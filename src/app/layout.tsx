@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import Script from "next/script";
 
 import { AppProviders } from "@/components/app-providers";
 
@@ -35,14 +34,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9553386327607295"
+          crossOrigin="anonymous"
+        />
+      </head>
       <body
         className={`font-sans ${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Script
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9553386327607295"
-          strategy="afterInteractive"
-          crossOrigin="anonymous"
-        />
         <AppProviders>{children}</AppProviders>
       </body>
     </html>

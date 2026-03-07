@@ -383,10 +383,10 @@ export default function Home() {
   };
 
   return (
-    <main className="flex min-h-screen flex-col bg-background py-5 px-6 md:px-0">
-      {/* Wrapper com padding lateral no desktop para não sobrepor os ads fixos */}
-      <div className="w-full flex flex-col min-w-0 md:pl-[176px] md:pr-[176px] lg:pl-[216px] lg:pr-[216px]">
-      <header className="mx-auto grid w-full max-w-6xl grid-cols-[1fr_auto_1fr] items-center gap-4 md:px-10">
+    <main className="flex min-h-screen flex-col bg-background py-5 px-6 lg:px-0">
+      {/* Wrapper com padding lateral no desktop (lg+) para não sobrepor os ads fixos */}
+      <div className="w-full flex flex-col min-w-0 lg:pl-[216px] lg:pr-[216px]">
+      <header className="mx-auto grid w-full max-w-6xl grid-cols-[1fr_auto_1fr] items-center gap-4 lg:px-10">
         <div className="flex items-center gap-2">
           {/* Mobile: botão de menu antes da logo */}
           <Sheet open={menuSheetOpen} onOpenChange={setMenuSheetOpen}>
@@ -565,7 +565,7 @@ export default function Home() {
         </div>
       </header>
 
-      <div className="mx-auto w-full max-w-6xl px-4 pt-14 pb-10 md:px-10">
+      <div className="mx-auto w-full max-w-6xl px-4 pt-14 pb-10 lg:px-10">
       <section className="w-full max-w-3xl mx-auto text-center">
         <div className="space-y-4">
           <h1 className="text-4xl font-semibold tracking-tight md:text-5xl">
@@ -1462,7 +1462,7 @@ export default function Home() {
       </div>
 
       {/* Mobile: ad “esquerdo” abaixo da calculadora */}
-      <aside className="mx-auto w-full max-w-5xl px-4 pt-8 pb-5 md:hidden">
+      <aside className="mx-auto w-full max-w-5xl px-4 pt-8 pb-5 lg:hidden">
         <div className="rounded-xl border border-dashed border-border bg-muted/20 p-4 text-center">
           <p className="text-sm font-medium text-foreground">Advertisement</p>
           <p className="mt-1 text-xs text-muted-foreground">
@@ -1472,7 +1472,7 @@ export default function Home() {
         </div>
       </aside>
 
-      <section className="mx-auto w-full max-w-3xl px-4 pb-12 pt-6 md:px-10">
+      <section className="mx-auto w-full max-w-3xl px-4 pb-12 pt-6 lg:px-10">
         <h2 className="mb-4 text-2xl font-semibold tracking-tight">
           {faqByLocale[locale].title}
         </h2>
@@ -1487,7 +1487,7 @@ export default function Home() {
       </section>
 
       {/* Mobile: ad “direito” abaixo do FAQ */}
-      <aside className="mx-auto w-full max-w-5xl px-4 pt-8 pb-5 md:hidden">
+      <aside className="mx-auto w-full max-w-5xl px-4 pt-8 pb-5 lg:hidden">
         <div className="rounded-xl border border-dashed border-border bg-muted/20 p-4 text-center">
           <p className="text-sm font-medium text-foreground">Advertisement</p>
           <p className="mt-1 text-xs text-muted-foreground">
@@ -1498,8 +1498,8 @@ export default function Home() {
       </aside>
       </div>
 
-      {/* Desktop: propaganda fixa no canto esquerdo */}
-      <aside className="hidden md:block fixed left-4 top-24 w-[160px] lg:w-[200px] z-10">
+      {/* Desktop (lg+): propaganda fixa no canto esquerdo */}
+      <aside className="hidden lg:block fixed left-4 top-24 w-[200px] z-10">
         <div className="rounded-xl border border-dashed border-border bg-muted/20 p-4 text-center">
           <p className="text-sm font-medium text-foreground">Advertisement</p>
           <p className="mt-1 text-xs text-muted-foreground">
@@ -1509,8 +1509,8 @@ export default function Home() {
         </div>
       </aside>
 
-      {/* Desktop: propaganda fixa no canto direito */}
-      <aside className="hidden md:block fixed right-4 top-24 w-[160px] lg:w-[200px] z-10">
+      {/* Desktop (lg+): propaganda fixa no canto direito */}
+      <aside className="hidden lg:block fixed right-4 top-24 w-[200px] z-10">
         <div className="rounded-xl border border-dashed border-border bg-muted/20 p-4 text-center">
           <p className="text-sm font-medium text-foreground">Advertisement</p>
           <p className="mt-1 text-xs text-muted-foreground">

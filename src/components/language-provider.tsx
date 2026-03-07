@@ -15,10 +15,12 @@ import {
 
 const LOCALE_STORAGE_KEY = "find-your-pace-locale";
 
+type Translation = (typeof translations)[Locale];
+
 type LanguageContextValue = {
   locale: Locale;
   setLocale: (locale: Locale) => void;
-  t: (key: keyof (typeof translations)[Locale]) => string;
+  t: <K extends keyof Translation>(key: K) => Translation[K];
 };
 
 const LanguageContext = createContext<LanguageContextValue | undefined>(

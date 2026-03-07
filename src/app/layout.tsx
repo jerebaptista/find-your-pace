@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 
 import { AppProviders } from "@/components/app-providers";
+import { siteBaseUrl } from "@/lib/i18n";
 
 import "./globals.css";
 
@@ -16,7 +17,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "KnowYourPace",
+  metadataBase: new URL(siteBaseUrl),
+  title: "FindYourPace",
   description:
     "Free running pace calculator to estimate pace, distance, time and race splits.",
   robots: "index, follow",

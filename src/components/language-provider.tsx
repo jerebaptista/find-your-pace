@@ -5,7 +5,6 @@ import { usePathname, useRouter } from "next/navigation";
 
 import {
   defaultLocale,
-  detectLocale,
   localeToPathLocale,
   pathLocaleToLocale,
   pathLocales,
@@ -27,23 +26,25 @@ const LanguageContext = createContext<LanguageContextValue | undefined>(
   undefined
 );
 
+function getLocaleFromPathname(pathname: string): Locale {
+  const segment = pathname.split("/")[1];
+  if (segment && pathLocales.includes(segment as (typeof pathLocales)[number])) {
+    return pathLocaleToLocale(segment);
+  }
+  return defaultLocale;
+}
+
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
 
-  const [locale, setLocaleState] = useState<Locale>(() => {
-    if (typeof window === "undefined") return defaultLocale;
-    const saved = window.localStorage.getItem(LOCALE_STORAGE_KEY) as Locale | null;
-    if (saved && translations[saved]) return saved;
-    return detectLocale(window.navigator.language);
-  });
+  const [locale, setLocaleState] = useState<Locale>(() =>
+    getLocaleFromPathname(pathname)
+  );
 
   useEffect(() => {
-    const segment = pathname.split("/")[1];
-    if (segment && pathLocales.includes(segment as (typeof pathLocales)[number])) {
-      const fromUrl = pathLocaleToLocale(segment);
-      setLocaleState(fromUrl);
-    }
+    const fromUrl = getLocaleFromPathname(pathname);
+    setLocaleState(fromUrl);
   }, [pathname]);
 
   const setLocale = useMemo(() => {

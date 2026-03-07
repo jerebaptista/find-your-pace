@@ -28,12 +28,29 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   languages["x-default"] = `${siteBaseUrl}/`;
 
   const localeKey = pathLocaleToLocale(pathLocale);
+  const pageUrl = `${siteBaseUrl}/${pathLocale}`;
+  const title = pageTitleByPathLocale[pathLocale];
+  const description = translations[localeKey].appDescription;
+
   return {
-    title: pageTitleByPathLocale[pathLocale],
-    description: translations[localeKey].appDescription,
+    title,
+    description,
     alternates: {
-      canonical: `${siteBaseUrl}/${pathLocale}`,
+      canonical: pageUrl,
       languages,
+    },
+    openGraph: {
+      type: "website",
+      url: pageUrl,
+      siteName: "FindYourPace",
+      title,
+      description,
+      locale: localeKey,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
     },
   };
 }
@@ -41,7 +58,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 const webAppSchema = {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  name: "KnowYourPace",
+  name: "FindYourPace",
   url: siteBaseUrl,
   applicationCategory: "SportsApplication",
   operatingSystem: "Any",

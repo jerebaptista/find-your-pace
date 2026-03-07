@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Script from "next/script";
 
 import { AppProviders } from "@/components/app-providers";
 
@@ -16,8 +17,15 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Find Your Pace",
-  description: "Site para calcular pace de corrida",
+  title: "KnowYourPace",
+  description:
+    "Free running pace calculator to estimate pace, distance, time and race splits.",
+  robots: "index, follow",
+};
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({
@@ -30,6 +38,11 @@ export default function RootLayout({
       <body
         className={`font-sans ${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <Script
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9553386327607295"
+          strategy="afterInteractive"
+          crossOrigin="anonymous"
+        />
         <AppProviders>{children}</AppProviders>
       </body>
     </html>

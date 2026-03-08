@@ -23,7 +23,8 @@ flowchart TB
     C --> GPT[OpenAI: gerar post em inglês]
     GPT --> SEO[SEO: título, description, corpo]
     SEO --> SLUG[Slug = título EN slugificado, sem data]
-    SLUG --> FILE_EN[Arquivo EN: content/blog/en/{slug}.mdx]
+    SLUG --> IMG[Unsplash: imagem aleatória Running, horizontal]
+    IMG --> FILE_EN[Arquivo EN: content/blog/en/{slug}.mdx com image no frontmatter]
   end
 
   subgraph translate["Tradução"]
@@ -51,9 +52,10 @@ flowchart TB
 | 1 | Buscar temas | Reddit r/running (hot) ou lista fixa |
 | 2 | Gerar post em inglês | Título EN, description, corpo Markdown (com SEO) |
 | 3 | Definir slug | Do título em inglês, sem data. Ex.: `best-sports-bras` |
-| 4 | Salvar post EN | `content/blog/en/{slug}.mdx` |
-| 5 | Traduzir | 9 arquivos: `content/blog/{locale}/{slug}.mdx` (es, fr, it, pt, ja, de, nl, pl, sv) |
-| 6 | Publicar | Commit + push de `content/blog/` |
+| 4 | Buscar imagem | Unsplash: uma foto aleatória (query "Running", horizontal); URL no frontmatter `image` |
+| 5 | Salvar post EN | `content/blog/en/{slug}.mdx` (com `image` se UNSPLASH_ACCESS_KEY estiver definida) |
+| 6 | Traduzir | 9 arquivos: `content/blog/{locale}/{slug}.mdx` (mesma imagem em todos) |
+| 7 | Publicar | Commit + push de `content/blog/` |
 
 ## Exemplo de URL e arquivos
 
@@ -72,6 +74,7 @@ flowchart TB
 - `content/blog/es/best-sports-bras.mdx`
 - etc.
 
-## Observação
+## Variáveis de ambiente (script e GitHub Action)
 
-A estrutura de pastas atual do blog é `content/blog/*.mdx` (um arquivo por post, sem pasta por idioma). Para esse fluxo será necessário migrar para `content/blog/{locale}/{slug}.mdx` e ajustar `src/lib/blog.ts` para aceitar `locale` e ler o arquivo correto por idioma.
+- **OPENAI_API_KEY** (obrigatória): chave da API OpenAI.
+- **UNSPLASH_ACCESS_KEY** (opcional): Access Key da aplicação Unsplash. Se definida, o script busca uma foto horizontal (query "Running") e grava a URL no frontmatter `image` do post. No GitHub Actions, criar secret `UNSPLASH_ACCESS_KEY` com o valor do Access Key (não usar Secret Key no script).

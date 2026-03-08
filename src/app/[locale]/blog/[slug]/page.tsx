@@ -1,7 +1,6 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
-import ReactMarkdown from "react-markdown";
 import { AdPlaceholder } from "@/components/ad-placeholder";
+import { BlogPostContent } from "@/components/blog-post-content";
 import { AppHeader } from "@/components/app-header";
 import {
   pathLocaleToLocale,
@@ -102,10 +101,12 @@ export default async function BlogPostPage({ params }: Props) {
             ) : null}
           </div>
 
-          {/* Conteúdo em markdown */}
-          <div className="mt-8 w-full max-w-3xl text-left prose text-lg prose-neutral dark:prose-invert prose-p:text-foreground/80 prose-headings:font-regular">
-            <ReactMarkdown>{post.content}</ReactMarkdown>
-          </div>
+          {/* Conteúdo em markdown: gaps entre parágrafos; no mobile, 1 ad após 4º parágrafo e 1 no final */}
+          <BlogPostContent
+            content={post.content}
+            adSupportText={t.adSupportRun}
+            adEnableText={t.adEnableAds}
+          />
         </div>
       </div>
       <AdPlaceholder

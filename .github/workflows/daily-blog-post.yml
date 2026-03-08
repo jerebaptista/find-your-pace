@@ -33,6 +33,7 @@ jobs:
       - name: Generate post
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
         run: node scripts/generate-daily-post.mjs
 
       - name: Commit and push

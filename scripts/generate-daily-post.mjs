@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 /**
  * Gera um post diário em inglês e traduz para os 9 outros idiomas.
- * Uso: OPENAI_API_KEY=xxx node scripts/generate-daily-post.mjs
+ * Uso: OPENAI_API_KEY=xxx [UNSPLASH_ACCESS_KEY=xxx] node scripts/generate-daily-post.mjs
  * Estrutura: content/blog/{locale}/{slug}.mdx — slug em inglês, sem data.
+ * Imagem: se UNSPLASH_ACCESS_KEY estiver definida, busca uma foto horizontal no Unsplash (query: Running).
  */
 
 import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from "fs";
@@ -12,6 +13,7 @@ const require = createRequire(import.meta.url);
 const matter = require("gray-matter");
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
+const UNSPLASH_ACCESS_KEY = process.env.UNSPLASH_ACCESS_KEY;
 const CONTENT_DIR = join(process.cwd(), "content", "blog");
 const DOCS_DIR = join(process.cwd(), "docs");
 const SEO_RULES_PATH = join(DOCS_DIR, "blog-seo-rules.md");
@@ -80,6 +82,35 @@ function slugify(text) {
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-|-$/g, "")
     .slice(0, 60);
+}
+
+/**
+ * Busca uma imagem horizontal no Unsplash (query: Running, fotos).
+ * Requer UNSPLASH_ACCESS_KEY. Retorna URL ou null.
+ */
+async function fetchUnsplashImage() {
+  if (!UNSPLASH_ACCESS_KEY) return null;
+  try {
+    const url = new URL("https://api.unsplash.com/search/photos");
+    url.searchParams.set("query", "Running");
+    url.searchParams.set("orientation", "landscape");
+    url.searchParams.set("per_page", "10");
+    const res = await fetch(url.toString(), {
+      headers: {
+        Authorization: `Client-ID ${UNSPLASH_ACCESS_KEY}`,
+        "Accept-Version": "v1",
+      },
+    });
+    if (!res.ok) return null;
+    const data = await res.json();
+    const results = data?.results || [];
+    if (results.length === 0) return null;
+    const pick = results[Math.floor(Math.random() * results.length)];
+    return pick?.urls?.regular || pick?.urls?.full || null;
+  } catch (e) {
+    console.warn("Unsplash fetch failed:", e.message);
+    return null;
+  }
 }
 
 async function openai(messages, options = {}) {
@@ -198,6 +229,7 @@ description: "${escapeYamlString(meta.description)}"
 date: "${meta.date || DATE_STR}"
 slug: "${slug}"
 `;
+  if (meta.image) front += `image: "${escapeYamlString(meta.image)}"\n`;
   if (extra.mainKeyword) front += `mainKeyword: "${escapeYamlString(extra.mainKeyword)}"\n`;
   if (Array.isArray(extra.secondaryKeywords) && extra.secondaryKeywords.length)
     front += `secondaryKeywords: ${JSON.stringify(extra.secondaryKeywords)}\n`;
@@ -232,11 +264,19 @@ async function main() {
     process.exit(1);
   }
 
+  let imageUrl = null;
+  if (UNSPLASH_ACCESS_KEY) {
+    console.log("Fetching image from Unsplash (Running, landscape)...");
+    imageUrl = await fetchUnsplashImage();
+    if (imageUrl) console.log("Image found:", imageUrl.slice(0, 50) + "...");
+  }
+
   const enMeta = {
     title,
     description: en.description || "Post about running and pace for FindYourPace.",
     date: DATE_STR,
     slug,
+    image: imageUrl || undefined,
   };
   const extra = {
     mainKeyword: en.mainKeyword || null,
@@ -258,6 +298,7 @@ async function main() {
       description: translated.description || enMeta.description,
       date: DATE_STR,
       slug,
+      image: enMeta.image,
     };
     const path = writePost(locale, slug, meta, translated.body, extra);
     console.log("Created:", path);

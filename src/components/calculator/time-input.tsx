@@ -35,8 +35,8 @@ type TimeInputProps = {
   minuteShort: string;
   secondShort: string;
   comboboxEmpty: string;
-  /** "full" = Field + Label + grid 4+4+4; "inline" = só grid 3+3+3 (para usar ao lado do select de unidade) */
-  variant?: "full" | "inline";
+  /** "full" = Field + Label + grid 4+4+4; "inline" = só grid 3+3+3; "minutesSeconds" = só M e S (2 colunas), H fixo 00 */
+  variant?: "full" | "inline" | "minutesSeconds";
 };
 
 export function TimeInput({
@@ -51,6 +51,7 @@ export function TimeInput({
   variant = "full",
 }: TimeInputProps) {
   const { h, m, s } = parseTime(value);
+  const effectiveH = variant === "minutesSeconds" ? "00" : h;
   const [hOpen, setHOpen] = useState(false);
   const [mOpen, setMOpen] = useState(false);
   const [sOpen, setSOpen] = useState(false);
@@ -58,11 +59,15 @@ export function TimeInput({
   const mInputRef = useRef("");
   const sInputRef = useRef("");
 
-  const gridCols = variant === "inline" ? "grid-cols-3" : "grid-cols-12";
-  const colSpan = variant === "inline" ? "min-w-0" : "col-span-4 min-w-0";
+  const gridCols =
+    variant === "minutesSeconds"
+      ? "grid-cols-2"
+      : "grid-cols-3";
+  const colSpan = "min-w-0";
 
   const content = (
     <>
+        {variant !== "minutesSeconds" && (
         <div className={colSpan}>
           <Combobox
             value={h === "00" ? undefined : h}
@@ -111,6 +116,7 @@ export function TimeInput({
             </ComboboxContent>
           </Combobox>
         </div>
+        )}
         <div className={colSpan}>
           <Combobox
             value={m === "00" ? undefined : m}
@@ -170,11 +176,11 @@ export function TimeInput({
               else {
                 const raw = sInputRef.current ?? s;
                 const clamped = clampMinutesOrSeconds(raw);
-                onChange(formatTime(h, m, clamped ? clamped.padStart(2, "0") : "00"));
+                onChange(formatTime(effectiveH, m, clamped ? clamped.padStart(2, "0") : "00"));
               }
             }}
             onValueChange={(v) => {
-              onChange(formatTime(h, m, v ?? "00"));
+              onChange(formatTime(effectiveH, m, v ?? "00"));
             }}
             onInputValueChange={(inputValue) => {
               sInputRef.current = clampMinutesOrSeconds(inputValue);
@@ -211,19 +217,99 @@ export function TimeInput({
   );
 
   const grid = (
-    <div className={`grid ${gridCols} gap-2`}>
+    <div className={`grid w-full min-w-0 ${gridCols} gap-2`}>
       {content}
     </div>
   );
 
-  if (variant === "inline") {
+  if (variant === "inline" || variant === "minutesSeconds") {
     return grid;
   }
 
   return (
-    <Field className="p-0 sm:col-span-3">
+    <Field className="w-full min-w-0 p-0 sm:col-span-3">
       {label != null && <Label>{label}</Label>}
       {grid}
     </Field>
   );
+}
+
+/** Um único combobox para minutos (para grid 3 colunas: M | S | select) */
+type MinuteOrSecondInputProps = {
+  value: string;
+  onChange: (v: string) => void;
+  placeholderTime: string;
+  shortLabel: string;
+  comboboxEmpty: string;
+  /** Se não informado, usa TIME_MINUTE_SECOND_OPTIONS. Para pace, use PACE_MINUTE_OPTIONS (00–08). */
+  options?: readonly string[];
+};
+
+function MinuteOrSecondInput({
+  value,
+  onChange,
+  placeholderTime,
+  shortLabel,
+  comboboxEmpty,
+  options = TIME_MINUTE_SECOND_OPTIONS,
+}: MinuteOrSecondInputProps) {
+  const [open, setOpen] = useState(false);
+  const inputRef = useRef("");
+
+  return (
+    <div className="min-w-0">
+      <Combobox
+        value={value === "00" ? undefined : value}
+        inputValue={open ? undefined : (value === "00" ? "" : value)}
+        open={open}
+        onOpenChange={(isOpen) => {
+          setOpen(isOpen);
+          if (isOpen) inputRef.current = value;
+          else {
+            const raw = inputRef.current ?? value;
+            const clamped = clampMinutesOrSeconds(raw);
+            onChange(clamped ? clamped.padStart(2, "0") : "00");
+          }
+        }}
+        onValueChange={(v) => onChange(v ?? "00")}
+        onInputValueChange={(inputValue) => {
+          inputRef.current = clampMinutesOrSeconds(inputValue);
+        }}
+        items={options}
+        filteredItems={options}
+      >
+        <ComboboxInput
+          placeholder={placeholderTime}
+          className="h-11 [&_input]:text-lg [&_input]:md:text-lg"
+          showTrigger={false}
+          showClear={false}
+          maxLength={2}
+        >
+          <InputGroupAddon align="inline-end" className="pr-3">
+            <InputGroupText className="text-muted-foreground">{shortLabel}</InputGroupText>
+          </InputGroupAddon>
+        </ComboboxInput>
+        <ComboboxContent>
+          <ComboboxList>
+            <ComboboxCollection>
+              {(item: string) => (
+                <ComboboxItem key={item} value={item}>
+                  {item}
+                </ComboboxItem>
+              )}
+            </ComboboxCollection>
+          </ComboboxList>
+          <ComboboxEmpty>{comboboxEmpty}</ComboboxEmpty>
+        </ComboboxContent>
+      </Combobox>
+    </div>
+  );
+}
+
+export function MinuteInput(props: Omit<MinuteOrSecondInputProps, "shortLabel"> & { minuteShort: string }) {
+  return <MinuteOrSecondInput {...props} shortLabel={props.minuteShort} />;
+}
+
+export function SecondInput(props: Omit<MinuteOrSecondInputProps, "shortLabel"> & { secondShort: string }) {
+  return <MinuteOrSecondInput {...props} shortLabel={props.secondShort} />;
 }

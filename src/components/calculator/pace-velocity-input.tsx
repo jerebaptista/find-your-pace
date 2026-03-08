@@ -9,8 +9,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Toggle } from "@/components/ui/toggle";
-import { TimeInput } from "@/components/calculator/time-input";
-import { formatTime, parseTime } from "@/lib/calculator-utils";
+import { MinuteInput, SecondInput } from "@/components/calculator/time-input";
+import { PACE_MINUTE_OPTIONS } from "@/lib/calculator-utils";
 
 type PaceVelocityInputProps<PaceUnit extends string, VelocityUnit extends string> = {
   mode: "pace" | "velocity";
@@ -41,6 +41,8 @@ type PaceVelocityInputProps<PaceUnit extends string, VelocityUnit extends string
   velocityOptionShort: Record<VelocityUnit, string>;
   paceOnlyOptions: readonly PaceUnit[];
   velocityOnlyOptions: readonly VelocityUnit[];
+  /** Identificador único por instância (ex: "time" ou "distance") para evitar conflito entre selects de Pace e Velocity */
+  instanceId?: string;
 };
 
 export function PaceVelocityInput<PaceUnit extends string, VelocityUnit extends string>({
@@ -72,16 +74,13 @@ export function PaceVelocityInput<PaceUnit extends string, VelocityUnit extends 
   velocityOptionShort,
   paceOnlyOptions,
   velocityOnlyOptions,
+  instanceId = "pace-velocity",
 }: PaceVelocityInputProps<PaceUnit, VelocityUnit>) {
-  const handlePaceTimeChange = (value: string) => {
-    const { h, m, s } = parseTime(value);
-    onPaceHChange(h);
-    onPaceMChange(m);
-    onPaceSChange(s);
-  };
+  const paceSelectId = `${instanceId}-pace-unit`;
+  const velocitySelectId = `${instanceId}-velocity-unit`;
 
   return (
-    <Field className="p-0 sm:col-span-3">
+    <Field className="w-full min-w-0 p-0 sm:col-span-3">
       <div className="flex items-center gap-1.5">
         <Toggle
           type="button"
@@ -104,24 +103,40 @@ export function PaceVelocityInput<PaceUnit extends string, VelocityUnit extends 
           {toggleVelocityLabel}
         </Toggle>
       </div>
-      <div className="mt-1 grid grid-cols-12 gap-2 items-center">
+      <div className="mt-1 grid w-full min-w-0 grid-cols-3 gap-2 items-center">
         {mode === "pace" ? (
           <>
-            <div className="col-span-9 min-w-0">
-              <TimeInput
-                variant="inline"
-                value={formatTime(paceH, paceM, paceS)}
-                onChange={handlePaceTimeChange}
+            <div key="pace-m" className="min-w-0">
+              <MinuteInput
+                value={paceM}
+                onChange={(m) => {
+                  onPaceHChange("00");
+                  onPaceMChange(m);
+                }}
                 placeholderTime={placeholderTime}
-                hourShort={hourShort}
                 minuteShort={minuteShort}
+                comboboxEmpty={comboboxEmpty}
+                options={PACE_MINUTE_OPTIONS}
+              />
+            </div>
+            <div key="pace-s" className="min-w-0">
+              <SecondInput
+                value={paceS}
+                onChange={(s) => {
+                  onPaceHChange("00");
+                  onPaceSChange(s);
+                }}
+                placeholderTime={placeholderTime}
                 secondShort={secondShort}
                 comboboxEmpty={comboboxEmpty}
               />
             </div>
-            <div className="col-span-3">
-              <Select value={paceUnit} onValueChange={(v) => onPaceUnitChange(v as PaceUnit)}>
-                <SelectTrigger className="h-11 w-full min-w-0 text-base data-[size=default]:h-11">
+            <div key="pace-select" className="min-w-0">
+              <Select
+                value={paceUnit}
+                onValueChange={(v) => onPaceUnitChange(v as PaceUnit)}
+              >
+                <SelectTrigger id={paceSelectId} className="h-11 w-full min-w-0 text-base data-[size=default]:h-11">
                   <SelectValue>/{paceOptionShort[paceUnit]}</SelectValue>
                 </SelectTrigger>
                 <SelectContent position="popper" side="bottom" sideOffset={6}>
@@ -134,7 +149,7 @@ export function PaceVelocityInput<PaceUnit extends string, VelocityUnit extends 
           </>
         ) : (
           <>
-            <div className="col-span-9 flex h-11 min-w-0 items-center rounded-lg border border-input bg-transparent transition-colors focus-within:border-ring focus-within:ring-3 focus-within:ring-ring/50">
+            <div className="col-span-2 flex h-11 min-w-0 items-center rounded-lg border border-input bg-transparent transition-colors focus-within:border-ring focus-within:ring-3 focus-within:ring-ring/50">
               <input
                 type="text"
                 inputMode="decimal"
@@ -148,9 +163,13 @@ export function PaceVelocityInput<PaceUnit extends string, VelocityUnit extends 
                 }}
               />
             </div>
-            <div className="col-span-3">
-              <Select value={velocityUnit} onValueChange={(v) => onVelocityUnitChange(v as VelocityUnit)}>
-                <SelectTrigger className="h-11 w-full min-w-0 text-base data-[size=default]:h-11">
+            <div className="col-span-1 min-w-0">
+              <Select
+                key={velocitySelectId}
+                value={velocityUnit}
+                onValueChange={(v) => onVelocityUnitChange(v as VelocityUnit)}
+              >
+                <SelectTrigger id={velocitySelectId} className="h-11 w-full min-w-0 text-base data-[size=default]:h-11">
                   <SelectValue>{velocityOptionShort[velocityUnit]}</SelectValue>
                 </SelectTrigger>
                 <SelectContent position="popper" side="bottom" sideOffset={6}>

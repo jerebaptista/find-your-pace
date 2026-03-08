@@ -32,6 +32,9 @@ type Translation = {
   secondsLabel: string;
   emptyState: string;
   resultTitle: string;
+  resultTitlePace: string;
+  resultTitleTime: string;
+  resultTitleDistance: string;
   averagePace: string;
   averageSpeed: string;
   racePredictions: string;
@@ -71,6 +74,12 @@ type Translation = {
   paceTimeTableColHalf: string;
   paceTimeTableColMarathon: string;
   paceTimeTableDistancesNote: string;
+  blogWrittenBy: string;
+  validationMissingTitle: string;
+  validationMissingDistance: string;
+  validationMissingTime: string;
+  validationMissingPace: string;
+  validationMissingVelocity: string;
 };
 
 export const localeOptions: { value: Locale; label: string }[] = [
@@ -119,6 +128,9 @@ export const translations: Record<Locale, Translation> = {
     secondsLabel: "Seconds",
     emptyState: "Fill distance and time to calculate your pace.",
     resultTitle: "Result",
+    resultTitlePace: "Your pace is",
+    resultTitleTime: "Your time is",
+    resultTitleDistance: "Your distance is",
     averagePace: "Average pace",
     averageSpeed: "Average speed",
     racePredictions: "Race predictions",
@@ -182,6 +194,12 @@ export const translations: Record<Locale, Translation> = {
     paceTimeTableColMarathon: "Marathon",
     paceTimeTableDistancesNote:
       "Half: 21.0975 km (13.1 mi). Marathon: 42.195 km (26.2 mi).",
+    blogWrittenBy: "Written by",
+    validationMissingTitle: "Missing required fields",
+    validationMissingDistance: "Distance",
+    validationMissingTime: "Time",
+    validationMissingPace: "Pace",
+    validationMissingVelocity: "Velocity",
   },
   es: {
     appTitle: "Encuentra tu Ritmo de Carrera",
@@ -219,6 +237,9 @@ export const translations: Record<Locale, Translation> = {
     secondsLabel: "Segundos",
     emptyState: "Completa distancia y tiempo para calcular tu ritmo.",
     resultTitle: "Resultado",
+    resultTitlePace: "Tu ritmo es",
+    resultTitleTime: "Tu tiempo es",
+    resultTitleDistance: "Tu distancia es",
     averagePace: "Ritmo medio",
     averageSpeed: "Velocidad media",
     racePredictions: "Proyecciones de carrera",
@@ -282,6 +303,12 @@ export const translations: Record<Locale, Translation> = {
     paceTimeTableColMarathon: "Maratón",
     paceTimeTableDistancesNote:
       "Media: 21,0975 km (13,1 mi). Maratón: 42,195 km (26,2 mi).",
+    blogWrittenBy: "Escrito por",
+    validationMissingTitle: "Campos requeridos",
+    validationMissingDistance: "Distancia",
+    validationMissingTime: "Tiempo",
+    validationMissingPace: "Ritmo",
+    validationMissingVelocity: "Velocidad",
   },
   fr: {
     appTitle: "Trouvez Votre Allure de Course",
@@ -319,6 +346,9 @@ export const translations: Record<Locale, Translation> = {
     secondsLabel: "Secondes",
     emptyState: "Saisissez distance et temps pour calculer votre allure.",
     resultTitle: "Resultat",
+    resultTitlePace: "Votre allure est",
+    resultTitleTime: "Votre temps est",
+    resultTitleDistance: "Votre distance est",
     averagePace: "Allure moyenne",
     averageSpeed: "Vitesse moyenne",
     racePredictions: "Projections de course",
@@ -382,6 +412,12 @@ export const translations: Record<Locale, Translation> = {
     paceTimeTableColMarathon: "Marathon",
     paceTimeTableDistancesNote:
       "Demi: 21,0975 km (13,1 mi). Marathon: 42,195 km (26,2 mi).",
+    blogWrittenBy: "Écrit par",
+    validationMissingTitle: "Champs requis manquants",
+    validationMissingDistance: "Distance",
+    validationMissingTime: "Temps",
+    validationMissingPace: "Allure",
+    validationMissingVelocity: "Vitesse",
   },
   de: {
     appTitle: "Finde Deinen Lauf-Pace",
@@ -419,6 +455,9 @@ export const translations: Record<Locale, Translation> = {
     secondsLabel: "Sekunden",
     emptyState: "Distanz und Zeit eingeben, um Pace zu berechnen.",
     resultTitle: "Ergebnis",
+    resultTitlePace: "Dein Pace ist",
+    resultTitleTime: "Deine Zeit ist",
+    resultTitleDistance: "Deine Distanz ist",
     averagePace: "Durchschnittspace",
     averageSpeed: "Durchschnittsgeschwindigkeit",
     racePredictions: "Wettkampf-Prognosen",
@@ -482,6 +521,12 @@ export const translations: Record<Locale, Translation> = {
     paceTimeTableColMarathon: "Marathon",
     paceTimeTableDistancesNote:
       "Halb: 21,0975 km (13,1 mi). Marathon: 42,195 km (26,2 mi).",
+    blogWrittenBy: "Geschrieben von",
+    validationMissingTitle: "Pflichtfelder fehlen",
+    validationMissingDistance: "Distanz",
+    validationMissingTime: "Zeit",
+    validationMissingPace: "Pace",
+    validationMissingVelocity: "Geschwindigkeit",
   },
   "pt-BR": {
     appTitle: "Encontre Seu Pace de Corrida",
@@ -519,6 +564,9 @@ export const translations: Record<Locale, Translation> = {
     secondsLabel: "Segundos",
     emptyState: "Preencha distancia e tempo para calcular seu pace.",
     resultTitle: "Resultado",
+    resultTitlePace: "Seu pace é",
+    resultTitleTime: "Seu tempo é",
+    resultTitleDistance: "Sua distância é",
     averagePace: "Pace medio",
     averageSpeed: "Velocidade media",
     racePredictions: "Projecoes de prova",
@@ -582,6 +630,12 @@ export const translations: Record<Locale, Translation> = {
     paceTimeTableColMarathon: "Maratona",
     paceTimeTableDistancesNote:
       "Meia: 21,0975 km (13,1 mi). Maratona: 42,195 km (26,2 mi).",
+    blogWrittenBy: "Escrito por",
+    validationMissingTitle: "Preencha os campos obrigatórios",
+    validationMissingDistance: "Distância",
+    validationMissingTime: "Tempo",
+    validationMissingPace: "Ritmo",
+    validationMissingVelocity: "Velocidade",
   },
   it: {
     appTitle: "Trova il Tuo Ritmo di Corsa",
@@ -619,6 +673,9 @@ export const translations: Record<Locale, Translation> = {
     secondsLabel: "Secondi",
     emptyState: "Inserisci distanza e tempo per calcolare il passo.",
     resultTitle: "Risultato",
+    resultTitlePace: "Il tuo passo è",
+    resultTitleTime: "Il tuo tempo è",
+    resultTitleDistance: "La tua distanza è",
     averagePace: "Passo medio",
     averageSpeed: "Velocita media",
     racePredictions: "Proiezioni gara",
@@ -682,6 +739,12 @@ export const translations: Record<Locale, Translation> = {
     paceTimeTableColMarathon: "Maratona",
     paceTimeTableDistancesNote:
       "Mezza: 21,0975 km (13,1 mi). Maratona: 42,195 km (26,2 mi).",
+    blogWrittenBy: "Scritto da",
+    validationMissingTitle: "Campi obbligatori mancanti",
+    validationMissingDistance: "Distanza",
+    validationMissingTime: "Tempo",
+    validationMissingPace: "Passo",
+    validationMissingVelocity: "Velocità",
   },
   ja: {
     appTitle: "あなたのランニングペースを見つける",
@@ -719,6 +782,9 @@ export const translations: Record<Locale, Translation> = {
     secondsLabel: "秒",
     emptyState: "距離と時間を入力するとペースを計算できます。",
     resultTitle: "結果",
+    resultTitlePace: "あなたのペースは",
+    resultTitleTime: "あなたのタイムは",
+    resultTitleDistance: "あなたの距離は",
     averagePace: "平均ペース",
     averageSpeed: "平均速度",
     racePredictions: "レース予測",
@@ -782,6 +848,12 @@ export const translations: Record<Locale, Translation> = {
     paceTimeTableColMarathon: "マラソン",
     paceTimeTableDistancesNote:
       "ハーフ: 21.0975 km (13.1 mi). マラソン: 42.195 km (26.2 mi).",
+    blogWrittenBy: "執筆：",
+    validationMissingTitle: "必須項目を入力してください",
+    validationMissingDistance: "距離",
+    validationMissingTime: "タイム",
+    validationMissingPace: "ペース",
+    validationMissingVelocity: "速度",
   },
   nl: {
     appTitle: "Vind Je Hardlooptempo",
@@ -813,6 +885,9 @@ export const translations: Record<Locale, Translation> = {
     secondsLabel: "Seconden",
     emptyState: "Vul afstand en tijd in om je tempo te berekenen.",
     resultTitle: "Resultaat",
+    resultTitlePace: "Je tempo is",
+    resultTitleTime: "Je tijd is",
+    resultTitleDistance: "Je afstand is",
     averagePace: "Gemiddeld tempo",
     averageSpeed: "Gemiddelde snelheid",
     racePredictions: "Wedstrijdvoorspellingen",
@@ -876,6 +951,12 @@ export const translations: Record<Locale, Translation> = {
     paceTimeTableColMarathon: "Marathon",
     paceTimeTableDistancesNote:
       "Halve: 21,0975 km (13,1 mi). Marathon: 42,195 km (26,2 mi).",
+    blogWrittenBy: "Geschreven door",
+    validationMissingTitle: "Ontbrekende verplichte velden",
+    validationMissingDistance: "Afstand",
+    validationMissingTime: "Tijd",
+    validationMissingPace: "Tempo",
+    validationMissingVelocity: "Snelheid",
   },
   pl: {
     appTitle: "Znajdź Swój Tempo Biegu",
@@ -907,6 +988,9 @@ export const translations: Record<Locale, Translation> = {
     secondsLabel: "Sekundy",
     emptyState: "Wpisz dystans i czas, aby obliczyć tempo.",
     resultTitle: "Wynik",
+    resultTitlePace: "Twoje tempo to",
+    resultTitleTime: "Twój czas to",
+    resultTitleDistance: "Twój dystans to",
     averagePace: "Średnie tempo",
     averageSpeed: "Średnia prędkość",
     racePredictions: "Prognozy biegu",
@@ -970,6 +1054,12 @@ export const translations: Record<Locale, Translation> = {
     paceTimeTableColMarathon: "Maraton",
     paceTimeTableDistancesNote:
       "Pół: 21,0975 km (13,1 mi). Maraton: 42,195 km (26,2 mi).",
+    blogWrittenBy: "Napisane przez",
+    validationMissingTitle: "Wypełnij wymagane pola",
+    validationMissingDistance: "Dystans",
+    validationMissingTime: "Czas",
+    validationMissingPace: "Tempo",
+    validationMissingVelocity: "Prędkość",
   },
   sv: {
     appTitle: "Hitta Din Löptempo",
@@ -1001,6 +1091,9 @@ export const translations: Record<Locale, Translation> = {
     secondsLabel: "Sekunder",
     emptyState: "Fyll i distans och tid för att beräkna ditt tempo.",
     resultTitle: "Resultat",
+    resultTitlePace: "Ditt tempo är",
+    resultTitleTime: "Din tid är",
+    resultTitleDistance: "Ditt avstånd är",
     averagePace: "Genomsnittligt tempo",
     averageSpeed: "Genomsnittlig hastighet",
     racePredictions: "Lopprognoser",
@@ -1064,6 +1157,12 @@ export const translations: Record<Locale, Translation> = {
     paceTimeTableColMarathon: "Maraton",
     paceTimeTableDistancesNote:
       "Halv: 21,0975 km (13,1 mi). Maraton: 42,195 km (26,2 mi).",
+    blogWrittenBy: "Skrivet av",
+    validationMissingTitle: "Obligatoriska fält saknas",
+    validationMissingDistance: "Sträcka",
+    validationMissingTime: "Tid",
+    validationMissingPace: "Tempo",
+    validationMissingVelocity: "Hastighet",
   },
 };
 

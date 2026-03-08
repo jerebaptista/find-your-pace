@@ -1,41 +1,19 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Loader2, Menu, Moon, Sun } from "lucide-react";
+import { Loader2 } from "lucide-react";
+import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useTheme } from "next-themes";
+import { toast } from "sonner";
 
 import { useLanguage } from "@/components/language-provider";
+import { AdPlaceholder } from "@/components/ad-placeholder";
+import { AppHeader } from "@/components/app-header";
 import { Button } from "@/components/ui/button";
-import { Field } from "@/components/ui/field";
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-} from "@/components/ui/navigation-menu";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Toggle } from "@/components/ui/toggle";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
 import {
   type Locale,
   translations,
-  pathLocalesAsLocales,
   faqByLocale,
 } from "@/lib/i18n";
 import {
@@ -63,19 +41,6 @@ import {
   formatTime,
   formatDistanceDisplay,
 } from "@/lib/calculator-utils";
-
-const localeOptions: { value: Locale; shortLabel: string; nativeLabel: string }[] = [
-  { value: "en", shortLabel: "EN", nativeLabel: "English" },
-  { value: "es", shortLabel: "ES", nativeLabel: "Español" },
-  { value: "fr", shortLabel: "FR", nativeLabel: "Français" },
-  { value: "de", shortLabel: "DE", nativeLabel: "Deutsch" },
-  { value: "pt-BR", shortLabel: "PT", nativeLabel: "Português (Brasil)" },
-  { value: "it", shortLabel: "IT", nativeLabel: "Italiano" },
-  { value: "ja", shortLabel: "日", nativeLabel: "日本語" },
-  { value: "nl", shortLabel: "NL", nativeLabel: "Nederlands" },
-  { value: "pl", shortLabel: "PL", nativeLabel: "Polski" },
-  { value: "sv", shortLabel: "SV", nativeLabel: "Svenska" },
-];
 
 /** Unidades de pace (tempo por distância). */
 const paceOnlyOptions = ["Per Mile", "Per Kilometer"] as const;
@@ -186,7 +151,7 @@ function PaceTimeTable({ t }: { t: PaceTimeTableTranslations }) {
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead className="font-medium">Pace</TableHead>
+          <TableHead className="pl-4 font-medium">Pace</TableHead>
           {colLabels.map((label) => (
             <TableHead key={label} className="text-center font-medium">
               {label}
@@ -197,7 +162,7 @@ function PaceTimeTable({ t }: { t: PaceTimeTableTranslations }) {
       <TableBody>
         {PACE_TABLE_PACES.map((paceMin) => (
           <TableRow key={paceMin}>
-            <TableCell className="font-medium">
+            <TableCell className="pl-4 font-medium">
               {formatPaceCell(paceMin)}
             </TableCell>
             {PACE_TABLE_DISTANCES_KM.map((distKm) => (
@@ -213,13 +178,11 @@ function PaceTimeTable({ t }: { t: PaceTimeTableTranslations }) {
 }
 
 export function CalculatorView() {
-  const { resolvedTheme, setTheme } = useTheme();
-  const { locale, setLocale } = useLanguage();
+  const { locale } = useLanguage();
   const pathname = usePathname();
   const router = useRouter();
   const pathLocale = pathname.split("/").filter(Boolean)[0] ?? "en";
   const activeTab = getTabFromPathname(pathname);
-  const [isDarkTheme, setIsDarkTheme] = useState(false);
   const [paceDistance, setPaceDistance] = useState("");
   const [paceTimeH, setPaceTimeH] = useState("");
   const [paceTimeM, setPaceTimeM] = useState("");
@@ -248,7 +211,6 @@ export function CalculatorView() {
   const [distanceVelocityUnit, setDistanceVelocityUnit] = useState<VelocityUnit>(() =>
     defaultVelocityUnitForLocale(locale ?? "en")
   );
-  const [menuSheetOpen, setMenuSheetOpen] = useState(false);
   const [isCalculating, setIsCalculating] = useState(false);
   const [showResult, setShowResult] = useState(false);
   const [paceDistanceUnit, setPaceDistanceUnit] = useState<DistanceUnit>(
@@ -257,14 +219,6 @@ export function CalculatorView() {
   const [timeDistanceUnit, setTimeDistanceUnit] = useState<DistanceUnit>(
     defaultUnitForLocale(locale)
   );
-  const selectedLocale =
-    localeOptions.find((option) => option.value === locale) ?? localeOptions[0];
-
-  useEffect(() => {
-    if (resolvedTheme) {
-      setIsDarkTheme(resolvedTheme === "dark");
-    }
-  }, [resolvedTheme]);
 
   useEffect(() => {
     const defaultUnit = defaultUnitForLocale(locale);
@@ -298,14 +252,6 @@ export function CalculatorView() {
     if (metaDesc) metaDesc.setAttribute("content", pageDescription);
   }, [pageTitle, pageDescription]);
 
-  const [headerScrolled, setHeaderScrolled] = useState(false);
-  useEffect(() => {
-    const onScroll = () => setHeaderScrolled(window.scrollY > 16);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
   const distanceUnitLabel: Record<DistanceUnit, string> = {
     miles: t.distanceUnitMiles,
     kilometers: t.distanceUnitKilometers,
@@ -324,6 +270,54 @@ export function CalculatorView() {
 
   function handleCalculate(e: React.MouseEvent) {
     e.preventDefault();
+
+    const distNum = (s: string) => (s ? parseFloat(s.replace(/\s/g, "").replace(/,/g, ".")) : 0);
+    const timeToSec = (h: string, m: string, s: string) =>
+      parseInt(h || "0", 10) * 3600 + parseInt(m || "0", 10) * 60 + parseInt(s || "0", 10);
+
+    const missing: string[] = [];
+
+    if (activeTab === "pace") {
+      const dist = distNum(paceDistance);
+      const sec = timeToSec(paceTimeH, paceTimeM, paceTimeS);
+      if (!dist || dist <= 0) missing.push(t.validationMissingDistance);
+      if (sec <= 0) missing.push(t.validationMissingTime);
+    } else if (activeTab === "time") {
+      const dist = distNum(timeDistance);
+      if (!dist || dist <= 0) missing.push(t.validationMissingDistance);
+      if (timePaceVelocityMode === "pace") {
+        const paceSec =
+          parseInt(timePaceH || "0", 10) * 3600 +
+          parseInt(timePaceM || "0", 10) * 60 +
+          parseInt(timePaceS || "0", 10);
+        if (paceSec <= 0) missing.push(t.validationMissingPace);
+      } else {
+        const speed = parseFloat(timeVelocityValue) || 0;
+        if (!speed || speed <= 0) missing.push(t.validationMissingVelocity);
+      }
+    } else {
+      const { h, m, s } = parseTime(distanceTime);
+      const totalSec = timeToSec(h, m, s);
+      if (totalSec <= 0) missing.push(t.validationMissingTime);
+      if (distancePaceVelocityMode === "pace") {
+        const paceSec =
+          parseInt(distancePaceH || "0", 10) * 3600 +
+          parseInt(distancePaceM || "0", 10) * 60 +
+          parseInt(distancePaceS || "0", 10);
+        if (paceSec <= 0) missing.push(t.validationMissingPace);
+      } else {
+        const speed = parseFloat(distanceVelocityValue) || 0;
+        if (!speed || speed <= 0) missing.push(t.validationMissingVelocity);
+      }
+    }
+
+    if (missing.length > 0) {
+      toast.error(t.validationMissingTitle, {
+        description: missing.join(", "),
+      });
+      return;
+    }
+
     setIsCalculating(true);
     setTimeout(() => {
       setIsCalculating(false);
@@ -420,197 +414,10 @@ export function CalculatorView() {
   const resultSummary = showResult ? getResultSummary() : null;
 
   return (
-    <main className="flex min-h-screen flex-col bg-background py-5 px-6 lg:px-0">
-      {/* Wrapper com padding lateral no desktop (lg+) para não sobrepor os ads fixos */}
-      <div className="w-full flex flex-col min-w-0 lg:pl-[216px] lg:pr-[216px]">
-      {/* Header: no topo = barra larga; com scroll = cápsula */}
-      <div
-        className={`sticky top-0 z-50 w-full transition-all duration-300 ease-out ${headerScrolled ? "py-3 px-2 lg:px-0" : "-mx-6 px-4 lg:-mx-0 lg:px-0 pb-2 pt-0"}`}
-      >
-        <div
-          className={`flex items-center bg-background/70 backdrop-blur-md transition-all duration-300 ease-out ${headerScrolled ? "mx-auto h-14 max-w-6xl rounded-xl border border-border shadow-md" : "w-full border-b border-transparent"}`}
-        >
-      <header className={`grid w-full min-w-0 grid-cols-[1fr_auto_1fr] items-center gap-4 ${headerScrolled ? "px-3 lg:px-6" : "px-4 lg:px-10"}`}>
-        <div className="flex items-center gap-2">
-          {/* Mobile: botão de menu antes da logo */}
-          <Sheet open={menuSheetOpen} onOpenChange={setMenuSheetOpen}>
-            <SheetTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="md:hidden"
-                aria-label="Open menu"
-              >
-                <Menu className="size-5" />
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="left" className="w-[280px] sm:max-w-[280px]">
-              <SheetHeader>
-                <SheetTitle className="text-left">Menu</SheetTitle>
-              </SheetHeader>
-              <nav className="flex flex-col gap-6 px-2 pt-4">
-                <div>
-                  <p className="mb-2 text-sm font-medium text-muted-foreground">
-                    {t.menuCalculators}
-                  </p>
-                  <ul className="flex flex-col gap-1">
-                    {t.calculatorsLinks.map((label) => (
-                      <li key={label}>
-                        <a
-                          href="#"
-                          className="block rounded-lg px-3 py-2 text-sm font-medium transition-colors hover:bg-muted"
-                          onClick={() => setMenuSheetOpen(false)}
-                        >
-                          {label}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                <div>
-                  <p className="mb-2 text-sm font-medium text-muted-foreground">
-                    {t.menuCharts}
-                  </p>
-                  <ul className="flex flex-col gap-1">
-                    {t.chartLinks.map((label) => (
-                      <li key={label}>
-                        <a
-                          href="#"
-                          className="block rounded-lg px-3 py-2 text-sm font-medium transition-colors hover:bg-muted"
-                          onClick={() => setMenuSheetOpen(false)}
-                        >
-                          {label}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                <div>
-                  <a
-                    href="#"
-                    className="block rounded-lg px-3 py-2 text-sm font-medium transition-colors hover:bg-muted"
-                    onClick={() => setMenuSheetOpen(false)}
-                  >
-                    {t.menuBlog}
-                  </a>
-                </div>
-              </nav>
-            </SheetContent>
-          </Sheet>
-          <p className="text-lg font-bold tracking-tight">FindYourPace</p>
-        </div>
-
-        <div className="flex justify-self-center items-center">
-          {/* Desktop: navigation menu */}
-          <NavigationMenu
-            viewport={false}
-            className="hidden md:flex"
-          >
-            <NavigationMenuList className="gap-3">
-              <NavigationMenuItem>
-                <NavigationMenuTrigger>{t.menuCalculators}</NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <ul className="grid min-w-[260px] gap-1">
-                    {t.calculatorsLinks.map((label) => (
-                      <li key={label}>
-                        <NavigationMenuLink asChild>
-                          <a href="#" className="block">
-                            {label}
-                          </a>
-                        </NavigationMenuLink>
-                      </li>
-                    ))}
-                  </ul>
-                </NavigationMenuContent>
-              </NavigationMenuItem>
-
-              <NavigationMenuItem>
-                <NavigationMenuTrigger>{t.menuCharts}</NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <ul className="grid min-w-[220px] gap-1">
-                    {t.chartLinks.map((label) => (
-                      <li key={label}>
-                        <NavigationMenuLink asChild>
-                          <a href="#" className="block">
-                            {label}
-                          </a>
-                        </NavigationMenuLink>
-                      </li>
-                    ))}
-                  </ul>
-                </NavigationMenuContent>
-              </NavigationMenuItem>
-
-              <NavigationMenuItem>
-                <NavigationMenuLink asChild>
-                  <a
-                    href="#"
-                    className="inline-flex h-9 items-center rounded-lg px-2.5 py-1.5 text-sm font-medium transition-colors hover:bg-muted"
-                  >
-                    {t.menuBlog}
-                  </a>
-                </NavigationMenuLink>
-              </NavigationMenuItem>
-            </NavigationMenuList>
-          </NavigationMenu>
-        </div>
-
-        <div className="flex items-center justify-self-end gap-2">
-          <Select
-            value={locale}
-            onValueChange={(value) => setLocale(value as Locale)}
-          >
-            <SelectTrigger className="w-[64px] text-base">
-              <SelectValue>{selectedLocale.shortLabel}</SelectValue>
-            </SelectTrigger>
-            <SelectContent
-              position="popper"
-              side="bottom"
-              align="end"
-              sideOffset={6}
-            >
-              {localeOptions
-                .filter((option) => pathLocalesAsLocales.includes(option.value))
-                .sort((a, b) => a.nativeLabel.localeCompare(b.nativeLabel))
-                .map((option) => (
-                  <SelectItem key={option.value} value={option.value}>
-                    {option.nativeLabel}
-                  </SelectItem>
-                ))}
-            </SelectContent>
-          </Select>
-
-          <Toggle
-            variant="outline"
-            aria-label="Toggle theme"
-            pressed={isDarkTheme}
-            onPressedChange={(pressed: boolean) => {
-              setIsDarkTheme(pressed);
-              setTheme(pressed ? "dark" : "light");
-            }}
-          >
-            <span className="relative size-4">
-              <Sun
-                className={`absolute inset-0 size-4 transition-all duration-300 ease-in-out ${
-                  isDarkTheme
-                    ? "rotate-90 scale-0 opacity-0"
-                    : "rotate-0 scale-100 opacity-100"
-                }`}
-              />
-              <Moon
-                className={`absolute inset-0 size-4 transition-all duration-300 ease-in-out ${
-                  isDarkTheme
-                    ? "rotate-0 scale-100 opacity-100"
-                    : "-rotate-90 scale-0 opacity-0"
-                }`}
-              />
-            </span>
-          </Toggle>
-        </div>
-      </header>
-        </div>
-      </div>
-
+    <main className="flex min-h-screen flex-col bg-background py-5 lg:px-0">
+      <AppHeader />
+      {/* Conteúdo: padding lateral e área dos ads no desktop */}
+      <div className="w-full flex flex-col min-w-0 px-6 xl:pl-[176px] xl:pr-[176px] 3xl:pl-[316px] 3xl:pr-[316px]">
       <div className="mx-auto w-full max-w-6xl px-4 pt-14 pb-10 lg:px-10">
       <section className="w-full max-w-3xl mx-auto text-center">
         <div className="space-y-4">
@@ -622,14 +429,13 @@ export function CalculatorView() {
           </p>
         </div>
 
-        <Field className="mx-auto mt-8 w-full max-w-none rounded-lg border border-input bg-card p-6 shadow-sm md:max-w-[388px]">
-          <div className="relative min-h-0 [perspective:1000px]">
-            <div
-              className="relative h-full w-full transition-transform duration-500 [transform-style:preserve-3d]"
-              style={{ transform: showResult ? "rotateY(180deg)" : "none" }}
-            >
-              {/* Frente: formulário */}
-              <div className="[backface-visibility:hidden]">
+        <div className="mx-auto mt-8 w-full max-w-none [perspective:1000px] md:max-w-[388px]">
+          <div
+            className="relative w-full rounded-lg border border-input bg-card shadow-sm transition-transform duration-500 [transform-style:preserve-3d]"
+            style={{ transform: showResult ? "rotateY(180deg)" : "none" }}
+          >
+            {/* Frente: formulário (no fluxo para definir altura do card) */}
+            <div className="rounded-lg p-6 [backface-visibility:hidden]">
           <Tabs
             value={activeTab}
             onValueChange={(v) => {
@@ -721,6 +527,7 @@ export function CalculatorView() {
                 distanceBadges={t.distanceBadges}
               />
               <PaceVelocityInput
+                instanceId="time"
                 mode={timePaceVelocityMode}
                 onModeChange={setTimePaceVelocityMode}
                 paceH={timePaceH}
@@ -783,6 +590,7 @@ export function CalculatorView() {
                 comboboxEmpty={t.comboboxEmpty}
               />
               <PaceVelocityInput
+                instanceId="distance"
                 mode={distancePaceVelocityMode}
                 onModeChange={setDistancePaceVelocityMode}
                 paceH={distancePaceH}
@@ -833,58 +641,61 @@ export function CalculatorView() {
           </TabsContent>
             </div>
           </Tabs>
-              </div>
+            </div>
 
-              {/* Verso: resultado */}
-              <div
-                className="absolute inset-0 flex flex-col gap-6 rounded-lg [backface-visibility:hidden]"
-                style={{ transform: "rotateY(180deg)" }}
-              >
-                {resultSummary && (
-                  <>
-                    <h3 className="text-lg font-semibold">{t.resultTitle}</h3>
-                    <Table>
-                      <TableBody>
-                        {resultSummary.tableRows.map((row, i) => (
-                          <TableRow key={i}>
-                            <TableCell className="font-medium text-muted-foreground">{row.label}</TableCell>
-                            <TableCell className="text-right">{row.value}</TableCell>
-                          </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
-                    <p className="text-3xl font-bold tracking-tight md:text-4xl">
-                      {resultSummary.mainResult}
-                    </p>
-                    <Button
-                      type="button"
-                      size="lg"
-                      className="h-14 w-full text-base"
-                      onClick={handleNewCalculation}
-                    >
-                      {t.btnNewCalculation}
-                    </Button>
-                  </>
-                )}
-              </div>
+            {/* Verso: resultado */}
+            <div
+              className="absolute inset-0 flex flex-col gap-6 rounded-lg p-6 [backface-visibility:hidden]"
+              style={{ transform: "rotateY(180deg)" }}
+            >
+              {resultSummary && (
+                <>
+                  <h3 className="text-lg font-semibold">
+                    {activeTab === "pace"
+                      ? t.resultTitlePace
+                      : activeTab === "time"
+                        ? t.resultTitleTime
+                        : t.resultTitleDistance}
+                  </h3>
+                  <Table>
+                    <TableBody>
+                      {resultSummary.tableRows.map((row, i) => (
+                        <TableRow key={i}>
+                          <TableCell className="font-medium text-muted-foreground">{row.label}</TableCell>
+                          <TableCell className="text-right">{row.value}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                  <p className="text-3xl font-bold tracking-tight md:text-4xl">
+                    {resultSummary.mainResult}
+                  </p>
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    size="lg"
+                    className="mt-auto h-14 w-full text-base"
+                    onClick={handleNewCalculation}
+                  >
+                    {t.btnNewCalculation}
+                  </Button>
+                </>
+              )}
             </div>
           </div>
-        </Field>
+        </div>
       </section>
       </div>
 
       {/* Mobile: ad “esquerdo” abaixo da calculadora */}
-      <aside className="mx-auto w-full max-w-5xl px-4 pt-8 pb-5 lg:hidden">
-        <div className="flex min-h-[90px] w-full flex-col items-center justify-center rounded-xl border border-dashed border-border p-4 text-center">
-          <p className="text-sm font-medium text-foreground">{t.adSupportRun}</p>
-          <p className="mt-1 text-xs text-muted-foreground">
-            {t.adEnableAds}
-          </p>
-        </div>
-      </aside>
+      <AdPlaceholder
+        variant="inline"
+        supportText={t.adSupportRun}
+        enableText={t.adEnableAds}
+      />
 
       {/* Tabela tempo por pace */}
-      <section className="mx-auto w-full max-w-5xl px-4 py-8">
+      <section className="mx-auto w-full max-w-5xl px-4 py-8 xl:mt-16">
         <h2 className="mb-2 text-2xl font-semibold tracking-tight">
           {t.paceTimeTableTitle}
         </h2>
@@ -899,7 +710,15 @@ export function CalculatorView() {
         </p>
       </section>
 
-      <section className="mx-auto w-full max-w-3xl px-4 pb-12 pt-6 lg:px-10">
+      {/* Mobile: segundo banner acima do FAQ */}
+      <AdPlaceholder
+        variant="inline"
+        inlineSize="300x600"
+        supportText={t.adSupportRun}
+        enableText={t.adEnableAds}
+      />
+
+      <section className="mx-auto w-full max-w-3xl px-4 pb-12 pt-6">
         <h2 className="mb-4 text-2xl font-semibold tracking-tight">
           {faqByLocale[locale].title}
         </h2>
@@ -912,37 +731,20 @@ export function CalculatorView() {
           ))}
         </Accordion>
       </section>
-
-      {/* Mobile: ad “direito” abaixo do FAQ */}
-      <aside className="mx-auto w-full max-w-5xl px-4 pt-8 pb-5 lg:hidden">
-        <div className="flex min-h-[90px] w-full flex-col items-center justify-center rounded-xl border border-dashed border-border p-4 text-center">
-          <p className="text-sm font-medium text-foreground">{t.adSupportRun}</p>
-          <p className="mt-1 text-xs text-muted-foreground">
-            {t.adEnableAds}
-          </p>
-        </div>
-      </aside>
       </div>
 
-      {/* Desktop (lg+): propaganda fixa no canto esquerdo */}
-      <aside className="hidden lg:block fixed left-4 top-24 w-[200px] z-10">
-        <div className="flex min-h-[500px] flex-col items-center justify-center rounded-xl border border-dashed border-border p-4 text-center lg:min-h-[600px]">
-          <p className="text-sm font-medium text-foreground">{t.adSupportRun}</p>
-          <p className="mt-1 text-xs text-muted-foreground">
-            {t.adEnableAds}
-          </p>
-        </div>
-      </aside>
-
-      {/* Desktop (lg+): propaganda fixa no canto direito */}
-      <aside className="hidden lg:block fixed right-4 top-24 w-[200px] z-10">
-        <div className="flex min-h-[500px] flex-col items-center justify-center rounded-xl border border-dashed border-border p-4 text-center lg:min-h-[600px]">
-          <p className="text-sm font-medium text-foreground">{t.adSupportRun}</p>
-          <p className="mt-1 text-xs text-muted-foreground">
-            {t.adEnableAds}
-          </p>
-        </div>
-      </aside>
+      <AdPlaceholder
+        variant="sidebar"
+        side="left"
+        supportText={t.adSupportRun}
+        enableText={t.adEnableAds}
+      />
+      <AdPlaceholder
+        variant="sidebar"
+        side="right"
+        supportText={t.adSupportRun}
+        enableText={t.adEnableAds}
+      />
     </main>
   );
 }

@@ -52,12 +52,12 @@ export function DistanceInput({
   const nextCursorRef = useRef<number | null>(null);
 
   return (
-    <Field className="p-0 sm:col-span-3">
+    <Field className="w-full min-w-0 p-0 sm:col-span-3">
       <Label htmlFor={id}>{label}</Label>
-      <div className="grid grid-cols-12 gap-2">
-        <div className="relative col-span-9">
+      <div className="grid w-full min-w-0 grid-cols-3 gap-2">
+        <div className="relative col-span-2 min-w-0">
           <div
-            className="flex h-11 items-center gap-0 rounded-lg border border-input bg-transparent transition-colors focus-within:border-ring focus-within:ring-3 focus-within:ring-ring/50 [&:has(input:focus)]:border-ring [&:has(input:focus)]:ring-3 [&:has(input:focus)]:ring-ring/50"
+            className="flex h-11 min-w-0 items-center gap-0 rounded-lg border border-input bg-transparent transition-colors focus-within:border-ring focus-within:ring-3 focus-within:ring-ring/50 [&:has(input:focus)]:border-ring [&:has(input:focus)]:ring-3 [&:has(input:focus)]:ring-ring/50"
             onFocus={() => setPopoverOpen(true)}
             onBlur={(e) => {
               if (!e.currentTarget.contains(e.relatedTarget as Node)) {
@@ -108,7 +108,7 @@ export function DistanceInput({
             </div>
           )}
         </div>
-        <div className="col-span-3">
+        <div className="col-span-1 min-w-0">
           <Select value={unit} onValueChange={(v) => onUnitChange(v as DistanceUnit)}>
             <SelectTrigger className="h-11 w-full min-w-0 text-base data-[size=default]:h-11">
               <SelectValue>

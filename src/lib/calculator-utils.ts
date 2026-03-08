@@ -47,6 +47,11 @@ export const TIME_MINUTE_SECOND_OPTIONS = Array.from({ length: 12 }, (_, i) =>
   (i * 5).toString().padStart(2, "0")
 );
 
+/** Opções de minutos para o input de pace (00–10). */
+export const PACE_MINUTE_OPTIONS = Array.from({ length: 11 }, (_, i) =>
+  i.toString().padStart(2, "0")
+);
+
 export function parseTime(value: string): { h: string; m: string; s: string } {
   if (!value) return { h: "", m: "", s: "" };
   const parts = value.split(":");

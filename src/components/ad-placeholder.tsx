@@ -18,7 +18,7 @@ export function AdPlaceholder({
     const isRectangle = inlineSize === "300x600";
     /* sm, md: área full width. Primeiro = horizontal (100px), segundo = rectangle (250px). */
     return (
-      <aside className="mx-auto w-full px-4 pt-8 pb-5 xl:hidden">
+      <aside className="mx-auto w-full pt-8 pb-5 xl:hidden">
         <div
           className="flex w-full flex-col items-center justify-center rounded-xl border border-dashed border-border p-4 text-center"
           style={{ minHeight: isRectangle ? 250 : 100 }}

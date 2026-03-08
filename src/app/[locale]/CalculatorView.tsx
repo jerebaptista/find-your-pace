@@ -416,9 +416,9 @@ export function CalculatorView() {
   return (
     <main className="flex min-h-screen flex-col bg-background py-5 lg:px-0">
       <AppHeader />
-      {/* Conteúdo: padding lateral e área dos ads no desktop */}
+      {/* Conteúdo: px-6 para todo (título, calculadora, ads, tabela, faq); desktop com área dos ads */}
       <div className="w-full flex flex-col min-w-0 px-6 xl:pl-[176px] xl:pr-[176px] 3xl:pl-[316px] 3xl:pr-[316px]">
-      <div className="mx-auto w-full max-w-6xl px-4 pt-14 pb-10 lg:px-10">
+      <div className="mx-auto w-full max-w-6xl pt-14 pb-10 lg:px-10">
       <section className="w-full max-w-3xl mx-auto text-center">
         <div className="space-y-4">
           <h1 className="text-4xl font-semibold tracking-tight md:text-5xl">
@@ -695,7 +695,7 @@ export function CalculatorView() {
       />
 
       {/* Tabela tempo por pace */}
-      <section className="mx-auto w-full max-w-5xl px-4 py-8 xl:mt-16">
+      <section className="mx-auto w-full max-w-5xl py-8 xl:mt-16">
         <h2 className="mb-2 text-2xl font-semibold tracking-tight">
           {t.paceTimeTableTitle}
         </h2>
@@ -718,7 +718,7 @@ export function CalculatorView() {
         enableText={t.adEnableAds}
       />
 
-      <section className="mx-auto w-full max-w-3xl px-4 pb-12 pt-6">
+      <section className="mx-auto w-full max-w-3xl pb-12 pt-6">
         <h2 className="mb-4 text-2xl font-semibold tracking-tight">
           {faqByLocale[locale].title}
         </h2>

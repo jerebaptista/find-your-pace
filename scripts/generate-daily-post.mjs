@@ -244,10 +244,12 @@ slug: "${slug}"
 }
 
 async function main() {
-  if (alreadyPostedToday()) {
-    console.log("Post for today already exists, skipping.");
+  const forceGenerate = /^(1|true|yes)$/i.test(String(process.env.FORCE_GENERATE || ""));
+  if (!forceGenerate && alreadyPostedToday()) {
+    console.log("Post for today already exists, skipping. (Use FORCE_GENERATE=1 to generate anyway.)");
     process.exit(0);
   }
+  if (forceGenerate) console.log("FORCE_GENERATE: ignoring 'post exists today' check.");
 
   const redditTitles = await fetchRedditHot();
   const context =

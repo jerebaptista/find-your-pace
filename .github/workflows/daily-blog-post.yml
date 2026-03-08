@@ -7,7 +7,13 @@ on:
   schedule:
     # 06:00 BRT = 09:00 UTC (ajuste o cron se mudar fuso)
     - cron: "0 9 * * *"
-  workflow_dispatch: # Permite rodar manualmente em Actions > Daily blog post > Run workflow
+  workflow_dispatch:
+    inputs:
+      force_generate:
+        description: "Gerar mesmo se já existir post de hoje (para testes)"
+        required: false
+        default: false
+        type: boolean
 
 jobs:
   generate:
@@ -34,6 +40,7 @@ jobs:
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
+          FORCE_GENERATE: ${{ github.event.inputs.force_generate == 'true' && '1' || '' }}
         run: node scripts/generate-daily-post.mjs
 
       - name: Commit and push

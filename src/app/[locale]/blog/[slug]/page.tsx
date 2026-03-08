@@ -1,20 +1,25 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import ReactMarkdown from "react-markdown";
+import { AdPlaceholder } from "@/components/ad-placeholder";
 import { AppHeader } from "@/components/app-header";
-import { pathLocaleToLocale, pathLocales, translations } from "@/lib/i18n";
-import { getPostBySlug, getPosts, formatBlogDate } from "@/lib/blog";
+import {
+  pathLocaleToLocale,
+  pathLocales,
+  translations,
+  type PathLocale,
+} from "@/lib/i18n";
+import { getPostBySlug, getAllSlugs, formatBlogDate } from "@/lib/blog";
 import type { Metadata } from "next";
 
 type Props = { params: Promise<{ locale: string; slug: string }> };
 
 export async function generateStaticParams() {
-  const posts = getPosts();
-  const pathLocaleList = [...pathLocales];
+  const slugs = getAllSlugs();
   const params: { locale: string; slug: string }[] = [];
-  for (const post of posts) {
-    for (const locale of pathLocaleList) {
-      params.push({ locale, slug: post.slug });
+  for (const locale of pathLocales) {
+    for (const slug of slugs) {
+      if (getPostBySlug(slug, locale)) params.push({ locale, slug });
     }
   }
   return params;
@@ -22,7 +27,10 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale: pathLocale, slug } = await params;
-  const post = getPostBySlug(slug);
+  const safeLocale = pathLocales.includes(pathLocale as PathLocale)
+    ? (pathLocale as PathLocale)
+    : "en";
+  const post = getPostBySlug(slug, safeLocale);
   if (!post) return { title: "Not found" };
   const locale = pathLocaleToLocale(pathLocale);
   const t = translations[locale];
@@ -34,7 +42,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function BlogPostPage({ params }: Props) {
   const { locale: pathLocale, slug } = await params;
-  const post = getPostBySlug(slug);
+  const safeLocale = pathLocales.includes(pathLocale as PathLocale)
+    ? (pathLocale as PathLocale)
+    : "en";
+  const post = getPostBySlug(slug, safeLocale);
   if (!post) notFound();
   const locale = pathLocaleToLocale(pathLocale);
   const t = translations[locale];
@@ -49,7 +60,7 @@ export default async function BlogPostPage({ params }: Props) {
   return (
     <main className="flex min-h-screen flex-col bg-background py-5 lg:px-0">
       <AppHeader />
-      <div className="w-full flex flex-col min-w-0 px-6 text-center">
+      <div className="w-full flex flex-col min-w-0 px-6 xl:pl-[216px] xl:pr-[216px] 3xl:pl-[356px] 3xl:pr-[356px] text-center">
         <div className="mx-auto max-w-4xl px-4 py-8 flex flex-col items-center">
 
           {/* Título e descrição */}
@@ -97,6 +108,18 @@ export default async function BlogPostPage({ params }: Props) {
           </div>
         </div>
       </div>
+      <AdPlaceholder
+        variant="sidebar"
+        side="left"
+        supportText={t.adSupportRun}
+        enableText={t.adEnableAds}
+      />
+      <AdPlaceholder
+        variant="sidebar"
+        side="right"
+        supportText={t.adSupportRun}
+        enableText={t.adEnableAds}
+      />
     </main>
   );
 }

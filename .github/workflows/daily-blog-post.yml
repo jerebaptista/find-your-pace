@@ -1,5 +1,5 @@
 # Post diário no blog: todo dia às 06:00 (horário de Brasília)
-# Usa Reddit r/running + OpenAI para gerar o conteúdo e faz commit em content/blog/
+# Gera post em inglês (Reddit r/running + OpenAI), traduz para 9 idiomas, commit em content/blog/{locale}/{slug}.mdx
 
 name: Daily blog post
 
@@ -26,6 +26,9 @@ jobs:
         with:
           node-version: "20"
           cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
 
       - name: Generate post
         env:

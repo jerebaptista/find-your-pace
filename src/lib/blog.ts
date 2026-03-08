@@ -1,6 +1,7 @@
-import { readdirSync, readFileSync } from "fs";
+import { existsSync, readdirSync, readFileSync } from "fs";
 import matter from "gray-matter";
 import { join } from "path";
+import { pathLocales, type PathLocale } from "./i18n";
 import type { Locale } from "./i18n";
 
 export type BlogPostMeta = {
@@ -16,60 +17,118 @@ export type BlogPost = BlogPostMeta & { content: string };
 
 const CONTENT_DIR = join(process.cwd(), "content", "blog");
 
-export function getPostBySlug(slug: string): BlogPost | null {
-  const posts = getPosts();
-  const meta = posts.find((p) => p.slug === slug);
-  if (!meta) return null;
-  try {
-    const file = readdirSync(CONTENT_DIR).find(
-      (f) =>
-        (f.endsWith(".mdx") || f.endsWith(".md")) &&
-        f.replace(/\.(mdx|md)$/, "") === slug
-    );
-    if (!file) return null;
-    const raw = readFileSync(join(CONTENT_DIR, file), "utf8");
-    const { data, content } = matter(raw);
-    const resolvedSlug = (data.slug as string) || file.replace(/\.(mdx|md)$/, "");
-    return {
-      title: (data.title as string) || resolvedSlug,
-      description: (data.description as string) || "",
-      date: (data.date as string) || "",
-      slug: resolvedSlug,
-      image: data.image as string | undefined,
-      author: (data.author as string) || "FindYourPace",
-      content: content.trim(),
-    };
-  } catch {
-    return { ...meta, content: "" };
-  }
+function getLocaleDir(locale: PathLocale): string {
+  return join(CONTENT_DIR, locale);
 }
 
-export function getPosts(): BlogPostMeta[] {
-  const dir = CONTENT_DIR;
-  try {
+function findFileForSlug(locale: PathLocale, slug: string): string | null {
+  const dir = getLocaleDir(locale);
+  if (!existsSync(dir)) return null;
+  const files = readdirSync(dir).filter(
+    (f) =>
+      (f.endsWith(".mdx") || f.endsWith(".md")) &&
+      f.replace(/\.(mdx|md)$/, "") === slug
+  );
+  if (files.length === 0) return null;
+  return join(dir, files[0]);
+}
+
+/**
+ * Returns all slugs that exist in at least one locale folder.
+ */
+export function getAllSlugs(): string[] {
+  const slugs = new Set<string>();
+  for (const locale of pathLocales) {
+    const dir = getLocaleDir(locale);
+    if (!existsSync(dir)) continue;
     const files = readdirSync(dir).filter(
       (f) => f.endsWith(".mdx") || f.endsWith(".md")
     );
-    const posts: BlogPostMeta[] = files.map((file) => {
-      const fullPath = join(dir, file);
-      const raw = readFileSync(fullPath, "utf8");
+    for (const file of files) {
+      slugs.add(file.replace(/\.(mdx|md)$/, ""));
+    }
+  }
+  return Array.from(slugs);
+}
+
+function getLocalesToTry(pathLocale: PathLocale): PathLocale[] {
+  if (pathLocale === "en") return ["en"];
+  const rest = pathLocales.filter((l) => l !== "en" && l !== pathLocale);
+  return [pathLocale, "en", ...rest];
+}
+
+/**
+ * Gets post meta for a slug in the given locale. Falls back to EN, then any other locale.
+ */
+function getPostMeta(slug: string, pathLocale: PathLocale): BlogPostMeta | null {
+  const localeToTry = getLocalesToTry(pathLocale);
+  for (const loc of localeToTry) {
+    const filePath = findFileForSlug(loc, slug);
+    if (!filePath) continue;
+    try {
+      const raw = readFileSync(filePath, "utf8");
       const { data } = matter(raw);
-      const slug = (data.slug as string) || file.replace(/\.(mdx|md)$/, "");
+      const resolvedSlug = (data.slug as string) || slug;
       return {
-        title: (data.title as string) || slug,
+        title: (data.title as string) || resolvedSlug,
         description: (data.description as string) || "",
         date: (data.date as string) || "",
-        slug,
+        slug: resolvedSlug,
         image: data.image as string | undefined,
         author: (data.author as string) || "FindYourPace",
       };
-    });
-    return posts.sort(
-      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-    );
-  } catch {
-    return [];
+    } catch {
+      continue;
+    }
   }
+  return null;
+}
+
+/**
+ * Lists posts for a locale. Uses fallback to EN when the locale file is missing.
+ * Sorted by date descending.
+ */
+export function getPosts(pathLocale: PathLocale): BlogPostMeta[] {
+  const slugs = getAllSlugs();
+  const posts: BlogPostMeta[] = [];
+  for (const slug of slugs) {
+    const meta = getPostMeta(slug, pathLocale);
+    if (meta) posts.push(meta);
+  }
+  return posts.sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+  );
+}
+
+/**
+ * Gets full post by slug and locale. Falls back to EN, then any other locale.
+ */
+export function getPostBySlug(
+  slug: string,
+  pathLocale: PathLocale
+): BlogPost | null {
+  const localeToTry = getLocalesToTry(pathLocale);
+  for (const loc of localeToTry) {
+    const filePath = findFileForSlug(loc, slug);
+    if (!filePath) continue;
+    try {
+      const raw = readFileSync(filePath, "utf8");
+      const { data, content } = matter(raw);
+      const resolvedSlug = (data.slug as string) || slug;
+      return {
+        title: (data.title as string) || resolvedSlug,
+        description: (data.description as string) || "",
+        date: (data.date as string) || "",
+        slug: resolvedSlug,
+        image: data.image as string | undefined,
+        author: (data.author as string) || "FindYourPace",
+        content: content.trim(),
+      };
+    } catch {
+      continue;
+    }
+  }
+  return null;
 }
 
 /**

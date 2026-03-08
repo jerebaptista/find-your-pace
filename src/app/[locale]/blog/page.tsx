@@ -7,6 +7,7 @@ import {
   pathLocales,
   siteBaseUrl,
   translations,
+  type PathLocale,
 } from "@/lib/i18n";
 import { getPosts, formatBlogDate, type BlogPostMeta } from "@/lib/blog";
 import type { Metadata } from "next";
@@ -43,39 +44,12 @@ function BlogCard({
   locale: Locale;
   pathLocale: string;
 }) {
-  const name = post.author ?? "FindYourPace";
-  const initials = name
-    .split(/\s+/)
-    .map((w) => w[0])
-    .join("")
-    .slice(0, 2)
-    .toUpperCase();
-
   return (
     <Link
       href={`/${pathLocale}/blog/${post.slug}`}
       className="block overflow-hidden rounded-lg border border-border bg-card text-left transition-colors hover:bg-muted/50"
     >
-      {/* Header do card: padding só aqui */}
-      <div className="flex items-center justify-between gap-2 p-3 pr-4">
-        <div className="flex items-center gap-2">
-          <div
-            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-muted text-xs font-medium text-muted-foreground"
-            aria-hidden
-          >
-            {initials}
-          </div>
-          <span className="text-sm font-medium text-foreground">{name}</span>
-        </div>
-        <time
-          className="shrink-0 text-xs text-muted-foreground"
-          dateTime={post.date}
-        >
-          {formatBlogDate(post.date, locale)}
-        </time>
-      </div>
-
-      {/* Imagem 16:9, largura total do card (sem padding) */}
+      {/* Imagem 16:9, largura total do card */}
       <div className="relative aspect-video w-full overflow-hidden bg-muted">
         {post.image ? (
           // eslint-disable-next-line @next/next/no-img-element
@@ -89,14 +63,20 @@ function BlogCard({
         )}
       </div>
 
-      {/* Footer do card: padding só aqui */}
+      {/* Conteúdo: título, descrição, data */}
       <div className="p-4">
         <h2 className="line-clamp-2 text-lg font-semibold leading-tight tracking-tight">
           {post.title}
         </h2>
-        <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">
+        <p className="mt-2 text-sm text-muted-foreground">
           {post.description}
         </p>
+        <time
+          className="mt-2 block text-xs text-muted-foreground"
+          dateTime={post.date}
+        >
+          {formatBlogDate(post.date, locale)}
+        </time>
       </div>
     </Link>
   );
@@ -106,22 +86,25 @@ export default async function BlogPage({ params }: Props) {
   const { locale: pathLocale } = await params;
   const locale = pathLocaleToLocale(pathLocale);
   const t = translations[locale];
-  const posts = getPosts();
+  const safeLocale = pathLocales.includes(pathLocale as PathLocale)
+    ? (pathLocale as PathLocale)
+    : "en";
+  const posts = getPosts(safeLocale);
 
   return (
     <main className="flex min-h-screen flex-col bg-background py-5 lg:px-0">
       <AppHeader />
-      <div className="w-full flex flex-col min-w-0 px-6 xl:pr-[176px] 3xl:pr-[316px] lg:pl-16">
-        <div className="w-full px-0 py-6">
+      <div className="w-full flex flex-col min-w-0 px-6 xl:pl-[216px] xl:pr-[216px] 3xl:pl-[356px] 3xl:pr-[356px]">
+        <div className="w-full max-w-[3840px] px-0 py-6">
           <h1 className="mb-10 text-5xl font-semibold tracking-tight">
             {t.menuBlog}
           </h1>
-          {/* Grid responsivo: mais cards por linha conforme a largura (min 280px por card) */}
+          {/* Grid: 4 colunas em 1920px, até 12 colunas; gap reduzido entre cards */}
           <div
-            className="grid w-full gap-4 md:gap-6"
+            className="grid w-full gap-2 md:gap-3"
             style={{
               gridTemplateColumns:
-                "repeat(auto-fill, minmax(min(100%, 280px), 1fr))",
+                "repeat(auto-fill, minmax(max(320px, 100%/12), 1fr))",
             }}
           >
             {posts.length === 0 ? (
@@ -129,18 +112,49 @@ export default async function BlogPage({ params }: Props) {
                 Nenhum post ainda.
               </div>
             ) : (
-              posts.map((post) => (
-                <BlogCard
-                  key={post.slug}
-                  post={post}
-                  locale={locale}
-                  pathLocale={pathLocale}
-                />
-              ))
+              (() => {
+                type GridItem =
+                  | { type: "post"; post: BlogPostMeta }
+                  | { type: "ad"; key: string };
+                const items: GridItem[] = [];
+                posts.forEach((post, i) => {
+                  items.push({ type: "post", post });
+                  if ((i + 1) % 4 === 0 && i < posts.length - 1) {
+                    items.push({ type: "ad", key: `ad-after-${i}` });
+                  }
+                });
+                return items.map((item) => {
+                  if (item.type === "post") {
+                    return (
+                      <BlogCard
+                        key={item.post.slug}
+                        post={item.post}
+                        locale={locale}
+                        pathLocale={pathLocale}
+                      />
+                    );
+                  }
+                  return (
+                    <div key={item.key} className="col-span-full xl:hidden">
+                      <AdPlaceholder
+                        variant="inline"
+                        supportText={t.adSupportRun}
+                        enableText={t.adEnableAds}
+                      />
+                    </div>
+                  );
+                });
+              })()
             )}
           </div>
         </div>
       </div>
+      <AdPlaceholder
+        variant="sidebar"
+        side="left"
+        supportText={t.adSupportRun}
+        enableText={t.adEnableAds}
+      />
       <AdPlaceholder
         variant="sidebar"
         side="right"

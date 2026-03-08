@@ -1,16 +1,24 @@
 #!/usr/bin/env node
 /**
- * Gera um post diário para o blog usando IA.
+ * Gera um post diário em inglês e traduz para os 9 outros idiomas.
  * Uso: OPENAI_API_KEY=xxx node scripts/generate-daily-post.mjs
- * Inspiração: Reddit r/running (hot) ou lista fixa de temas.
- * Escreve em content/blog/YYYY-MM-DD-slug.mdx
+ * Estrutura: content/blog/{locale}/{slug}.mdx — slug em inglês, sem data.
  */
 
-import { writeFileSync, existsSync, readdirSync } from "fs";
+import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from "fs";
 import { join } from "path";
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
+const matter = require("gray-matter");
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const CONTENT_DIR = join(process.cwd(), "content", "blog");
+const DOCS_DIR = join(process.cwd(), "docs");
+const SEO_RULES_PATH = join(DOCS_DIR, "blog-seo-rules.md");
+const GENERATE_PROMPT_PATH = join(DOCS_DIR, "blog-generate-prompt.md");
+
+const LOCALES = ["en", "es", "fr", "it", "pt", "ja", "de", "nl", "pl", "sv"];
+const TRANSLATE_LOCALES = LOCALES.filter((l) => l !== "en");
 
 if (!OPENAI_API_KEY) {
   console.error("OPENAI_API_KEY is required");
@@ -18,19 +26,27 @@ if (!OPENAI_API_KEY) {
 }
 
 const TODAY = new Date();
-const DATE_STR = TODAY.toISOString().slice(0, 10); // YYYY-MM-DD
+const DATE_STR = TODAY.toISOString().slice(0, 10);
 
-// Temas de fallback quando Reddit falhar ou retornar pouco
 const FALLBACK_TOPICS = [
-  "como melhorar o pace em provas de 5k e 10k",
-  "recuperação pós-treino e descanso para corredores",
-  "nutrição e hidratação no dia da corrida",
-  "treino de tiros para ganhar velocidade",
-  "preparação para meia maratona em 12 semanas",
-  "evitar lesões na corrida: alongamento e fortalecimento",
-  "diferença entre ritmo por km e por milha",
-  "como calcular tempo final usando pace",
+  "how to improve pace in 5k and 10k races",
+  "recovery and rest for runners",
+  "nutrition and hydration on race day",
+  "speedwork and interval training",
+  "12-week half marathon training",
+  "avoiding running injuries: stretching and strength",
+  "pace per km vs per mile",
+  "how to calculate finish time from pace",
 ];
+
+function getGeneratePrompt() {
+  try {
+    if (existsSync(GENERATE_PROMPT_PATH)) {
+      return readFileSync(GENERATE_PROMPT_PATH, "utf8").trim();
+    }
+  } catch (_) {}
+  return null;
+}
 
 function pickTopicOfDay() {
   const start = new Date("2025-01-01");
@@ -62,28 +78,11 @@ function slugify(text) {
     .normalize("NFD")
     .replace(/\p{Diacritic}/gu, "")
     .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-|-$/g, "");
+    .replace(/^-|-$/g, "")
+    .slice(0, 60);
 }
 
-function buildSlug(title) {
-  const base = slugify(title).slice(0, 40);
-  return `${DATE_STR}-${base}`;
-}
-
-async function generatePostWithOpenAI(context) {
-  const systemPrompt = `Você é um redator do blog FindYourPace, um site sobre calculadora de pace e tempo de corrida.
-Escreva um post em português do Brasil, útil para corredores iniciantes e intermediários.
-O post deve ter entre 300 e 500 palavras, tom amigável e informativo.
-Use apenas Markdown: título (#), subtítulos (##), parágrafos, listas e **negrito** quando fizer sentido.
-Não invente links externos. Não use imagens.`;
-
-  const userPrompt = `Com base no seguinte contexto do que está em discussão entre corredores (Reddit r/running ou tema do dia), escreva um post único e relevante para o blog.
-
-Contexto/temas:
-${context}
-
-Gere apenas o corpo do post em Markdown, sem título no início (o título será usado no frontmatter). No primeiro parágrafo já entre no assunto.`;
-
+async function openai(messages, options = {}) {
   const res = await fetch("https://api.openai.com/v1/chat/completions", {
     method: "POST",
     headers: {
@@ -92,73 +91,180 @@ Gere apenas o corpo do post em Markdown, sem título no início (o título será
     },
     body: JSON.stringify({
       model: "gpt-4o-mini",
-      messages: [
-        { role: "system", content: systemPrompt },
-        { role: "user", content: userPrompt },
-      ],
-      max_tokens: 1200,
-      temperature: 0.7,
+      messages,
+      max_tokens: options.max_tokens ?? 1200,
+      temperature: options.temperature ?? 0.7,
     }),
   });
-
   if (!res.ok) {
     const err = await res.text();
     throw new Error(`OpenAI API error: ${res.status} ${err}`);
   }
-
   const data = await res.json();
-  const body = data?.choices?.[0]?.message?.content?.trim();
-  if (!body) throw new Error("Empty response from OpenAI");
+  const content = data?.choices?.[0]?.message?.content?.trim();
+  if (!content) throw new Error("Empty response from OpenAI");
+  return content;
+}
 
-  // Extrair primeiro parágrafo ou linha como sugestão de título (até 60 chars)
-  const firstLine = body.split("\n").find((l) => l.trim().length > 0) || "";
-  const titleSuggestion = firstLine.replace(/^#+\s*/, "").trim().slice(0, 60);
+function alreadyPostedToday() {
+  const enDir = join(CONTENT_DIR, "en");
+  if (!existsSync(enDir)) return false;
+  const files = readdirSync(enDir).filter(
+    (f) => f.endsWith(".mdx") || f.endsWith(".md")
+  );
+  for (const file of files) {
+    const raw = readFileSync(join(enDir, file), "utf8");
+    const { data } = matter(raw);
+    if (data.date === DATE_STR) return true;
+  }
+  return false;
+}
 
-  return { body, titleSuggestion };
+async function generatePostEn(context) {
+  const promptTemplate = getGeneratePrompt();
+  const systemPrompt = promptTemplate
+    ? promptTemplate.replace(/\{\{THEME\}\}/g, context)
+    : `You are a writer for FindYourPace, a running pace and time calculator blog.
+Write a post in English for beginner and intermediate runners.
+Output valid JSON only with keys: "title", "description", "body", "slug", "mainKeyword", "secondaryKeywords" (array of 5), "tags" (array of 5).
+Theme/context: ${context}`;
+
+  const userPrompt = promptTemplate
+    ? `Use the theme above and return only the JSON object (no markdown, no code block).`
+    : `Return only the JSON object.`;
+
+  const raw = await openai(
+    [
+      { role: "system", content: systemPrompt },
+      { role: "user", content: userPrompt },
+    ],
+    { max_tokens: 4500 }
+  );
+  const cleaned = raw.replace(/^```\w*\n?|\n?```$/g, "").trim();
+  return JSON.parse(cleaned);
+}
+
+async function translatePost(enFrontmatter, enBody, targetLocale) {
+  const localeNames = {
+    es: "Spanish",
+    fr: "French",
+    it: "Italian",
+    pt: "Portuguese (Brazil)",
+    ja: "Japanese",
+    de: "German",
+    nl: "Dutch",
+    pl: "Polish",
+    sv: "Swedish",
+  };
+  const lang = localeNames[targetLocale] || targetLocale;
+  const systemPrompt = `You are a translator. Translate the following blog post from English to ${lang}.
+Keep the same structure: Markdown with ## headings, paragraphs, lists, **bold**.
+Do not invent or add links. Output valid JSON only with keys: "title", "description", "body".`;
+
+  const userPrompt = `Translate to ${lang}:
+
+Title: ${enFrontmatter.title}
+Description: ${enFrontmatter.description}
+
+Body (markdown):
+${enBody}
+
+Return only the JSON object.`;
+
+  const raw = await openai(
+    [
+      { role: "system", content: systemPrompt },
+      { role: "user", content: userPrompt },
+    ],
+    { max_tokens: 4500, temperature: 0.3 }
+  );
+  const cleaned = raw.replace(/^```\w*\n?|\n?```$/g, "").trim();
+  return JSON.parse(cleaned);
+}
+
+function escapeYamlString(s) {
+  if (s == null || s === "") return "";
+  return String(s).replace(/\\/g, "\\\\").replace(/"/g, '\\"');
+}
+
+function writePost(locale, slug, meta, body, extra = {}) {
+  const dir = join(CONTENT_DIR, locale);
+  if (!existsSync(dir)) {
+    mkdirSync(dir, { recursive: true });
+  }
+  let front = `---
+title: "${escapeYamlString(meta.title)}"
+description: "${escapeYamlString(meta.description)}"
+date: "${meta.date || DATE_STR}"
+slug: "${slug}"
+`;
+  if (extra.mainKeyword) front += `mainKeyword: "${escapeYamlString(extra.mainKeyword)}"\n`;
+  if (Array.isArray(extra.secondaryKeywords) && extra.secondaryKeywords.length)
+    front += `secondaryKeywords: ${JSON.stringify(extra.secondaryKeywords)}\n`;
+  if (Array.isArray(extra.tags) && extra.tags.length)
+    front += `tags: ${JSON.stringify(extra.tags)}\n`;
+  front += `---
+
+`;
+  const path = join(dir, `${slug}.mdx`);
+  writeFileSync(path, front + (body || "").trim(), "utf8");
+  return path;
 }
 
 async function main() {
-  const redditTitles = await fetchRedditHot();
-  const context =
-    redditTitles.length > 0
-      ? redditTitles.join("\n- ")
-      : `Tema do dia: ${pickTopicOfDay()}`;
-
-  const { body, titleSuggestion } = await generatePostWithOpenAI(context);
-
-  // Título para frontmatter: usar sugestão ou genérico
-  const title =
-    titleSuggestion.length > 10 ? titleSuggestion : `Corrida e pace – ${DATE_STR}`;
-  const slug = buildSlug(title);
-
-  const frontmatter = `---
-title: "${title.replace(/"/g, '\\"')}"
-description: "Post gerado com base em tendências e temas do dia para corredores."
-date: "${DATE_STR}"
-slug: "${slug}"
----
-
-`;
-
-  const filePath = join(CONTENT_DIR, `${slug}.mdx`);
-  const content = frontmatter + body;
-
-  // Evitar duplicata no mesmo dia
-  if (existsSync(filePath)) {
-    console.log("Post for today already exists, skipping:", filePath);
-    process.exit(0);
-  }
-
-  const existing = readdirSync(CONTENT_DIR).filter((f) => f.startsWith(DATE_STR));
-  if (existing.length > 0) {
+  if (alreadyPostedToday()) {
     console.log("Post for today already exists, skipping.");
     process.exit(0);
   }
 
-  writeFileSync(filePath, content, "utf8");
-  console.log("Created:", filePath);
-  // Workflow usa esse path para git add
-  console.log("FILE_PATH=" + filePath);
+  const redditTitles = await fetchRedditHot();
+  const context =
+    redditTitles.length > 0
+      ? redditTitles.join("\n- ")
+      : `Topic of the day: ${pickTopicOfDay()}`;
+
+  console.log("Generating post in English...");
+  const en = await generatePostEn(context);
+  const title = en.title && en.title.length > 10 ? en.title : `Running and pace – ${DATE_STR}`;
+  const slug = (en.slug && slugify(en.slug)) || slugify(title);
+  if (!slug) {
+    console.error("Could not derive slug from title");
+    process.exit(1);
+  }
+
+  const enMeta = {
+    title,
+    description: en.description || "Post about running and pace for FindYourPace.",
+    date: DATE_STR,
+    slug,
+  };
+  const extra = {
+    mainKeyword: en.mainKeyword || null,
+    secondaryKeywords: Array.isArray(en.secondaryKeywords) ? en.secondaryKeywords : null,
+    tags: Array.isArray(en.tags) ? en.tags : null,
+  };
+  const enPath = writePost("en", slug, enMeta, en.body, extra);
+  console.log("Created:", enPath);
+
+  for (const locale of TRANSLATE_LOCALES) {
+    console.log("Translating to", locale, "...");
+    const translated = await translatePost(
+      { title: enMeta.title, description: enMeta.description },
+      en.body,
+      locale
+    );
+    const meta = {
+      title: translated.title || enMeta.title,
+      description: translated.description || enMeta.description,
+      date: DATE_STR,
+      slug,
+    };
+    const path = writePost(locale, slug, meta, translated.body, extra);
+    console.log("Created:", path);
+  }
+
+  console.log("Done. Slug:", slug);
+  console.log("FILE_PATH=" + enPath);
 }
 
 main().catch((err) => {

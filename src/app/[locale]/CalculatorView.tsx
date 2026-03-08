@@ -151,7 +151,7 @@ function PaceTimeTable({ t }: { t: PaceTimeTableTranslations }) {
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead className="pl-4 font-medium">Pace</TableHead>
+          <TableHead className="sticky left-0 z-10 border-r border-border bg-background text-center font-medium">Pace</TableHead>
           {colLabels.map((label) => (
             <TableHead key={label} className="text-center font-medium">
               {label}
@@ -162,7 +162,7 @@ function PaceTimeTable({ t }: { t: PaceTimeTableTranslations }) {
       <TableBody>
         {PACE_TABLE_PACES.map((paceMin) => (
           <TableRow key={paceMin}>
-            <TableCell className="pl-4 font-medium">
+            <TableCell className="sticky left-0 z-[1] border-r border-border bg-background text-center font-medium">
               {formatPaceCell(paceMin)}
             </TableCell>
             {PACE_TABLE_DISTANCES_KM.map((distKm) => (

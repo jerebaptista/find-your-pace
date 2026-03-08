@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     : "en";
   const localeKey = pathLocaleToLocale(pathLocale);
   const pageUrl = `${siteBaseUrl}/${pathLocale}/time`;
-  const title = translations[localeKey].appTitleTime;
+  const title = `${translations[localeKey].appTitleTime} | FindYourPace`;
   const description = translations[localeKey].appDescriptionTime;
   const languages: Record<string, string> = {};
   for (const loc of pathLocales) {

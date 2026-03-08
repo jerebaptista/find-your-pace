@@ -244,13 +244,14 @@ export function CalculatorView() {
 
   const t = translations[locale];
   const pageTitle = activeTab === "pace" ? t.appTitle : activeTab === "time" ? t.appTitleTime : t.appTitleDistance;
+  const pageTitleFull = `${pageTitle} | FindYourPace`;
   const pageDescription = activeTab === "pace" ? t.appDescription : activeTab === "time" ? t.appDescriptionTime : t.appDescriptionDistance;
 
   useEffect(() => {
-    document.title = pageTitle;
+    document.title = pageTitleFull;
     const metaDesc = document.querySelector('meta[name="description"]');
     if (metaDesc) metaDesc.setAttribute("content", pageDescription);
-  }, [pageTitle, pageDescription]);
+  }, [pageTitleFull, pageDescription]);
 
   const distanceUnitLabel: Record<DistanceUnit, string> = {
     miles: t.distanceUnitMiles,

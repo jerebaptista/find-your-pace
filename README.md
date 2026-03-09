@@ -29,6 +29,39 @@ To learn more about Next.js, take a look at the following resources:
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
+## Ambientes (Local, Preview, Production)
+
+O projeto usa os três ambientes da [Vercel](https://vercel.com/docs/deployments/environments):
+
+| Ambiente | Uso | Como usar |
+|----------|-----|-----------|
+| **1. Local Development** | Desenvolver e testar no teu PC | `npm run dev` → [http://localhost:3000](http://localhost:3000) |
+| **2. Preview** | Testar/QA sem afetar o site em produção | `vercel` (CLI) ou push/PR para uma branch que não seja a de produção |
+| **3. Production** | Site público final | `vercel --prod` ou merge na branch de produção (ex.: `main`) |
+
+### Pré-requisitos para Preview e Production (CLI)
+
+```bash
+npm i -g vercel
+vercel link          # associar esta pasta ao projeto na Vercel
+vercel env pull      # (opcional) trazer variáveis de ambiente para .env.local
+```
+
+### Comandos rápidos
+
+```bash
+# Local
+npm run dev
+
+# Preview (deploy de teste; URL temporário)
+vercel
+
+# Production (atualiza o site em produção)
+vercel --prod
+```
+
+---
+
 ## Deploy on Vercel
 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.

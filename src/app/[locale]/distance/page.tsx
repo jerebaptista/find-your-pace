@@ -27,8 +27,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title,
     description,
     alternates: { canonical: pageUrl, languages },
-    openGraph: { type: "website", url: pageUrl, siteName: "FindYourPace", title, description, locale: localeKey },
-    twitter: { card: "summary_large_image", title, description },
+    openGraph: {
+      type: "website",
+      url: pageUrl,
+      siteName: "FindYourPace",
+      title,
+      description,
+      locale: localeKey,
+      images: [{ url: "/og.png", width: 1200, height: 630, alt: "FindYourPace – Running pace calculator" }],
+    },
+    twitter: { card: "summary_large_image", title, description, images: ["/og.png"] },
   };
 }
 

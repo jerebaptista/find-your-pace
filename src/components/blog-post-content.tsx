@@ -57,15 +57,6 @@ export function BlogPostContent({
           {content}
         </ReactMarkdown>
       </div>
-      {/* Segundo ad: no final do conteúdo (só mobile) */}
-      <div className="xl:hidden w-full max-w-3xl mt-6">
-        <AdPlaceholder
-          variant="inline"
-          supportText={adSupportText}
-          enableText={adEnableText}
-          inlineSize="320x100"
-        />
-      </div>
     </>
   );
 }

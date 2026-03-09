@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 
+import { AppFooter } from "@/components/app-footer";
 import {
   faqByLocale,
   pageTitleByPathLocale,
@@ -46,11 +47,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title,
       description,
       locale: localeKey,
+      images: [
+        {
+          url: "/og.png",
+          width: 1200,
+          height: 630,
+          alt: "FindYourPace – Running pace calculator",
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
+      images: ["/og.png"],
     },
   };
 }
@@ -102,7 +112,10 @@ export default async function LocaleLayout({ children, params }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
-      {children}
+      <div className="flex min-h-screen flex-col">
+        {children}
+        <AppFooter />
+      </div>
     </>
   );
 }

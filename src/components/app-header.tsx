@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
 
 import { useLanguage } from "@/components/language-provider";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   NavigationMenu,
@@ -78,6 +79,10 @@ export function AppHeader() {
 
   const basePath = pathLocales.includes(pathLocale as (typeof pathLocales)[number]) ? pathLocale : "en";
 
+  /** Só a Calculadora de Pace tem página (início). Índices com página: 0 = Pace. */
+  const calculatorHasPage = [true, false, false, false, false, false];
+  const tableHasPage = [false, false, false, false];
+
   return (
     <header
       className="sticky top-0 z-50 w-full shrink-0"
@@ -115,33 +120,47 @@ export function AppHeader() {
                         {t.menuCalculators}
                       </p>
                       <ul className="flex flex-col gap-1">
-                        {t.calculatorsLinks.map((label) => (
+                        {t.navCalculatorLabels.map((label, i) => (
                           <li key={label}>
-                            <Link
-                              href={`/${basePath}`}
-                              className="block rounded-lg px-3 py-2 text-sm font-medium transition-colors hover:bg-muted"
-                              onClick={() => setMenuSheetOpen(false)}
-                            >
-                              {label}
-                            </Link>
+                            {calculatorHasPage[i] ? (
+                              <Link
+                                href={`/${basePath}`}
+                                className="block rounded-lg px-3 py-2 text-sm font-medium transition-colors hover:bg-muted"
+                                onClick={() => setMenuSheetOpen(false)}
+                              >
+                                {label}
+                              </Link>
+                            ) : (
+                              <span className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground">
+                                {label}
+                                <Badge variant="secondary">{t.comingSoonBadge}</Badge>
+                              </span>
+                            )}
                           </li>
                         ))}
                       </ul>
                     </div>
                     <div>
                       <p className="mb-2 text-sm font-medium text-muted-foreground">
-                        {t.menuCharts}
+                        {t.menuTables}
                       </p>
                       <ul className="flex flex-col gap-1">
-                        {t.chartLinks.map((label) => (
+                        {t.navTableLabels.map((label, i) => (
                           <li key={label}>
-                            <Link
-                              href={`/${basePath}`}
-                              className="block rounded-lg px-3 py-2 text-sm font-medium transition-colors hover:bg-muted"
-                              onClick={() => setMenuSheetOpen(false)}
-                            >
-                              {label}
-                            </Link>
+                            {tableHasPage[i] ? (
+                              <Link
+                                href={`/${basePath}`}
+                                className="block rounded-lg px-3 py-2 text-sm font-medium transition-colors hover:bg-muted"
+                                onClick={() => setMenuSheetOpen(false)}
+                              >
+                                {label}
+                              </Link>
+                            ) : (
+                              <span className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground">
+                                {label}
+                                <Badge variant="secondary">{t.comingSoonBadge}</Badge>
+                              </span>
+                            )}
                           </li>
                         ))}
                       </ul>
@@ -172,30 +191,50 @@ export function AppHeader() {
                   <NavigationMenuItem>
                     <NavigationMenuTrigger>{t.menuCalculators}</NavigationMenuTrigger>
                     <NavigationMenuContent>
-                      <ul className="grid min-w-[260px] gap-1">
-                        {t.calculatorsLinks.map((label) => (
+                      <ul className="grid min-w-[280px] gap-1 p-2">
+                        {t.navCalculatorLabels.map((label, i) => (
                           <li key={label}>
-                            <NavigationMenuLink asChild>
-                              <Link href={`/${basePath}`} className="block">
+                            {calculatorHasPage[i] ? (
+                              <NavigationMenuLink asChild>
+                                <Link
+                                  href={`/${basePath}`}
+                                  className="flex items-center justify-between rounded-md px-3 py-2 text-sm hover:bg-muted"
+                                >
+                                  {label}
+                                </Link>
+                              </NavigationMenuLink>
+                            ) : (
+                              <span className="flex items-center justify-between rounded-md px-3 py-2 text-sm text-muted-foreground">
                                 {label}
-                              </Link>
-                            </NavigationMenuLink>
+                                <Badge variant="secondary">{t.comingSoonBadge}</Badge>
+                              </span>
+                            )}
                           </li>
                         ))}
                       </ul>
                     </NavigationMenuContent>
                   </NavigationMenuItem>
                   <NavigationMenuItem>
-                    <NavigationMenuTrigger>{t.menuCharts}</NavigationMenuTrigger>
+                    <NavigationMenuTrigger>{t.menuTables}</NavigationMenuTrigger>
                     <NavigationMenuContent>
-                      <ul className="grid min-w-[220px] gap-1">
-                        {t.chartLinks.map((label) => (
+                      <ul className="grid min-w-[280px] gap-1 p-2">
+                        {t.navTableLabels.map((label, i) => (
                           <li key={label}>
-                            <NavigationMenuLink asChild>
-                              <Link href={`/${basePath}`} className="block">
+                            {tableHasPage[i] ? (
+                              <NavigationMenuLink asChild>
+                                <Link
+                                  href={`/${basePath}`}
+                                  className="flex items-center justify-between rounded-md px-3 py-2 text-sm hover:bg-muted"
+                                >
+                                  {label}
+                                </Link>
+                              </NavigationMenuLink>
+                            ) : (
+                              <span className="flex items-center justify-between rounded-md px-3 py-2 text-sm text-muted-foreground">
                                 {label}
-                              </Link>
-                            </NavigationMenuLink>
+                                <Badge variant="secondary">{t.comingSoonBadge}</Badge>
+                              </span>
+                            )}
                           </li>
                         ))}
                       </ul>

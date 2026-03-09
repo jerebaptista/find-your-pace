@@ -22,13 +22,13 @@ export function AdPlaceholder({
     return (
       <aside className="mx-auto w-full pt-8 pb-5 xl:hidden">
         <div
-          className="flex w-full flex-row items-center justify-start gap-3 rounded-xl border border-dashed border-border p-4 text-left"
+          className="flex w-full flex-row items-center justify-center gap-3 rounded-xl border border-dashed border-border p-4"
           style={{ minHeight: isRectangle ? 250 : 100 }}
         >
           <Frown className="h-6 w-6 shrink-0 text-foreground" aria-hidden />
-          <div className="flex flex-col gap-0.5">
+          <div className="flex flex-col gap-0 leading-tight text-left">
             <p className="text-sm font-medium text-foreground">{supportText}</p>
-            <p className="text-xs text-muted-foreground">{enableText}</p>
+            <p className="mt-0.5 text-xs text-muted-foreground">{enableText}</p>
           </div>
         </div>
       </aside>

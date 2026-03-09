@@ -18,10 +18,18 @@ type Translation = {
   appTitleDistance: string;
   appDescriptionDistance: string;
   menuCalculators: string;
-  menuCharts: string;
+  menuTables: string;
   menuBlog: string;
-  calculatorsLinks: readonly [string, string, string, string];
-  chartLinks: readonly [string, string, string, string, string];
+  navCalculatorLabels: readonly [
+    string,
+    string,
+    string,
+    string,
+    string,
+    string,
+  ];
+  navTableLabels: readonly [string, string, string, string];
+  comingSoonBadge: string;
   language: string;
   theme: string;
   darkMode: string;
@@ -75,6 +83,7 @@ type Translation = {
   paceTimeTableColMarathon: string;
   paceTimeTableDistancesNote: string;
   blogWrittenBy: string;
+  blogMorePosts: string;
   validationMissingTitle: string;
   validationMissingDistance: string;
   validationMissingTime: string;
@@ -109,15 +118,23 @@ export const translations: Record<Locale, Translation> = {
     appDescriptionDistance:
       "Calculate your running distance instantly with our free calculator. Enter time and pace to estimate how far you can run in kilometers or miles.",
     menuCalculators: "Calculators",
-    menuCharts: "Charts",
+    menuTables: "Tables",
     menuBlog: "Blog",
-    calculatorsLinks: [
+    navCalculatorLabels: [
       "Pace Calculator",
-      "5K Pace Calculator",
-      "Half Marathon Pace Calculator",
-      "Marathon Pace Calculator",
+      "Race Time Predictor",
+      "Training Zones Calculator",
+      "Splits Calculator",
+      "Calories Calculator",
+      "Unit Converter",
     ],
-    chartLinks: ["Custom", "5K Pace", "10K Pace", "Half Marathon", "Marathon"],
+    navTableLabels: [
+      "Pace to finish time table",
+      "Splits table",
+      "Training pace table",
+      "Equivalences table",
+    ],
+    comingSoonBadge: "Coming soon",
     language: "Language",
     theme: "Theme",
     darkMode: "Dark mode",
@@ -195,6 +212,7 @@ export const translations: Record<Locale, Translation> = {
     paceTimeTableDistancesNote:
       "Half: 21.0975 km (13.1 mi). Marathon: 42.195 km (26.2 mi).",
     blogWrittenBy: "Written by",
+    blogMorePosts: "More to read",
     validationMissingTitle: "Missing required fields",
     validationMissingDistance: "Distance",
     validationMissingTime: "Time",
@@ -212,21 +230,23 @@ export const translations: Record<Locale, Translation> = {
     appDescriptionDistance:
       "Calcula tu distancia de carrera al instante con nuestra calculadora gratuita. Introduce tiempo y ritmo para estimar cuánto puedes correr en kilómetros o millas.",
     menuCalculators: "Calculadoras",
-    menuCharts: "Tablas",
+    menuTables: "Tablas",
     menuBlog: "Blog",
-    calculatorsLinks: [
+    navCalculatorLabels: [
       "Calculadora de Ritmo",
-      "Ritmo 5K",
-      "Ritmo Media Maratón",
-      "Ritmo Maratón",
+      "Preditor de Tiempo de Prueba",
+      "Calculadora de Zonas de Entrenamiento",
+      "Calculadora de Splits",
+      "Calculadora de Calorías",
+      "Conversor de Unidades",
     ],
-    chartLinks: [
-      "Tabla de Ritmo Personalizada",
-      "Tabla de Ritmo 5K",
-      "Tabla de Ritmo 10K",
-      "Tabla Media Maratón",
-      "Tabla Maratón",
+    navTableLabels: [
+      "Tabla de tiempo por ritmo",
+      "Tabla de splits",
+      "Tabla de ritmos de entrenamiento",
+      "Tabla de equivalencias",
     ],
+    comingSoonBadge: "Próximamente",
     language: "Idioma",
     theme: "Tema",
     darkMode: "Modo oscuro",
@@ -304,6 +324,7 @@ export const translations: Record<Locale, Translation> = {
     paceTimeTableDistancesNote:
       "Media: 21,0975 km (13,1 mi). Maratón: 42,195 km (26,2 mi).",
     blogWrittenBy: "Escrito por",
+    blogMorePosts: "Más para leer",
     validationMissingTitle: "Campos requeridos",
     validationMissingDistance: "Distancia",
     validationMissingTime: "Tiempo",
@@ -321,21 +342,23 @@ export const translations: Record<Locale, Translation> = {
     appDescriptionDistance:
       "Calculez votre distance de course instantanément avec notre calculateur gratuit. Entrez le temps et l'allure pour estimer la distance que vous pouvez parcourir en km ou en miles.",
     menuCalculators: "Calculateurs",
-    menuCharts: "Tableaux",
+    menuTables: "Tableaux",
     menuBlog: "Blog",
-    calculatorsLinks: [
-      "Calculateur d'Allure",
-      "Allure 5K",
-      "Allure Semi-Marathon",
-      "Allure Marathon",
+    navCalculatorLabels: [
+      "Calculateur d'allure",
+      "Prédicteur de temps de course",
+      "Calculateur de zones d'entraînement",
+      "Calculateur de splits",
+      "Calculateur de calories",
+      "Convertisseur d'unités",
     ],
-    chartLinks: [
-      "Tableau d'Allure Personnalisé",
-      "Tableau d'Allure 5K",
-      "Tableau d'Allure 10K",
-      "Tableau Semi-Marathon",
-      "Tableau Marathon",
+    navTableLabels: [
+      "Tableau temps par allure",
+      "Tableau de splits",
+      "Tableau d'allures d'entraînement",
+      "Tableau d'équivalences",
     ],
+    comingSoonBadge: "Bientôt disponible",
     language: "Langue",
     theme: "Theme",
     darkMode: "Mode sombre",
@@ -413,6 +436,7 @@ export const translations: Record<Locale, Translation> = {
     paceTimeTableDistancesNote:
       "Demi: 21,0975 km (13,1 mi). Marathon: 42,195 km (26,2 mi).",
     blogWrittenBy: "Écrit par",
+    blogMorePosts: "À lire aussi",
     validationMissingTitle: "Champs requis manquants",
     validationMissingDistance: "Distance",
     validationMissingTime: "Temps",
@@ -430,21 +454,23 @@ export const translations: Record<Locale, Translation> = {
     appDescriptionDistance:
       "Berechne deine Laufdistanz sofort mit unserem kostenlosen Rechner. Gib Zeit und Tempo ein, um zu schätzen, wie weit du in Kilometern oder Meilen laufen kannst.",
     menuCalculators: "Rechner",
-    menuCharts: "Pace Tabellen",
+    menuTables: "Tabellen",
     menuBlog: "Blog",
-    calculatorsLinks: [
-      "Pace Rechner",
-      "5 km Pace Rechner",
-      "Halbmarathon Pace Rechner",
-      "Marathon Pace Rechner",
+    navCalculatorLabels: [
+      "Pace-Rechner",
+      "Wettkampfzeit-Vorhersage",
+      "Trainingszonen-Rechner",
+      "Splits-Rechner",
+      "Kalorien-Rechner",
+      "Einheitenumrechner",
     ],
-    chartLinks: [
-      "Eigene Pace Tabelle erstellen",
-      "5 km Pace Tabelle",
-      "10 km Pace Tabelle",
-      "Halbmarathon Pace Tabelle",
-      "Marathon Pace Tabelle",
+    navTableLabels: [
+      "Tabelle Zeit nach Pace",
+      "Splits-Tabelle",
+      "Trainingspace-Tabelle",
+      "Äquivalenz-Tabelle",
     ],
+    comingSoonBadge: "Demnächst",
     language: "Sprache",
     theme: "Thema",
     darkMode: "Dunkelmodus",
@@ -522,6 +548,7 @@ export const translations: Record<Locale, Translation> = {
     paceTimeTableDistancesNote:
       "Halb: 21,0975 km (13,1 mi). Marathon: 42,195 km (26,2 mi).",
     blogWrittenBy: "Geschrieben von",
+    blogMorePosts: "Weitere Beiträge",
     validationMissingTitle: "Pflichtfelder fehlen",
     validationMissingDistance: "Distanz",
     validationMissingTime: "Zeit",
@@ -539,21 +566,23 @@ export const translations: Record<Locale, Translation> = {
     appDescriptionDistance:
       "Calcule sua distância de corrida na hora com nossa calculadora gratuita. Informe tempo e pace para estimar quantos km ou milhas você pode percorrer.",
     menuCalculators: "Calculadoras",
-    menuCharts: "Tabelas",
+    menuTables: "Tabelas",
     menuBlog: "Blog",
-    calculatorsLinks: [
+    navCalculatorLabels: [
       "Calculadora de Pace",
-      "Pace 5K",
-      "Pace Meia Maratona",
-      "Pace Maratona",
+      "Preditor de Tempo de Prova",
+      "Calculadora de Zonas de Treino",
+      "Calculadora de Splits",
+      "Calculadora de Calorias",
+      "Conversor de Unidade",
     ],
-    chartLinks: [
-      "Tabela de Pace Personalizada",
-      "Tabela de Pace 5K",
-      "Tabela de Pace 10K",
-      "Tabela Meia Maratona",
-      "Tabela Maratona",
+    navTableLabels: [
+      "Tabela de tempo por pace",
+      "Tabela de splits",
+      "Tabela de ritmos de treino",
+      "Tabela de equivalências",
     ],
+    comingSoonBadge: "Em breve",
     language: "Idioma",
     theme: "Tema",
     darkMode: "Modo escuro",
@@ -631,6 +660,7 @@ export const translations: Record<Locale, Translation> = {
     paceTimeTableDistancesNote:
       "Meia: 21,0975 km (13,1 mi). Maratona: 42,195 km (26,2 mi).",
     blogWrittenBy: "Escrito por",
+    blogMorePosts: "Outras leituras",
     validationMissingTitle: "Preencha os campos obrigatórios",
     validationMissingDistance: "Distância",
     validationMissingTime: "Tempo",
@@ -648,21 +678,23 @@ export const translations: Record<Locale, Translation> = {
     appDescriptionDistance:
       "Calcola la tua distanza di corsa all'istante con il nostro calcolatore gratuito. Inserisci tempo e ritmo per stimare quanti km o miglia puoi percorrere.",
     menuCalculators: "Calcolatori",
-    menuCharts: "Tabelle",
+    menuTables: "Tabelle",
     menuBlog: "Blog",
-    calculatorsLinks: [
-      "Calcolatore di Ritmo",
-      "Ritmo 5K",
-      "Ritmo Mezza Maratona",
-      "Ritmo Maratona",
+    navCalculatorLabels: [
+      "Calcolatore di ritmo",
+      "Predittore tempo di gara",
+      "Calcolatore zone di allenamento",
+      "Calcolatore splits",
+      "Calcolatore calorie",
+      "Convertitore di unità",
     ],
-    chartLinks: [
-      "Tabella Ritmo Personalizzata",
-      "Tabella Ritmo 5K",
-      "Tabella Ritmo 10K",
-      "Tabella Mezza Maratona",
-      "Tabella Maratona",
+    navTableLabels: [
+      "Tabella tempo per ritmo",
+      "Tabella splits",
+      "Tabella ritmi di allenamento",
+      "Tabella equivalenze",
     ],
+    comingSoonBadge: "In arrivo",
     language: "Lingua",
     theme: "Tema",
     darkMode: "Modalita scura",
@@ -740,6 +772,7 @@ export const translations: Record<Locale, Translation> = {
     paceTimeTableDistancesNote:
       "Mezza: 21,0975 km (13,1 mi). Maratona: 42,195 km (26,2 mi).",
     blogWrittenBy: "Scritto da",
+    blogMorePosts: "Altri articoli",
     validationMissingTitle: "Campi obbligatori mancanti",
     validationMissingDistance: "Distanza",
     validationMissingTime: "Tempo",
@@ -757,21 +790,23 @@ export const translations: Record<Locale, Translation> = {
     appDescriptionDistance:
       "無料計算機で走行距離をすぐに計算。時間とペースを入力して、何kmまたは何マイル走れるかを推定します。",
     menuCalculators: "計算ツール",
-    menuCharts: "ペース表",
+    menuTables: "表",
     menuBlog: "ブログ",
-    calculatorsLinks: [
+    navCalculatorLabels: [
       "ペース計算機",
-      "5Kペース",
-      "ハーフマラソンペース",
-      "マラソンペース",
+      "レースタイム予測",
+      "トレーニングゾーン計算機",
+      "スプリット計算機",
+      "カロリー計算機",
+      "単位換算",
     ],
-    chartLinks: [
-      "カスタムペース表",
-      "5Kペース表",
-      "10Kペース表",
-      "ハーフマラソンペース表",
-      "マラソンペース表",
+    navTableLabels: [
+      "ペース別ゴールタイム表",
+      "スプリット表",
+      "トレーニングペース表",
+      "換算表",
     ],
+    comingSoonBadge: "近日公開",
     language: "言語",
     theme: "テーマ",
     darkMode: "ダークモード",
@@ -849,6 +884,7 @@ export const translations: Record<Locale, Translation> = {
     paceTimeTableDistancesNote:
       "ハーフ: 21.0975 km (13.1 mi). マラソン: 42.195 km (26.2 mi).",
     blogWrittenBy: "執筆：",
+    blogMorePosts: "他の記事",
     validationMissingTitle: "必須項目を入力してください",
     validationMissingDistance: "距離",
     validationMissingTime: "タイム",
@@ -866,15 +902,23 @@ export const translations: Record<Locale, Translation> = {
     appDescriptionDistance:
       "Bereken je hardloopafstand direct met onze gratis rekenmachine. Voer tijd en tempo in om te schatten hoe ver je in kilometers of mijlen kunt hardlopen.",
     menuCalculators: "Rekenmachines",
-    menuCharts: "Grafieken",
+    menuTables: "Tabellen",
     menuBlog: "Blog",
-    calculatorsLinks: [
-      "Tempo calculator",
-      "5K Tempo calculator",
-      "Halve marathon tempo",
-      "Marathon tempo calculator",
+    navCalculatorLabels: [
+      "Tempo-calculator",
+      "Wedstrijdtijd-voorspeller",
+      "Trainingszones-calculator",
+      "Splits-calculator",
+      "Calorieën-calculator",
+      "Eenhedenomzetter",
     ],
-    chartLinks: ["Aangepast", "5K Tempo", "10K Tempo", "Halve marathon", "Marathon"],
+    navTableLabels: [
+      "Tabel tijd per tempo",
+      "Splits-tabel",
+      "Trainingspace-tabel",
+      "Equivalentietabel",
+    ],
+    comingSoonBadge: "Binnenkort",
     language: "Taal",
     theme: "Thema",
     darkMode: "Donkere modus",
@@ -952,6 +996,7 @@ export const translations: Record<Locale, Translation> = {
     paceTimeTableDistancesNote:
       "Halve: 21,0975 km (13,1 mi). Marathon: 42,195 km (26,2 mi).",
     blogWrittenBy: "Geschreven door",
+    blogMorePosts: "Meer artikelen",
     validationMissingTitle: "Ontbrekende verplichte velden",
     validationMissingDistance: "Afstand",
     validationMissingTime: "Tijd",
@@ -969,15 +1014,23 @@ export const translations: Record<Locale, Translation> = {
     appDescriptionDistance:
       "Oblicz dystans biegu od razu z naszym darmowym kalkulatorem. Wprowadź czas i tempo, aby oszacować, jak daleko możesz przebiec w km lub milach.",
     menuCalculators: "Kalkulatory",
-    menuCharts: "Wykresy",
+    menuTables: "Tabele",
     menuBlog: "Blog",
-    calculatorsLinks: [
+    navCalculatorLabels: [
       "Kalkulator tempa",
-      "Kalkulator tempa 5K",
-      "Kalkulator półmaratonu",
-      "Kalkulator maratonu",
+      "Predyktor czasu biegu",
+      "Kalkulator stref treningowych",
+      "Kalkulator odcinków",
+      "Kalkulator kalorii",
+      "Przelicznik jednostek",
     ],
-    chartLinks: ["Niestandardowy", "Tempo 5K", "Tempo 10K", "Półmaraton", "Maraton"],
+    navTableLabels: [
+      "Tabela czasu wg tempa",
+      "Tabela odcinków",
+      "Tabela temp treningowych",
+      "Tabela równoważników",
+    ],
+    comingSoonBadge: "Wkrótce",
     language: "Język",
     theme: "Motyw",
     darkMode: "Tryb ciemny",
@@ -1055,6 +1108,7 @@ export const translations: Record<Locale, Translation> = {
     paceTimeTableDistancesNote:
       "Pół: 21,0975 km (13,1 mi). Maraton: 42,195 km (26,2 mi).",
     blogWrittenBy: "Napisane przez",
+    blogMorePosts: "Inne artykuły",
     validationMissingTitle: "Wypełnij wymagane pola",
     validationMissingDistance: "Dystans",
     validationMissingTime: "Czas",
@@ -1072,15 +1126,23 @@ export const translations: Record<Locale, Translation> = {
     appDescriptionDistance:
       "Beräkna din löpsträcka direkt med vår gratis kalkylator. Ange tid och tempo för att uppskatta hur långt du kan springa i km eller miles.",
     menuCalculators: "Kalkylatorer",
-    menuCharts: "Diagram",
+    menuTables: "Tabeller",
     menuBlog: "Blogg",
-    calculatorsLinks: [
+    navCalculatorLabels: [
       "Tempokalkylator",
-      "5K tempokalkylator",
-      "Halvmaratonkalkylator",
-      "Maratonkalkylator",
+      "Lopptidsförutsägelse",
+      "Träningszonkalkylator",
+      "Splitkalkylator",
+      "Kalorikalkylator",
+      "Enhetsomvandlare",
     ],
-    chartLinks: ["Anpassad", "5K tempo", "10K tempo", "Halvmaraton", "Maraton"],
+    navTableLabels: [
+      "Tabell tid per tempo",
+      "Splittabell",
+      "Träningspacetabell",
+      "Equivalenstabell",
+    ],
+    comingSoonBadge: "Kommer snart",
     language: "Språk",
     theme: "Tema",
     darkMode: "Mörkt läge",
@@ -1158,6 +1220,7 @@ export const translations: Record<Locale, Translation> = {
     paceTimeTableDistancesNote:
       "Halv: 21,0975 km (13,1 mi). Maraton: 42,195 km (26,2 mi).",
     blogWrittenBy: "Skrivet av",
+    blogMorePosts: "Fler artiklar",
     validationMissingTitle: "Obligatoriska fält saknas",
     validationMissingDistance: "Sträcka",
     validationMissingTime: "Tid",
@@ -1245,22 +1308,52 @@ export const faqByLocale: Record<Locale, { title: string; items: FaqItem[] }> = 
       {
         question: "What is running pace?",
         answer:
-          "Running pace is the time it takes to run a specific distance, usually expressed as minutes per kilometer or minutes per mile.",
+          "Running pace is the time it takes to cover a specific distance, usually expressed as minutes per kilometer or minutes per mile.",
       },
       {
         question: "How do I calculate my running pace?",
         answer:
-          "To calculate your running pace, divide the total time of your run by the distance. This running pace calculator does it instantly for you.",
+          "To calculate running pace, divide your total running time by the distance covered. You can also use the FindYourPace calculator to get results instantly.",
       },
       {
-        question: "What is a good running pace?",
+        question: "What is a good running pace for beginners?",
         answer:
-          "A good running pace depends on your fitness level and experience. Beginners often run between 7:00 and 9:00 minutes per kilometer.",
+          "A good running pace for beginners typically ranges from 7:00 to 9:00 minutes per kilometer (11:00–14:30 per mile), depending on fitness level and experience.",
       },
       {
-        question: "How do I convert pace to speed?",
+        question: "How do I convert running pace to speed?",
         answer:
-          "You can convert pace to speed by calculating how many kilometers or miles you run per hour. Our calculator shows both pace and speed.",
+          "You can convert pace to speed by calculating how many kilometers or miles you run per hour. Running apps and calculators usually show both values.",
+      },
+      {
+        question: "How long does it take to run 5K?",
+        answer:
+          "The average 5K finish time ranges from 20 to 40 minutes depending on pace, training level, age, and experience.",
+      },
+      {
+        question: "How long does it take to run a marathon?",
+        answer:
+          "Marathon finish times vary widely, but most runners complete it between 3 and 5 hours depending on pace and endurance.",
+      },
+      {
+        question: "What pace do I need to run a sub-30 minute 5K?",
+        answer:
+          "To finish a 5K in under 30 minutes, you need to maintain a pace faster than 6:00 minutes per kilometer (9:39 per mile).",
+      },
+      {
+        question: "Is pace or speed better for runners?",
+        answer:
+          "Pace is more commonly used by runners because it's easier to manage effort and race strategy, while speed is more common in cycling and track analysis.",
+      },
+      {
+        question: "How can I improve my running pace?",
+        answer:
+          "You can improve pace through interval training, tempo runs, strength training, proper recovery, and consistent weekly mileage.",
+      },
+      {
+        question: "Why is my running pace getting slower?",
+        answer:
+          "Slower pace can be caused by fatigue, overtraining, poor sleep, dehydration, terrain changes, or lack of recovery.",
       },
     ],
   },
@@ -1270,27 +1363,57 @@ export const faqByLocale: Record<Locale, { title: string; items: FaqItem[] }> = 
       {
         question: "¿Qué es el ritmo de carrera?",
         answer:
-          "El ritmo de carrera es el tiempo que se tarda en recorrer una distancia determinada, normalmente expresado en minutos por kilómetro o minutos por milla.",
+          "El ritmo de carrera es el tiempo que se tarda en recorrer una distancia determinada, normalmente expresado en minutos por kilómetro o por milla.",
       },
       {
         question: "¿Cómo calculo mi ritmo de carrera?",
         answer:
-          "Para calcular tu ritmo de carrera, divide el tiempo total de tu carrera por la distancia. Esta calculadora de ritmo lo hace al instante.",
+          "Para calcular el ritmo, divide el tiempo total de carrera entre la distancia recorrida. También puedes usar la calculadora FindYourPace para obtener resultados al instante.",
       },
       {
-        question: "¿Cuál es un buen ritmo de carrera?",
+        question: "¿Cuál es un buen ritmo de carrera para principiantes?",
         answer:
-          "Un buen ritmo depende de tu nivel de forma física y experiencia. Los principiantes suelen correr entre 7:00 y 9:00 minutos por kilómetro.",
+          "Un buen ritmo para principiantes suele estar entre 7:00 y 9:00 min/km (11:00–14:30 por milla), según el nivel físico y la experiencia.",
       },
       {
-        question: "¿Cómo convierto el ritmo en velocidad?",
+        question: "¿Cómo convierto el ritmo de carrera en velocidad?",
         answer:
-          "Puedes convertir el ritmo en velocidad calculando cuántos kilómetros o millas corres por hora. Nuestra calculadora muestra ritmo y velocidad.",
+          "Puedes convertir el ritmo en velocidad calculando cuántos kilómetros o millas corres por hora. Las apps y calculadoras de running suelen mostrar ambos valores.",
+      },
+      {
+        question: "¿Cuánto se tarda en correr un 5K?",
+        answer:
+          "El tiempo medio de un 5K oscila entre 20 y 40 minutos según el ritmo, el nivel de entrenamiento, la edad y la experiencia.",
+      },
+      {
+        question: "¿Cuánto se tarda en correr un maratón?",
+        answer:
+          "Los tiempos de maratón varían mucho; la mayoría de corredores lo completan entre 3 y 5 horas según ritmo y resistencia.",
+      },
+      {
+        question: "¿Qué ritmo necesito para un 5K en menos de 30 minutos?",
+        answer:
+          "Para terminar un 5K en menos de 30 minutos necesitas mantener un ritmo inferior a 6:00 min/km (9:39 por milla).",
+      },
+      {
+        question: "¿Es mejor el ritmo o la velocidad para corredores?",
+        answer:
+          "El ritmo es más usado por corredores porque facilita gestionar el esfuerzo y la estrategia de carrera; la velocidad es más común en ciclismo y análisis de pista.",
+      },
+      {
+        question: "¿Cómo puedo mejorar mi ritmo de carrera?",
+        answer:
+          "Puedes mejorar el ritmo con entrenamiento por intervalos, rodajes a ritmo controlado, trabajo de fuerza, recuperación adecuada y kilometraje semanal constante.",
+      },
+      {
+        question: "¿Por qué mi ritmo de carrera se está volviendo más lento?",
+        answer:
+          "Un ritmo más lento puede deberse a fatiga, sobreentrenamiento, mal descanso, deshidratación, cambios de terreno o falta de recuperación.",
       },
     ],
   },
   fr: {
-    title: "FAQ Calculateur d'Allure Running",
+    title: "FAQ Calculateur d'allure de course",
     items: [
       {
         question: "Qu'est-ce que l'allure de course ?",
@@ -1300,22 +1423,52 @@ export const faqByLocale: Record<Locale, { title: string; items: FaqItem[] }> = 
       {
         question: "Comment calculer mon allure de course ?",
         answer:
-          "Pour calculer votre allure, divisez le temps total de course par la distance. Ce calculateur d'allure le fait instantanément pour vous.",
+          "Pour calculer l'allure, divisez le temps total de course par la distance parcourue. Vous pouvez aussi utiliser le calculateur FindYourPace pour un résultat instantané.",
       },
       {
-        question: "Quelle est une bonne allure de course ?",
+        question: "Quelle est une bonne allure pour les débutants ?",
         answer:
-          "Une bonne allure dépend de votre niveau et de votre expérience. Les débutants courent souvent entre 7:00 et 9:00 minutes au kilomètre.",
+          "Une bonne allure pour débutants se situe généralement entre 7:00 et 9:00 min/km (11:00–14:30 par mile), selon la forme et l'expérience.",
       },
       {
         question: "Comment convertir l'allure en vitesse ?",
         answer:
-          "Vous pouvez convertir l'allure en vitesse en calculant combien de kilomètres ou de miles vous parcourez par heure. Notre calculateur affiche allure et vitesse.",
+          "Convertissez l'allure en vitesse en calculant combien de kilomètres ou de miles vous parcourez par heure. Les applis et calculateurs affichent souvent les deux.",
+      },
+      {
+        question: "Combien de temps pour courir un 5 km ?",
+        answer:
+          "Le temps moyen d'un 5 km varie entre 20 et 40 minutes selon l'allure, le niveau d'entraînement, l'âge et l'expérience.",
+      },
+      {
+        question: "Combien de temps pour courir un marathon ?",
+        answer:
+          "Les temps de marathon varient beaucoup ; la plupart des coureurs terminent entre 3 et 5 heures selon l'allure et l'endurance.",
+      },
+      {
+        question: "Quelle allure pour un 5 km en moins de 30 minutes ?",
+        answer:
+          "Pour finir un 5 km en moins de 30 minutes, il faut maintenir une allure inférieure à 6:00 min/km (9:39 par mile).",
+      },
+      {
+        question: "Allure ou vitesse : quoi de mieux pour les coureurs ?",
+        answer:
+          "L'allure est plus utilisée par les coureurs pour gérer l'effort et la stratégie de course ; la vitesse est plus courante en cyclisme et en analyse sur piste.",
+      },
+      {
+        question: "Comment améliorer mon allure de course ?",
+        answer:
+          "Améliorez l'allure grâce aux séances par intervalles, aux sorties au tempo, au renforcement, à une bonne récupération et à un volume hebdomadaire régulier.",
+      },
+      {
+        question: "Pourquoi mon allure de course ralentit-elle ?",
+        answer:
+          "Un ralentissement peut venir de la fatigue, du surentraînement, du manque de sommeil, de la déshydratation, du terrain ou d'une récupération insuffisante.",
       },
     ],
   },
   it: {
-    title: "FAQ Calcolatore Ritmo Corsa",
+    title: "FAQ Calcolatore ritmo di corsa",
     items: [
       {
         question: "Cos'è il ritmo di corsa?",
@@ -1325,42 +1478,102 @@ export const faqByLocale: Record<Locale, { title: string; items: FaqItem[] }> = 
       {
         question: "Come calcolo il mio ritmo di corsa?",
         answer:
-          "Per calcolare il ritmo, dividi il tempo totale della corsa per la distanza. Questo calcolatore di ritmo lo fa istantaneamente per te.",
+          "Per calcolare il ritmo, dividi il tempo totale di corsa per la distanza percorsa. Puoi anche usare il calcolatore FindYourPace per risultati immediati.",
       },
       {
-        question: "Qual è un buon ritmo di corsa?",
+        question: "Qual è un buon ritmo di corsa per i principianti?",
         answer:
-          "Un buon ritmo dipende dal livello di forma e dall'esperienza. I principianti spesso corrono tra 7:00 e 9:00 minuti per chilometro.",
+          "Un buon ritmo per principianti è in genere tra 7:00 e 9:00 min/km (11:00–14:30 per miglio), in base a forma fisica ed esperienza.",
       },
       {
-        question: "Come converto il ritmo in velocità?",
+        question: "Come converto il ritmo di corsa in velocità?",
         answer:
-          "Puoi convertire il ritmo in velocità calcolando quanti chilometri o miglia percorri all'ora. Il nostro calcolatore mostra ritmo e velocità.",
+          "Puoi convertire il ritmo in velocità calcolando quanti chilometri o miglia percorri all'ora. App e calcolatori di corsa di solito mostrano entrambi i valori.",
+      },
+      {
+        question: "Quanto tempo ci vuole per correre un 5K?",
+        answer:
+          "Il tempo medio di un 5K varia tra 20 e 40 minuti in base a ritmo, livello di allenamento, età ed esperienza.",
+      },
+      {
+        question: "Quanto tempo ci vuole per correre una maratona?",
+        answer:
+          "I tempi di maratona variano molto; la maggior parte dei runner la completa tra le 3 e le 5 ore in base a ritmo e resistenza.",
+      },
+      {
+        question: "Che ritmo serve per un 5K sotto i 30 minuti?",
+        answer:
+          "Per finire un 5K in meno di 30 minuti devi mantenere un ritmo inferiore a 6:00 min/km (9:39 per miglio).",
+      },
+      {
+        question: "Per i runner è meglio il ritmo o la velocità?",
+        answer:
+          "Il ritmo è più usato dai runner perché è più facile gestire sforzo e strategia di gara; la velocità è più comune in ciclismo e nell'analisi su pista.",
+      },
+      {
+        question: "Come posso migliorare il mio ritmo di corsa?",
+        answer:
+          "Puoi migliorare il ritmo con interval training, corse a ritmo medio, potenziamento, recupero adeguato e chilometraggio settimanale costante.",
+      },
+      {
+        question: "Perché il mio ritmo di corsa sta rallentando?",
+        answer:
+          "Un ritmo più lento può dipendere da affaticamento, overtraining, sonno insufficiente, disidratazione, tipo di terreno o scarsa recuperazione.",
       },
     ],
   },
   "pt-BR": {
-    title: "FAQ Calculadora de Pace de Corrida",
+    title: "FAQ Calculadora de pace de corrida",
     items: [
       {
         question: "O que é pace de corrida?",
         answer:
-          "Pace de corrida é o tempo que você leva para percorrer uma distância, geralmente em minutos por quilômetro ou minutos por milha.",
+          "Pace de corrida é o tempo que você leva para percorrer uma distância específica, geralmente em minutos por quilômetro ou por milha.",
       },
       {
         question: "Como calcular meu pace de corrida?",
         answer:
-          "Para calcular seu pace, divida o tempo total da corrida pela distância. Esta calculadora de pace faz isso na hora para você.",
+          "Para calcular o pace, divida o tempo total da corrida pela distância percorrida. Você também pode usar a calculadora FindYourPace para obter o resultado na hora.",
       },
       {
-        question: "Qual é um bom pace de corrida?",
+        question: "Qual é um bom pace de corrida para iniciantes?",
         answer:
-          "Um bom pace depende do seu condicionamento e experiência. Iniciantes costumam correr entre 7:00 e 9:00 minutos por quilômetro.",
+          "Um bom pace para iniciantes costuma ficar entre 7:00 e 9:00 min/km (11:00–14:30 por milha), dependendo do condicionamento e da experiência.",
       },
       {
-        question: "Como converter pace em velocidade?",
+        question: "Como converter pace de corrida em velocidade?",
         answer:
-          "Você pode converter pace em velocidade calculando quantos quilômetros ou milhas você corre por hora. Nossa calculadora mostra pace e velocidade.",
+          "Você converte pace em velocidade calculando quantos quilômetros ou milhas você corre por hora. Apps e calculadoras de corrida costumam mostrar os dois.",
+      },
+      {
+        question: "Quanto tempo leva para correr 5K?",
+        answer:
+          "O tempo médio de um 5K varia de 20 a 40 minutos conforme o pace, nível de treino, idade e experiência.",
+      },
+      {
+        question: "Quanto tempo leva para correr uma maratona?",
+        answer:
+          "Os tempos de maratona variam muito; a maioria dos corredores termina entre 3 e 5 horas, dependendo do pace e do condicionamento.",
+      },
+      {
+        question: "Que pace preciso para um 5K em menos de 30 minutos?",
+        answer:
+          "Para terminar um 5K em menos de 30 minutos é preciso manter um pace mais rápido que 6:00 min/km (9:39 por milha).",
+      },
+      {
+        question: "Pace ou velocidade: o que é melhor para corredores?",
+        answer:
+          "O pace é mais usado por corredores porque facilita controlar o esforço e a estratégia de prova; a velocidade é mais comum no ciclismo e na análise de pista.",
+      },
+      {
+        question: "Como posso melhorar meu pace de corrida?",
+        answer:
+          "Dá para melhorar o pace com treinos intervalados, corridas em ritmo controlado, fortalecimento, recuperação adequada e quilometragem semanal consistente.",
+      },
+      {
+        question: "Por que meu pace de corrida está ficando mais lento?",
+        answer:
+          "Um pace mais lento pode ser causado por fadiga, overtraining, sono ruim, desidratação, tipo de terreno ou falta de recuperação.",
       },
     ],
   },
@@ -1370,72 +1583,162 @@ export const faqByLocale: Record<Locale, { title: string; items: FaqItem[] }> = 
       {
         question: "ランニングペースとは？",
         answer:
-          "ランニングペースは、特定の距離を走るのにかかる時間で、通常は1キロまたは1マイルあたりの分数で表されます。",
+          "ランニングペースは、一定の距離を走るのにかかる時間で、通常は1キロまたは1マイルあたりの分数で表します。",
       },
       {
-        question: "ランニングペースはどのように計算しますか？",
+        question: "ランニングペースはどう計算しますか？",
         answer:
-          "ランニングペースを計算するには、走行の合計時間を距離で割ります。このペース計算機で即座に計算できます。",
+          "走った合計時間を走行距離で割るとペースが出ます。FindYourPaceの計算機を使えばすぐに結果が得られます。",
       },
       {
-        question: "良いランニングペースとは？",
+        question: "初心者に適したランニングペースは？",
         answer:
-          "良いペースは体力レベルや経験によって異なります。初心者は1キロあたり7:00〜9:00分で走ることが多いです。",
+          "初心者なら通常1キロ7:00〜9:00分（1マイル11:00〜14:30分）程度が目安で、体力や経験で変わります。",
       },
       {
-        question: "ペースを速度に変換するには？",
+        question: "ランニングペースを速度に換算するには？",
         answer:
-          "1時間で何キロまたは何マイル走るかを計算すると、ペースを速度に変換できます。当計算機ではペースと速度の両方を表示します。",
+          "1時間で何キロ（またはマイル）走るかを計算すると速度になります。ランニングアプリや計算機では両方表示されることが多いです。",
+      },
+      {
+        question: "5Kを走るのにどのくらいかかりますか？",
+        answer:
+          "5Kの平均タイムはペース・トレーニングレベル・年齢・経験により20〜40分程度です。",
+      },
+      {
+        question: "マラソンを走るのにどのくらいかかりますか？",
+        answer:
+          "マラソンのタイムは人により大きく異なりますが、多くのランナーはペースと持久力に応じて3〜5時間で完走します。",
+      },
+      {
+        question: "5Kを30分以内で走るにはどのペースが必要ですか？",
+        answer:
+          "5Kを30分以内で走るには、1キロ6:00分（1マイル9:39分）より速いペースを維持する必要があります。",
+      },
+      {
+        question: "ランナーにはペースと速度のどちらが向いていますか？",
+        answer:
+          "ランナーはペースの方がよく使われます。負荷やレース戦略を組み立てやすいためです。速度は自転車やトラック分析でよく使われます。",
+      },
+      {
+        question: "ランニングペースを上げるには？",
+        answer:
+          "インターバル走、ペース走、筋トレ、十分な回復、そして毎週の走行距離を安定させることでペースを上げられます。",
+      },
+      {
+        question: "ランニングペースが遅くなるのはなぜですか？",
+        answer:
+          "ペースが落ちる原因には、疲労、オーバートレーニング、睡眠不足、脱水、コースの変化、回復不足などがあります。",
       },
     ],
   },
   de: {
-    title: "Lauf Pace Rechner FAQ",
+    title: "Lauf-Pace-Rechner FAQ",
     items: [
       {
         question: "Was ist Lauf-Pace?",
         answer:
-          "Lauf-Pace ist die Zeit, die du für eine bestimmte Distanz brauchst, meist in Minuten pro Kilometer oder Minuten pro Meile angegeben.",
+          "Lauf-Pace ist die Zeit, die du für eine bestimmte Strecke brauchst, meist in Minuten pro Kilometer oder pro Meile angegeben.",
       },
       {
         question: "Wie berechne ich meinen Lauf-Pace?",
         answer:
-          "Teile die Gesamtzeit deines Laufs durch die Distanz. Dieser Lauf-Pace-Rechner erledigt das sofort für dich.",
+          "Teile die Gesamtlaufzeit durch die gelaufene Strecke. Du kannst auch den FindYourPace-Rechner nutzen und sofort ein Ergebnis bekommen.",
       },
       {
-        question: "Was ist ein guter Lauf-Pace?",
+        question: "Was ist ein guter Lauf-Pace für Einsteiger?",
         answer:
-          "Ein guter Pace hängt von deinem Fitnesslevel und Erfahrung ab. Einsteiger laufen oft zwischen 7:00 und 9:00 Minuten pro Kilometer.",
+          "Ein guter Pace für Einsteiger liegt typischerweise zwischen 7:00 und 9:00 Min./km (11:00–14:30 pro Meile), je nach Fitness und Erfahrung.",
       },
       {
-        question: "Wie rechne ich Pace in Geschwindigkeit um?",
+        question: "Wie rechne ich Lauf-Pace in Geschwindigkeit um?",
         answer:
-          "Du kannst Pace in Geschwindigkeit umrechnen, indem du berechnest, wie viele Kilometer oder Meilen du pro Stunde läufst. Unser Rechner zeigt beides an.",
+          "Berechne, wie viele Kilometer oder Meilen du pro Stunde läufst. Lauf-Apps und Rechner zeigen meist beides an.",
+      },
+      {
+        question: "Wie lange braucht man für einen 5K?",
+        answer:
+          "Die durchschnittliche 5K-Zeit liegt je nach Pace, Trainingsstand, Alter und Erfahrung zwischen 20 und 40 Minuten.",
+      },
+      {
+        question: "Wie lange braucht man für einen Marathon?",
+        answer:
+          "Marathon-Zeiten variieren stark; die meisten Läufer liegen je nach Pace und Ausdauer zwischen 3 und 5 Stunden.",
+      },
+      {
+        question: "Welchen Pace brauche ich für einen 5K unter 30 Minuten?",
+        answer:
+          "Für einen 5K unter 30 Minuten musst du schneller als 6:00 Min./km (9:39 pro Meile) laufen.",
+      },
+      {
+        question: "Pace oder Geschwindigkeit – was ist besser für Läufer?",
+        answer:
+          "Pace wird von Läufern häufiger genutzt, weil sich damit Anstrengung und Renntaktik besser steuern lassen; Geschwindigkeit ist eher im Radsport und in der Bahnanalyse üblich.",
+      },
+      {
+        question: "Wie kann ich meinen Lauf-Pace verbessern?",
+        answer:
+          "Pace verbesserst du durch Intervalltraining, Tempoläufe, Krafttraining, ausreichende Erholung und konstanten wöchentlichen Umfang.",
+      },
+      {
+        question: "Warum wird mein Lauf-Pace langsamer?",
+        answer:
+          "Ein langsamerer Pace kann an Müdigkeit, Übertraining, schlechtem Schlaf, Dehydrierung, Gelände oder zu wenig Erholung liegen.",
       },
     ],
   },
   nl: {
-    title: "FAQ Hardlooptempo Calculator",
+    title: "FAQ Hardlooptempo-calculator",
     items: [
       {
         question: "Wat is hardlooptempo?",
         answer:
-          "Hardlooptempo is de tijd die je nodig hebt om een bepaalde afstand te lopen, meestal uitgedrukt in minuten per kilometer of minuten per mijl.",
+          "Hardlooptempo is de tijd die je nodig hebt om een bepaalde afstand te lopen, meestal uitgedrukt in minuten per kilometer of per mijl.",
       },
       {
         question: "Hoe bereken ik mijn hardlooptempo?",
         answer:
-          "Deel de totale looptijd door de afstand. Deze tempocalculator doet het direct voor je.",
+          "Deel je totale looptijd door de afgelegde afstand. Je kunt ook de FindYourPace-calculator gebruiken voor directe resultaten.",
       },
       {
-        question: "Wat is een goed hardlooptempo?",
+        question: "Wat is een goed hardlooptempo voor beginners?",
         answer:
-          "Een goed tempo hangt af van je conditie en ervaring. Beginners lopen vaak tussen 7:00 en 9:00 minuten per kilometer.",
+          "Een goed tempo voor beginners ligt meestal tussen 7:00 en 9:00 min/km (11:00–14:30 per mijl), afhankelijk van conditie en ervaring.",
       },
       {
-        question: "Hoe zet ik tempo om in snelheid?",
+        question: "Hoe zet ik hardlooptempo om in snelheid?",
         answer:
-          "Bereken hoeveel kilometer of mijl je per uur loopt. Onze rekenmachine toont zowel tempo als snelheid.",
+          "Bereken hoeveel kilometer of mijl je per uur loopt. Hardloopapps en rekenmachines tonen vaak beide waarden.",
+      },
+      {
+        question: "Hoe lang duurt het om 5K te lopen?",
+        answer:
+          "De gemiddelde 5K-tijd ligt tussen 20 en 40 minuten, afhankelijk van tempo, trainingsniveau, leeftijd en ervaring.",
+      },
+      {
+        question: "Hoe lang duurt het om een marathon te lopen?",
+        answer:
+          "Marathontijden lopen uiteen; de meeste lopers finishen tussen 3 en 5 uur, afhankelijk van tempo en uithoudingsvermogen.",
+      },
+      {
+        question: "Welk tempo voor een 5K onder 30 minuten?",
+        answer:
+          "Voor een 5K onder 30 minuten moet je sneller dan 6:00 min/km (9:39 per mijl) lopen.",
+      },
+      {
+        question: "Tempo of snelheid: wat is beter voor lopers?",
+        answer:
+          "Tempo wordt vaker gebruikt door lopers omdat het makkelijker is om inspanning en wedstrijdstrategie te sturen; snelheid is gebruikelijker in wielrennen en baananalyse.",
+      },
+      {
+        question: "Hoe kan ik mijn hardlooptempo verbeteren?",
+        answer:
+          "Verbeter je tempo met intervaltraining, tempoloopjes, krachttraining, goed herstel en een constant wekelijks aantal kilometers.",
+      },
+      {
+        question: "Waarom wordt mijn hardlooptempo langzamer?",
+        answer:
+          "Een langzamer tempo kan komen door vermoeidheid, overtraining, slecht slapen, uitdroging, ander terrein of te weinig herstel.",
       },
     ],
   },
@@ -1445,22 +1748,52 @@ export const faqByLocale: Record<Locale, { title: string; items: FaqItem[] }> = 
       {
         question: "Co to jest tempo biegu?",
         answer:
-          "Tempo biegu to czas, w jakim pokonujesz określony dystans, zwykle podawany w minutach na kilometr lub minutach na milę.",
+          "Tempo biegu to czas potrzebny na pokonanie danego dystansu, zwykle w minutach na kilometr lub na milę.",
       },
       {
         question: "Jak obliczyć moje tempo biegu?",
         answer:
-          "Podziel łączny czas biegu przez dystans. Ten kalkulator tempa zrobi to za Ciebie w mgnieniu oka.",
+          "Podziel łączny czas biegu przez pokonany dystans. Możesz też skorzystać z kalkulatora FindYourPace, żeby od razu uzyskać wynik.",
       },
       {
-        question: "Jakie tempo biegu jest dobre?",
+        question: "Jakie tempo biegu jest dobre dla początkujących?",
         answer:
-          "Dobre tempo zależy od formy i doświadczenia. Początkujący często biegają między 7:00 a 9:00 minut na kilometr.",
+          "Dobre tempo dla początkujących to zwykle 7:00–9:00 min/km (11:00–14:30 na milę), w zależności od formy i doświadczenia.",
       },
       {
-        question: "Jak przeliczyć tempo na prędkość?",
+        question: "Jak przeliczyć tempo biegu na prędkość?",
         answer:
-          "Oblicz, ile kilometrów lub mil przebiegasz w godzinę. Nasz kalkulator pokazuje zarówno tempo, jak i prędkość.",
+          "Oblicz, ile kilometrów lub mil przebiegasz w godzinę. Aplikacje i kalkulatory do biegania zwykle pokazują obie wartości.",
+      },
+      {
+        question: "Ile trwa przebiegnięcie 5K?",
+        answer:
+          "Średni czas 5K to 20–40 minut w zależności od tempa, poziomu treningu, wieku i doświadczenia.",
+      },
+      {
+        question: "Ile trwa przebiegnięcie maratonu?",
+        answer:
+          "Czasy maratonów są bardzo zróżnicowane; większość biegaczy kończy między 3 a 5 godzin, w zależności od tempa i wytrzymałości.",
+      },
+      {
+        question: "Jakie tempo do 5K w poniżej 30 minut?",
+        answer:
+          "Żeby przebiec 5K w poniżej 30 minut, musisz utrzymać tempo szybsze niż 6:00 min/km (9:39 na milę).",
+      },
+      {
+        question: "Tempo czy prędkość – co lepsze dla biegaczy?",
+        answer:
+          "Biegacze częściej używają tempa, bo łatwiej planować wysiłek i taktykę; prędkość jest częstsza w kolarstwie i analizie na bieżni.",
+      },
+      {
+        question: "Jak mogę poprawić tempo biegu?",
+        answer:
+          "Poprawisz tempo dzięki treningom interwałowym, biegom tempowym, treningowi siłowemu, odpowiedniej regeneracji i stałemu tygodniowemu kilometrażowi.",
+      },
+      {
+        question: "Dlaczego moje tempo biegu się spowalnia?",
+        answer:
+          "Wolniejsze tempo może wynikać z zmęczenia, przetrenowania, złego snu, odwodnienia, zmiany nawierzchni lub braku regeneracji.",
       },
     ],
   },
@@ -1470,22 +1803,52 @@ export const faqByLocale: Record<Locale, { title: string; items: FaqItem[] }> = 
       {
         question: "Vad är löptempo?",
         answer:
-          "Löptempo är den tid det tar att springa en viss sträcka, vanligtvis uttryckt i minuter per kilometer eller minuter per mil.",
+          "Löptempo är den tid det tar att springa en viss sträcka, vanligtvis uttryckt i minuter per kilometer eller per engelsk mil.",
       },
       {
         question: "Hur beräknar jag mitt löptempo?",
         answer:
-          "Dela din totala springtid med sträckan. Denna tempokalkylator gör det direkt åt dig.",
+          "Dela din totala springtid med den sprungna sträckan. Du kan också använda FindYourPace-kalkylatorn för resultat direkt.",
       },
       {
-        question: "Vad är ett bra löptempo?",
+        question: "Vad är ett bra löptempo för nybörjare?",
         answer:
-          "Ett bra tempo beror på din kondition och erfarenhet. Nybörjare springer ofta mellan 7:00 och 9:00 minuter per kilometer.",
+          "Ett bra tempo för nybörjare ligger oftast mellan 7:00 och 9:00 min/km (11:00–14:30 per engelsk mil), beroende på kondition och erfarenhet.",
       },
       {
-        question: "Hur konverterar jag tempo till hastighet?",
+        question: "Hur konverterar jag löptempo till hastighet?",
         answer:
-          "Beräkna hur många kilometer eller mil du springer per timme. Vår kalkylator visar både tempo och hastighet.",
+          "Beräkna hur många kilometer eller engelska mil du springer per timme. Löpappar och kalkylatorer visar oftast båda värdena.",
+      },
+      {
+        question: "Hur lång tid tar det att springa 5K?",
+        answer:
+          "Medel tiden för 5K är 20–40 minuter beroende på tempo, träningsnivå, ålder och erfarenhet.",
+      },
+      {
+        question: "Hur lång tid tar det att springa ett maraton?",
+        answer:
+          "Maratontider varierar mycket; de flesta löpare fullföljer mellan 3 och 5 timmar beroende på tempo och uthållighet.",
+      },
+      {
+        question: "Vilket tempo behövs för 5K under 30 minuter?",
+        answer:
+          "För att springa 5K på under 30 minuter behöver du hålla ett tempo snabbare än 6:00 min/km (9:39 per engelsk mil).",
+      },
+      {
+        question: "Är tempo eller hastighet bättre för löpare?",
+        answer:
+          "Tempo används oftare av löpare eftersom det är lättare att styra ansträngning och tävlingsstrategi; hastighet är vanligare inom cykling och bana.",
+      },
+      {
+        question: "Hur kan jag förbättra mitt löptempo?",
+        answer:
+          "Du kan förbättra tempot med intervallträning, tempolöpning, styrketräning, ordentlig återhämtning och konsekvent veckovolat.",
+      },
+      {
+        question: "Varför blir mitt löptempo långsammare?",
+        answer:
+          "Långsammare tempo kan bero på trötthet, överträning, dålig sömn, uttorkning, underlagsändringar eller brist på återhämtning.",
       },
     ],
   },

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AdPlaceholder } from "@/components/ad-placeholder";
 import { BlogPostContent } from "@/components/blog-post-content";
@@ -8,8 +9,20 @@ import {
   translations,
   type PathLocale,
 } from "@/lib/i18n";
-import { getPostBySlug, getAllSlugs, formatBlogDate } from "@/lib/blog";
+import { getPostBySlug, getPosts, getAllSlugs, formatBlogDate } from "@/lib/blog";
 import type { Metadata } from "next";
+
+function shuffleWithSeed<T>(array: T[], seed: string): T[] {
+  const a = [...array];
+  let h = 0;
+  for (let i = 0; i < seed.length; i++) h = (h << 5) - h + seed.charCodeAt(i);
+  for (let i = a.length - 1; i > 0; i--) {
+    h = (h << 5) - h + i;
+    const j = Math.abs(h) % (i + 1);
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
 
 type Props = { params: Promise<{ locale: string; slug: string }> };
 
@@ -33,9 +46,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!post) return { title: "Not found" };
   const locale = pathLocaleToLocale(pathLocale);
   const t = translations[locale];
+  const imageUrl = post.image || "/og.png";
   return {
     title: `${post.title} – ${t.menuBlog}`,
     description: post.description,
+    openGraph: {
+      type: "article",
+      title: post.title,
+      description: post.description,
+      images: [{ url: imageUrl, width: 1200, height: 630, alt: post.title }],
+    },
+    twitter: { card: "summary_large_image", title: post.title, description: post.description, images: [imageUrl] },
   };
 }
 
@@ -101,12 +122,72 @@ export default async function BlogPostPage({ params }: Props) {
             ) : null}
           </div>
 
-          {/* Conteúdo em markdown: gaps entre parágrafos; no mobile, 1 ad após 4º parágrafo e 1 no final */}
+          {/* Conteúdo em markdown: gaps entre parágrafos; no mobile, 1 ad após 4º parágrafo */}
           <BlogPostContent
             content={post.content}
             adSupportText={t.adSupportRun}
             adEnableText={t.adEnableAds}
           />
+
+          {/* Secção: 3 outras postagens (aleatórias determinísticas) */}
+          {(() => {
+            const all = getPosts(safeLocale).filter((p) => p.slug !== slug);
+            const more = shuffleWithSeed(all, slug).slice(0, 3);
+            if (more.length === 0) return null;
+            return (
+              <section className="mt-12 w-full text-left">
+                <h2 className="mb-6 text-2xl font-semibold tracking-tight">
+                  {t.blogMorePosts}
+                </h2>
+                <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+                  {more.map((p) => (
+                    <Link
+                      key={p.slug}
+                      href={`/${pathLocale}/blog/${p.slug}`}
+                      className="block overflow-hidden rounded-lg border border-border bg-card text-left transition-colors hover:bg-muted/50"
+                    >
+                      <div className="relative aspect-video w-full overflow-hidden bg-muted">
+                        {p.image ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            src={p.image}
+                            alt=""
+                            className="h-full w-full object-cover"
+                          />
+                        ) : (
+                          <div className="h-full w-full bg-muted" />
+                        )}
+                      </div>
+                      <div className="p-4">
+                        <h3 className="line-clamp-2 text-lg font-semibold leading-tight tracking-tight">
+                          {p.title}
+                        </h3>
+                        <p className="mt-2 text-sm text-muted-foreground">
+                          {p.description}
+                        </p>
+                        <time
+                          className="mt-2 block text-xs text-muted-foreground"
+                          dateTime={p.date}
+                        >
+                          {formatBlogDate(p.date, locale)}
+                        </time>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </section>
+            );
+          })()}
+
+          {/* Banner de ads no final (só mobile) */}
+          <div className="xl:hidden w-full max-w-3xl mt-8">
+            <AdPlaceholder
+              variant="inline"
+              supportText={t.adSupportRun}
+              enableText={t.adEnableAds}
+              inlineSize="320x100"
+            />
+          </div>
         </div>
       </div>
       <AdPlaceholder

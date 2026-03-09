@@ -417,8 +417,8 @@ export function CalculatorView() {
   return (
     <main className="flex min-h-screen flex-col bg-background py-5 lg:px-0">
       <AppHeader />
-      {/* Conteúdo: px-6 para todo (título, calculadora, ads, tabela, faq); desktop com área dos ads */}
-      <div className="w-full flex flex-col min-w-0 px-6 xl:pl-[176px] xl:pr-[176px] 3xl:pl-[316px] 3xl:pr-[316px]">
+      {/* Conteúdo: px-6 para todo; desktop com margem entre conteúdo e sidebars (32px de gap) */}
+      <div className="w-full flex flex-col min-w-0 px-6 xl:pl-[208px] xl:pr-[208px] 3xl:pl-[348px] 3xl:pr-[348px]">
       <div className="mx-auto w-full max-w-6xl pt-14 pb-10 lg:px-10">
       <section className="w-full max-w-3xl mx-auto text-center">
         <div className="space-y-4">
@@ -689,11 +689,14 @@ export function CalculatorView() {
       </div>
 
       {/* Mobile: ad “esquerdo” abaixo da calculadora */}
-      <AdPlaceholder
-        variant="inline"
-        supportText={t.adSupportRun}
-        enableText={t.adEnableAds}
-      />
+      <div className="mt-8">
+        <AdPlaceholder
+          variant="inline"
+          inlineSize="300x600"
+          supportText={t.adSupportRun}
+          enableText={t.adEnableAds}
+        />
+      </div>
 
       {/* Tabela tempo por pace */}
       <section className="mx-auto w-full max-w-5xl py-8 xl:mt-16">
@@ -712,12 +715,14 @@ export function CalculatorView() {
       </section>
 
       {/* Mobile: segundo banner acima do FAQ */}
-      <AdPlaceholder
-        variant="inline"
-        inlineSize="300x600"
-        supportText={t.adSupportRun}
-        enableText={t.adEnableAds}
-      />
+      <div className="mt-8">
+        <AdPlaceholder
+          variant="inline"
+          inlineSize="300x600"
+          supportText={t.adSupportRun}
+          enableText={t.adEnableAds}
+        />
+      </div>
 
       <section className="mx-auto w-full max-w-3xl pb-12 pt-6">
         <h2 className="mb-4 text-2xl font-semibold tracking-tight">

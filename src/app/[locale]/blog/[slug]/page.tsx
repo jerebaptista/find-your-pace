@@ -117,6 +117,8 @@ export default async function BlogPostPage({ params }: Props) {
               <img
                 src={post.image}
                 alt=""
+                width={640}
+                height={360}
                 className="h-full w-full object-cover"
               />
             ) : null}
@@ -152,6 +154,9 @@ export default async function BlogPostPage({ params }: Props) {
                           <img
                             src={p.image}
                             alt=""
+                            width={640}
+                            height={360}
+                            loading="lazy"
                             className="h-full w-full object-cover"
                           />
                         ) : (

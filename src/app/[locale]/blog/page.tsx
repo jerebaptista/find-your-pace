@@ -66,6 +66,8 @@ function BlogCard({
           <img
             src={post.image}
             alt=""
+            width={640}
+            height={360}
             className="h-full w-full object-cover"
           />
         ) : (

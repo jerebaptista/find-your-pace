@@ -18,12 +18,16 @@ export function AdPlaceholder({
 }: AdPlaceholderProps) {
   if (variant === "inline") {
     const isRectangle = inlineSize === "300x600";
-    /* sm, md: área full width. Ícone à esquerda, textos alinhados à esquerda. */
+    const contentMinHeight = isRectangle ? 250 : 100;
+    /* sm, md: área full width. Espaço reservado (minHeight) para evitar CLS. */
     return (
-      <aside className="mx-auto w-full pt-8 pb-5 xl:hidden">
+      <aside
+        className="mx-auto w-full pt-8 pb-5 xl:hidden"
+        style={{ minHeight: 32 + 20 + contentMinHeight }}
+      >
         <div
           className="flex w-full flex-row items-center justify-center gap-3 rounded-xl border border-dashed border-border p-4"
-          style={{ minHeight: isRectangle ? 250 : 100 }}
+          style={{ minHeight: contentMinHeight }}
         >
           <Frown className="h-6 w-6 shrink-0 text-foreground" aria-hidden />
           <div className="flex flex-col gap-0 leading-tight text-left">

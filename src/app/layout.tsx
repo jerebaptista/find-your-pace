@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   description:
     "Free running pace calculator to estimate pace, distance, time and race splits.",
   robots: "index, follow",
-  icons: { icon: "/favicon.svg", type: "image/svg+xml" },
+  icons: { icon: "/favicon.svg" },
 };
 
 export const viewport = {

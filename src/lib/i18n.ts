@@ -89,6 +89,10 @@ type Translation = {
   validationMissingTime: string;
   validationMissingPace: string;
   validationMissingVelocity: string;
+  menuPrivacyPolicy: string;
+  privacyPageTitle: string;
+  privacyLastUpdate: string;
+  privacySections: readonly { title: string; body: string }[];
 };
 
 export const localeOptions: { value: Locale; label: string }[] = [
@@ -218,6 +222,35 @@ export const translations: Record<Locale, Translation> = {
     validationMissingTime: "Time",
     validationMissingPace: "Pace",
     validationMissingVelocity: "Velocity",
+    menuPrivacyPolicy: "Privacy Policy",
+    privacyPageTitle: "Privacy Policy",
+    privacyLastUpdate: "Last updated: March 2025",
+    privacySections: [
+      {
+        title: "Introduction",
+        body: "FindYourPace (“we”, “our”) offers a free running pace calculator, race time and distance tools, and a blog. This policy describes how we handle information when you use our website.",
+      },
+      {
+        title: "Information We Collect",
+        body: "Our calculator and tools run in your browser. We do not require an account or collect personal data to use them. We may receive technical data such as your IP address, browser type, and general usage (e.g. through our hosting or analytics) in line with standard web operation.",
+      },
+      {
+        title: "Google AdSense and Cookies",
+        body: "We use Google AdSense to show ads and keep the service free. Google and its partners may use cookies and similar technologies to deliver ads and measure performance. You can learn how Google uses data from sites that use its services at policies.google.com/technologies/partner-sites. You can manage or opt out of personalised advertising in your Google Account settings.",
+      },
+      {
+        title: "How We Use Information",
+        body: "We use information to operate and improve the site, to display relevant ads, and to comply with legal obligations. We do not sell your personal information.",
+      },
+      {
+        title: "Your Choices",
+        body: "You can disable or limit cookies in your browser. Disabling cookies may affect ad relevance and some site features. You can also use your Google Account to control ad personalisation.",
+      },
+      {
+        title: "Changes and Contact",
+        body: "We may update this policy from time to time; the “Last updated” date will be revised. For questions about this privacy policy, you can contact us through the contact options available on our website.",
+      },
+    ],
   },
   es: {
     appTitle: "Encuentra tu Ritmo de Carrera",
@@ -330,6 +363,35 @@ export const translations: Record<Locale, Translation> = {
     validationMissingTime: "Tiempo",
     validationMissingPace: "Ritmo",
     validationMissingVelocity: "Velocidad",
+    menuPrivacyPolicy: "Política de privacidad",
+    privacyPageTitle: "Política de privacidad",
+    privacyLastUpdate: "Última actualización: marzo 2025",
+    privacySections: [
+      {
+        title: "Introducción",
+        body: "FindYourPace («nosotros») ofrece una calculadora de ritmo de carrera gratuita, herramientas de tiempo y distancia y un blog. Esta política describe cómo tratamos la información cuando utilizas nuestro sitio.",
+      },
+      {
+        title: "Información que recogemos",
+        body: "Nuestra calculadora y herramientas se ejecutan en tu navegador. No exigimos cuenta ni recogemos datos personales para usarlas. Podemos recibir datos técnicos como tu dirección IP, tipo de navegador y uso general (p. ej. a través de nuestro alojamiento o análisis) según el funcionamiento habitual de la web.",
+      },
+      {
+        title: "Google AdSense y cookies",
+        body: "Utilizamos Google AdSense para mostrar anuncios y mantener el servicio gratuito. Google y sus partners pueden usar cookies y tecnologías similares para mostrar anuncios y medir el rendimiento. Puedes consultar cómo usa Google los datos de sitios que usan sus servicios en policies.google.com/technologies/partner-sites. Puedes gestionar o desactivar la publicidad personalizada en la configuración de tu Cuenta de Google.",
+      },
+      {
+        title: "Uso de la información",
+        body: "Usamos la información para operar y mejorar el sitio, mostrar anuncios relevantes y cumplir obligaciones legales. No vendemos tu información personal.",
+      },
+      {
+        title: "Tus opciones",
+        body: "Puedes desactivar o limitar las cookies en tu navegador. Desactivarlas puede afectar a la relevancia de los anuncios y a algunas funciones del sitio. También puedes usar tu Cuenta de Google para controlar la personalización de anuncios.",
+      },
+      {
+        title: "Cambios y contacto",
+        body: "Podemos actualizar esta política; la fecha de «Última actualización» se revisará. Para preguntas sobre esta política de privacidad, puedes contactarnos a través de las opciones de contacto disponibles en nuestro sitio.",
+      },
+    ],
   },
   fr: {
     appTitle: "Trouvez Votre Allure de Course",
@@ -442,6 +504,35 @@ export const translations: Record<Locale, Translation> = {
     validationMissingTime: "Temps",
     validationMissingPace: "Allure",
     validationMissingVelocity: "Vitesse",
+    menuPrivacyPolicy: "Politique de confidentialité",
+    privacyPageTitle: "Politique de confidentialité",
+    privacyLastUpdate: "Dernière mise à jour : mars 2025",
+    privacySections: [
+      {
+        title: "Introduction",
+        body: "FindYourPace (« nous », « notre ») propose une calculatrice d'allure de course gratuite, des outils de temps et de distance et un blog. Cette politique décrit comment nous traitons les informations lorsque vous utilisez notre site.",
+      },
+      {
+        title: "Informations que nous collectons",
+        body: "Notre calculatrice et nos outils s'exécutent dans votre navigateur. Nous ne demandons pas de compte ni ne collectons de données personnelles pour les utiliser. Nous pouvons recevoir des données techniques (adresse IP, type de navigateur, usage général) via notre hébergement ou analyses, conformément au fonctionnement standard du web.",
+      },
+      {
+        title: "Google AdSense et cookies",
+        body: "Nous utilisons Google AdSense pour afficher des annonces et maintenir le service gratuit. Google et ses partenaires peuvent utiliser des cookies et technologies similaires pour diffuser des annonces et mesurer les performances. Consultez policies.google.com/technologies/partner-sites pour savoir comment Google utilise les données des sites utilisant ses services. Vous pouvez gérer ou désactiver la publicité personnalisée dans les paramètres de votre compte Google.",
+      },
+      {
+        title: "Utilisation des informations",
+        body: "Nous utilisons les informations pour faire fonctionner et améliorer le site, afficher des annonces pertinentes et respecter les obligations légales. Nous ne vendons pas vos données personnelles.",
+      },
+      {
+        title: "Vos choix",
+        body: "Vous pouvez désactiver ou limiter les cookies dans votre navigateur. Les désactiver peut affecter la pertinence des annonces et certaines fonctionnalités. Vous pouvez aussi utiliser votre compte Google pour contrôler la personnalisation des annonces.",
+      },
+      {
+        title: "Modifications et contact",
+        body: "Nous pouvons mettre à jour cette politique ; la date « Dernière mise à jour » sera révisée. Pour toute question, vous pouvez nous contacter via les options disponibles sur notre site.",
+      },
+    ],
   },
   de: {
     appTitle: "Finde Deinen Lauf-Pace",
@@ -554,6 +645,35 @@ export const translations: Record<Locale, Translation> = {
     validationMissingTime: "Zeit",
     validationMissingPace: "Pace",
     validationMissingVelocity: "Geschwindigkeit",
+    menuPrivacyPolicy: "Datenschutz",
+    privacyPageTitle: "Datenschutzerklärung",
+    privacyLastUpdate: "Zuletzt aktualisiert: März 2025",
+    privacySections: [
+      {
+        title: "Einführung",
+        body: "FindYourPace („wir“, „unser“) bietet einen kostenlosen Laufpace-Rechner, Werkzeuge für Zeit und Distanz sowie ein Blog. Diese Richtlinie beschreibt, wie wir mit Informationen umgehen, wenn Sie unsere Website nutzen.",
+      },
+      {
+        title: "Erhobene Daten",
+        body: "Unser Rechner und die Werkzeuge laufen in Ihrem Browser. Wir verlangen kein Konto und erheben keine personenbezogenen Daten. Wir können technische Daten (z. B. IP-Adresse, Browsertyp, allgemeine Nutzung) über unser Hosting oder Analysen erhalten, wie bei üblichen Webabläufen.",
+      },
+      {
+        title: "Google AdSense und Cookies",
+        body: "Wir nutzen Google AdSense für Anzeigen und um den Service kostenlos zu halten. Google und Partner können Cookies und ähnliche Technologien für Anzeigen und Messungen verwenden. Unter policies.google.com/technologies/partner-sites erfahren Sie, wie Google Daten von Partnerseiten nutzt. Sie können personalisierte Werbung in Ihren Google-Kontoeinstellungen verwalten oder deaktivieren.",
+      },
+      {
+        title: "Verwendung der Daten",
+        body: "Wir nutzen die Daten zum Betreiben und Verbessern der Website, für relevante Anzeigen und zur Erfüllung gesetzlicher Pflichten. Wir verkaufen Ihre personenbezogenen Daten nicht.",
+      },
+      {
+        title: "Ihre Wahlmöglichkeiten",
+        body: "Sie können Cookies in Ihrem Browser deaktivieren oder einschränken. Das Deaktivieren kann Anzeigenrelevanz und einige Funktionen beeinträchtigen. Sie können auch Ihr Google-Konto nutzen, um die Anzeigenpersonalisierung zu steuern.",
+      },
+      {
+        title: "Änderungen und Kontakt",
+        body: "Wir können diese Richtlinie aktualisieren; das Datum „Zuletzt aktualisiert“ wird angepasst. Bei Fragen können Sie uns über die auf unserer Website angegebenen Kontaktmöglichkeiten erreichen.",
+      },
+    ],
   },
   "pt-BR": {
     appTitle: "Encontre Seu Pace de Corrida",
@@ -666,6 +786,35 @@ export const translations: Record<Locale, Translation> = {
     validationMissingTime: "Tempo",
     validationMissingPace: "Ritmo",
     validationMissingVelocity: "Velocidade",
+    menuPrivacyPolicy: "Política de privacidade",
+    privacyPageTitle: "Política de privacidade",
+    privacyLastUpdate: "Última atualização: março de 2025",
+    privacySections: [
+      {
+        title: "Introdução",
+        body: "O FindYourPace («nós») oferece uma calculadora de pace de corrida gratuita, ferramentas de tempo e distância e um blog. Esta política descreve como tratamos as informações quando você usa nosso site.",
+      },
+      {
+        title: "Informações que coletamos",
+        body: "Nossa calculadora e ferramentas funcionam no seu navegador. Não exigimos conta nem coletamos dados pessoais para usá-las. Podemos receber dados técnicos (endereço IP, tipo de navegador, uso geral) por meio de nossa hospedagem ou análises, conforme o funcionamento padrão da web.",
+      },
+      {
+        title: "Google AdSense e cookies",
+        body: "Usamos o Google AdSense para exibir anúncios e manter o serviço gratuito. O Google e seus parceiros podem usar cookies e tecnologias semelhantes para exibir anúncios e medir desempenho. Saiba como o Google usa dados de sites que usam seus serviços em policies.google.com/technologies/partner-sites. Você pode gerenciar ou desativar a publicidade personalizada nas configurações da sua Conta Google.",
+      },
+      {
+        title: "Uso das informações",
+        body: "Usamos as informações para operar e melhorar o site, exibir anúncios relevantes e cumprir obrigações legais. Não vendemos suas informações pessoais.",
+      },
+      {
+        title: "Suas escolhas",
+        body: "Você pode desativar ou limitar cookies no seu navegador. Desativá-los pode afetar a relevância dos anúncios e algumas funções do site. Você também pode usar sua Conta Google para controlar a personalização de anúncios.",
+      },
+      {
+        title: "Alterações e contato",
+        body: "Podemos atualizar esta política; a data de «Última atualização» será revisada. Para dúvidas sobre esta política de privacidade, você pode nos contatar pelas opções disponíveis em nosso site.",
+      },
+    ],
   },
   it: {
     appTitle: "Trova il Tuo Ritmo di Corsa",
@@ -778,6 +927,35 @@ export const translations: Record<Locale, Translation> = {
     validationMissingTime: "Tempo",
     validationMissingPace: "Passo",
     validationMissingVelocity: "Velocità",
+    menuPrivacyPolicy: "Informativa sulla privacy",
+    privacyPageTitle: "Informativa sulla privacy",
+    privacyLastUpdate: "Ultimo aggiornamento: marzo 2025",
+    privacySections: [
+      {
+        title: "Introduzione",
+        body: "FindYourPace («noi») offre una calcolatrice di ritmo di corsa gratuita, strumenti per tempo e distanza e un blog. Questa informativa descrive come trattiamo i dati quando utilizzi il nostro sito.",
+      },
+      {
+        title: "Informazioni che raccogliamo",
+        body: "La nostra calcolatrice e gli strumenti funzionano nel tuo browser. Non richiediamo un account né raccogliamo dati personali per usarli. Possiamo ricevere dati tecnici (indirizzo IP, tipo di browser, utilizzo generale) tramite hosting o analisi, come nel funzionamento standard del web.",
+      },
+      {
+        title: "Google AdSense e cookie",
+        body: "Utilizziamo Google AdSense per mostrare annunci e mantenere il servizio gratuito. Google e i suoi partner possono usare cookie e tecnologie simili per annunci e misurazioni. Puoi scoprire come Google utilizza i dati dei siti che usano i suoi servizi su policies.google.com/technologies/partner-sites. Puoi gestire o disattivare la pubblicità personalizzata nelle impostazioni del tuo account Google.",
+      },
+      {
+        title: "Uso delle informazioni",
+        body: "Utilizziamo le informazioni per gestire e migliorare il sito, mostrare annunci pertinenti e rispettare gli obblighi legali. Non vendiamo i tuoi dati personali.",
+      },
+      {
+        title: "Le tue scelte",
+        body: "Puoi disattivare o limitare i cookie nel browser. Disattivarli può influire sulla pertinenza degli annunci e su alcune funzionalità. Puoi anche usare il tuo account Google per controllare la personalizzazione degli annunci.",
+      },
+      {
+        title: "Modifiche e contatto",
+        body: "Potremmo aggiornare questa informativa; la data «Ultimo aggiornamento» sarà aggiornata. Per domande su questa privacy policy, puoi contattarci tramite le opzioni disponibili sul nostro sito.",
+      },
+    ],
   },
   ja: {
     appTitle: "あなたのランニングペースを見つける",
@@ -890,6 +1068,35 @@ export const translations: Record<Locale, Translation> = {
     validationMissingTime: "タイム",
     validationMissingPace: "ペース",
     validationMissingVelocity: "速度",
+    menuPrivacyPolicy: "プライバシーポリシー",
+    privacyPageTitle: "プライバシーポリシー",
+    privacyLastUpdate: "最終更新：2025年3月",
+    privacySections: [
+      {
+        title: "はじめに",
+        body: "FindYourPace（「当サイト」）は、無料のランニングペース計算機、レースタイム・距離ツール、ブログを提供しています。本ポリシーは、当サイトのご利用時に情報をどのように扱うかを説明します。",
+      },
+      {
+        title: "収集する情報",
+        body: "計算機とツールはお使いのブラウザ上で動作します。ご利用に際してアカウントや個人データの入力は不要です。ホスティングや解析を通じて、IPアドレス、ブラウザの種類、一般的な利用状況などの技術情報を受け取ることがあります。",
+      },
+      {
+        title: "Google AdSenseとCookie",
+        body: "広告表示とサービス無料提供のため、Google AdSenseを利用しています。Googleおよびそのパートナーは、広告の配信・効果測定のためにCookie等を使用することがあります。Googleのデータ利用については policies.google.com/technologies/partner-sites をご確認ください。Googleアカウントの設定でパーソナライズ広告の管理や無効化ができます。",
+      },
+      {
+        title: "情報の利用",
+        body: "情報はサイトの運営・改善、関連広告の表示、法的義務の履行に利用します。個人情報の販売は行いません。",
+      },
+      {
+        title: "お客様の選択",
+        body: "ブラウザでCookieを無効または制限できます。無効にすると広告の関連性や一部機能に影響する場合があります。Googleアカウントで広告のパーソナライズも管理できます。",
+      },
+      {
+        title: "変更とお問い合わせ",
+        body: "本ポリシーは随時更新することがあり、「最終更新」日を改めます。プライバシーポリシーに関するお問い合わせは、当サイトに記載の連絡方法からお願いします。",
+      },
+    ],
   },
   nl: {
     appTitle: "Vind Je Hardlooptempo",
@@ -1002,6 +1209,35 @@ export const translations: Record<Locale, Translation> = {
     validationMissingTime: "Tijd",
     validationMissingPace: "Tempo",
     validationMissingVelocity: "Snelheid",
+    menuPrivacyPolicy: "Privacybeleid",
+    privacyPageTitle: "Privacybeleid",
+    privacyLastUpdate: "Laatst bijgewerkt: maart 2025",
+    privacySections: [
+      {
+        title: "Introductie",
+        body: "FindYourPace («wij», «ons») biedt een gratis hardlooptempocalculator, tools voor tijd en afstand en een blog. Dit beleid beschrijft hoe we omgaan met informatie wanneer je onze site gebruikt.",
+      },
+      {
+        title: "Informatie die we verzamelen",
+        body: "Onze calculator en tools draaien in je browser. We vragen geen account aan en verzamelen geen persoonsgegevens om ze te gebruiken. We kunnen technische gegevens ontvangen (o.a. IP-adres, browsertype, algemeen gebruik) via onze hosting of analyses, conform standaard webwerking.",
+      },
+      {
+        title: "Google AdSense en cookies",
+        body: "We gebruiken Google AdSense om advertenties te tonen en de service gratis te houden. Google en partners kunnen cookies en vergelijkbare technologieën gebruiken voor advertenties en metingen. Meer over het gebruik van data door Google op policies.google.com/technologies/partner-sites. Je kunt gepersonaliseerde advertenties beheren of uitzetten in je Google-accountinstellingen.",
+      },
+      {
+        title: "Gebruik van informatie",
+        body: "We gebruiken informatie om de site te laten werken en verbeteren, relevante advertenties te tonen en aan wettelijke verplichtingen te voldoen. We verkopen je persoonsgegevens niet.",
+      },
+      {
+        title: "Jouw keuzes",
+        body: "Je kunt cookies in je browser uitschakelen of beperken. Uitschakelen kan de relevantie van advertenties en sommige functies beïnvloeden. Je kunt ook je Google-account gebruiken om advertentiepersonalisatie te beheren.",
+      },
+      {
+        title: "Wijzigingen en contact",
+        body: "We kunnen dit beleid bijwerken; de datum «Laatst bijgewerkt» wordt dan aangepast. Voor vragen over dit privacybeleid kun je contact met ons opnemen via de op onze site vermelde contactopties.",
+      },
+    ],
   },
   pl: {
     appTitle: "Znajdź Swój Tempo Biegu",
@@ -1114,6 +1350,35 @@ export const translations: Record<Locale, Translation> = {
     validationMissingTime: "Czas",
     validationMissingPace: "Tempo",
     validationMissingVelocity: "Prędkość",
+    menuPrivacyPolicy: "Polityka prywatności",
+    privacyPageTitle: "Polityka prywatności",
+    privacyLastUpdate: "Ostatnia aktualizacja: marzec 2025",
+    privacySections: [
+      {
+        title: "Wprowadzenie",
+        body: "FindYourPace („my”, „nas”) oferuje darmowy kalkulator tempa biegu, narzędzia do czasu i dystansu oraz blog. Niniejsza polityka opisuje, jak przetwarzamy informacje podczas korzystania z naszej strony.",
+      },
+      {
+        title: "Zbierane informacje",
+        body: "Kalkulator i narzędzia działają w Twojej przeglądarce. Nie wymagamy konta ani nie zbieramy danych osobowych. Możemy otrzymywać dane techniczne (np. adres IP, typ przeglądarki, ogólne użycie) przez hosting lub analitykę, zgodnie ze standardowym działaniem sieci.",
+      },
+      {
+        title: "Google AdSense i pliki cookie",
+        body: "Używamy Google AdSense do wyświetlania reklam i utrzymania bezpłatnej usługi. Google i partnerzy mogą używać plików cookie i podobnych technologii do reklam i pomiarów. Więcej o wykorzystaniu danych przez Google: policies.google.com/technologies/partner-sites. Możesz zarządzać lub wyłączyć reklamy spersonalizowane w ustawieniach konta Google.",
+      },
+      {
+        title: "Wykorzystanie informacji",
+        body: "Używamy informacji do działania i rozwoju strony, wyświetlania relevantnych reklam oraz spełniania obowiązków prawnych. Nie sprzedajemy Twoich danych osobowych.",
+      },
+      {
+        title: "Twoje wybory",
+        body: "Możesz wyłączyć lub ograniczyć pliki cookie w przeglądarce. Wyłączenie może wpłynąć na trafność reklam i część funkcji. Możesz też użyć konta Google do zarządzania personalizacją reklam.",
+      },
+      {
+        title: "Zmiany i kontakt",
+        body: "Możemy aktualizować niniejszą politykę; data „Ostatnia aktualizacja” zostanie zmieniona. W razie pytań skontaktuj się z nami za pomocą opcji podanych na stronie.",
+      },
+    ],
   },
   sv: {
     appTitle: "Hitta Din Löptempo",
@@ -1226,6 +1491,35 @@ export const translations: Record<Locale, Translation> = {
     validationMissingTime: "Tid",
     validationMissingPace: "Tempo",
     validationMissingVelocity: "Hastighet",
+    menuPrivacyPolicy: "Integritetspolicy",
+    privacyPageTitle: "Integritetspolicy",
+    privacyLastUpdate: "Senast uppdaterad: mars 2025",
+    privacySections: [
+      {
+        title: "Introduktion",
+        body: "FindYourPace (»vi«, »oss«) erbjuder en gratis löptempokalkylator, verktyg för tid och sträcka samt en blogg. Denna policy beskriver hur vi hanterar information när du använder vår webbplats.",
+      },
+      {
+        title: "Information vi samlar in",
+        body: "Vår kalkylator och verktyg körs i din webbläsare. Vi kräver inget konto och samlar inte in personuppgifter för användning. Vi kan ta emot teknisk data (t.ex. IP-adress, webbläsartyp, allmän användning) via vår hosting eller analyser, i enlighet med vanlig webbdrift.",
+      },
+      {
+        title: "Google AdSense och cookies",
+        body: "Vi använder Google AdSense för att visa annonser och hålla tjänsten gratis. Google och partners kan använda cookies och liknande teknik för annonser och mätning. Läs om hur Google använder data på policies.google.com/technologies/partner-sites. Du kan hantera eller stänga av personlig annonsering i dina Google-kontoinställningar.",
+      },
+      {
+        title: "Hur vi använder information",
+        body: "Vi använder information för att driva och förbättra webbplatsen, visa relevanta annonser och uppfylla juridiska krav. Vi säljer inte dina personuppgifter.",
+      },
+      {
+        title: "Dina val",
+        body: "Du kan inaktivera eller begränsa cookies i webbläsaren. Inaktivering kan påverka annonsrelevans och vissa funktioner. Du kan också använda ditt Google-konto för att styra annonspersonalisering.",
+      },
+      {
+        title: "Ändringar och kontakt",
+        body: "Vi kan uppdatera denna policy; datumet »Senast uppdaterad« revideras. För frågor om denna integritetspolicy kan du nå oss via de kontaktalternativ som finns på webbplatsen.",
+      },
+    ],
   },
 };
 

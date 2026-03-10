@@ -65,12 +65,12 @@ export function AdPlaceholder({
       className={`hidden xl:block fixed ${sideClass} top-1/2 z-10 w-[160px] -translate-y-1/2 3xl:w-[300px]`}
     >
       <div
-        className="flex min-h-[600px] flex-col items-center justify-center gap-3 rounded-xl border border-dashed border-border p-4 text-center"
+        className="flex min-h-[600px] flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-border p-6 text-center"
         style={{ minHeight: 600 }}
       >
         <Frown className="h-6 w-6 shrink-0 text-foreground" aria-hidden />
         <p className="m-0 text-sm font-medium text-foreground">{supportText}</p>
-        <p className="m-0 mt-1 text-xs text-muted-foreground">{enableText}</p>
+        <p className="m-0 text-xs text-muted-foreground">{enableText}</p>
       </div>
     </aside>
   );

@@ -96,7 +96,7 @@ export function AppHeader() {
           className={`flex min-h-14 items-center bg-background/70 backdrop-blur-md transition-all duration-300 ease-out ${headerScrolled ? "mx-auto h-14 max-w-6xl rounded-xl border border-border shadow-md" : "w-full border-b border-transparent"}`}
         >
           <div
-            className={`grid w-full min-w-0 grid-cols-[1fr_auto_1fr] items-center gap-4 ${headerScrolled ? "px-3 lg:px-6" : "px-4 lg:px-10"}`}
+            className={`grid w-full min-w-0 grid-cols-[1fr_auto_1fr] items-center gap-4 ${headerScrolled ? "px-4 lg:px-4" : "px-4 lg:px-10"}`}
           >
             <div className="flex items-center gap-2">
               <Sheet open={menuSheetOpen} onOpenChange={setMenuSheetOpen}>
@@ -179,7 +179,7 @@ export function AppHeader() {
               </Sheet>
               <Link
                 href={`/${basePath}`}
-                className="text-lg font-bold tracking-tight"
+                className="text-lg font-bold tracking-tight ml-1"
               >
                 FindYourPace
               </Link>
@@ -189,7 +189,7 @@ export function AppHeader() {
               <NavigationMenu viewport={false} className="hidden md:flex">
                 <NavigationMenuList className="gap-3">
                   <NavigationMenuItem>
-                    <NavigationMenuTrigger>{t.menuCalculators}</NavigationMenuTrigger>
+                    <NavigationMenuTrigger className="bg-transparent">{t.menuCalculators}</NavigationMenuTrigger>
                     <NavigationMenuContent>
                       <ul className="grid min-w-[280px] gap-1 p-2">
                         {t.navCalculatorLabels.map((label, i) => (
@@ -215,7 +215,7 @@ export function AppHeader() {
                     </NavigationMenuContent>
                   </NavigationMenuItem>
                   <NavigationMenuItem>
-                    <NavigationMenuTrigger>{t.menuTables}</NavigationMenuTrigger>
+                    <NavigationMenuTrigger className="bg-transparent">{t.menuTables}</NavigationMenuTrigger>
                     <NavigationMenuContent>
                       <ul className="grid min-w-[280px] gap-1 p-2">
                         {t.navTableLabels.map((label, i) => (

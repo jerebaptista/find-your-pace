@@ -1,0 +1,51 @@
+# Run manually to create Release v1.0.0 and repository labels (one-time setup).
+# Actions > Create release and labels > Run workflow
+
+name: Create release and labels
+
+on:
+  workflow_dispatch:
+
+jobs:
+  create:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Create Release v1.0.0
+        id: release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v1.0.0
+          name: v1.0.0 - Primeira release estavel
+          body_path: release-notes-v1.0.0.md
+          fail_on_unmatched: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create labels
+        run: |
+          OWNER="${{ github.repository_owner }}"
+          REPO="${{ github.event.repository.name }}"
+          BASE="https://api.github.com/repos/$OWNER/$REPO"
+          AUTH="Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}"
+          LABELS='[
+            {"name":"area: calculadora","color":"1d76db","description":"Calculadora de pace, tempo, distancia"},
+            {"name":"area: blog","color":"bfd4f2","description":"Blog e posts"},
+            {"name":"area: i18n","color":"0e8a16","description":"Traducoes e locales"},
+            {"name":"area: layout","color":"fbca04","description":"Header, footer, navegacao"},
+            {"name":"area: ads","color":"d93f0b","description":"AdSense e placeholders"},
+            {"name":"tipo: componente","color":"c5def5","description":"Componentes UI e paginas"},
+            {"name":"tipo: funcionalidade","color":"a2eeef","description":"Funcionalidades e features"},
+            {"name":"documentacao","color":"ededed","description":"README, release notes, docs"}
+          ]'
+          for row in $(echo "$LABELS" | jq -c '.[]'); do
+            name=$(echo "$row" | jq -r '.name')
+            color=$(echo "$row" | jq -r '.color')
+            desc=$(echo "$row" | jq -r '.description')
+            curl -s -X POST "$BASE/labels" -H "Accept: application/vnd.github+json" -H "$AUTH" -H "X-GitHub-Api-Version: 2022-11-28" -d "{\"name\":\"$name\",\"color\":\"$color\",\"description\":\"$desc\"}" || true
+          done
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

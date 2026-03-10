@@ -85,15 +85,15 @@ export function AppHeader() {
 
   return (
     <header
-      className="sticky top-0 z-50 w-full shrink-0"
+      className={`sticky top-0 z-50 w-full shrink-0 transition-all duration-300 ease-out ${headerScrolled ? "" : "-mt-4"}`}
       role="banner"
     >
       {/* Controle de largura interno: barra full width no topo, cápsula centralizada com scroll */}
       <div
-        className={`transition-all duration-300 ease-out ${headerScrolled ? "py-3 px-4 xl:px-[176px] 3xl:px-[316px]" : "pb-2 pt-0 xl:px-[176px] 3xl:px-[316px]"}`}
+        className={`min-h-14 transition-all duration-300 ease-out ${headerScrolled ? "py-3 px-4 xl:px-[176px] 3xl:px-[316px]" : "pb-2 pt-0 xl:px-[176px] 3xl:px-[316px]"}`}
       >
         <div
-          className={`flex items-center bg-background/70 backdrop-blur-md transition-all duration-300 ease-out ${headerScrolled ? "mx-auto h-14 max-w-6xl rounded-xl border border-border shadow-md" : "w-full border-b border-transparent"}`}
+          className={`flex min-h-14 items-center bg-background/70 backdrop-blur-md transition-all duration-300 ease-out ${headerScrolled ? "mx-auto h-14 max-w-6xl rounded-xl border border-border shadow-md" : "w-full border-b border-transparent"}`}
         >
           <div
             className={`grid w-full min-w-0 grid-cols-[1fr_auto_1fr] items-center gap-4 ${headerScrolled ? "px-3 lg:px-6" : "px-4 lg:px-10"}`}

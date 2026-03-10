@@ -17,41 +17,60 @@ export function AdPlaceholder({
   inlineSize = "320x100",
 }: AdPlaceholderProps) {
   if (variant === "inline") {
-    const isRectangle = inlineSize === "300x600";
-    const contentMinHeight = isRectangle ? 250 : 100;
-    /* sm, md: área full width. Espaço reservado (minHeight) para evitar CLS. */
+    /* Banner horizontal 320x100: estrutura própria, sem <p> para evitar margens de prose. */
+    if (inlineSize === "320x100") {
+      return (
+        <aside
+          className="mx-auto flex w-full items-center justify-center pt-4 pb-4 xl:hidden"
+          style={{ minHeight: 112 }}
+        >
+          <div className="flex w-full max-w-3xl flex-row items-center justify-center gap-3 rounded-xl border border-dashed border-border p-4">
+            <Frown className="h-6 w-6 shrink-0 text-foreground" aria-hidden />
+            <div className="flex flex-col items-start justify-center gap-0.5 text-left">
+              <span className="text-sm font-medium leading-tight text-foreground">
+                {supportText}
+              </span>
+              <span className="text-xs leading-tight text-muted-foreground">
+                {enableText}
+              </span>
+            </div>
+          </div>
+        </aside>
+      );
+    }
+    /* Banner retangular 300x600: estrutura própria. */
     return (
       <aside
-        className="mx-auto w-full pt-8 pb-5 xl:hidden"
-        style={{ minHeight: 32 + 20 + contentMinHeight }}
+        className="mx-auto flex w-full items-center justify-center pt-4 pb-4 xl:hidden"
+        style={{ minHeight: 282 }}
       >
         <div
-          className="flex w-full flex-row items-center justify-center gap-3 rounded-xl border border-dashed border-border p-4"
-          style={{ minHeight: contentMinHeight }}
+          className="flex w-full max-w-3xl flex-row items-center justify-center gap-3 rounded-xl border border-dashed border-border p-4"
+          style={{ minHeight: 250 }}
         >
           <Frown className="h-6 w-6 shrink-0 text-foreground" aria-hidden />
           <div className="flex flex-col gap-0 leading-tight text-left">
-            <p className="text-sm font-medium text-foreground">{supportText}</p>
-            <p className="mt-0.5 text-xs text-muted-foreground">{enableText}</p>
+            <p className="m-0 text-sm font-medium text-foreground">{supportText}</p>
+            <p className="m-0 mt-0.5 text-xs text-muted-foreground">{enableText}</p>
           </div>
         </div>
       </aside>
     );
   }
 
-  /* Desktop: vertical. Ícone acima do título. xl, 2xl: 160×600 | 3xl: 300×600 */
+  /* Desktop: vertical, centralizado ao meio da viewport durante o scroll. */
   const sideClass = side === "left" ? "left-4" : "right-4";
   return (
     <aside
-      className={`hidden xl:block fixed ${sideClass} top-24 z-10 w-[160px] 3xl:w-[300px]`}
+      className={`hidden xl:block fixed ${sideClass} top-1/2 z-10 w-[160px] -translate-y-1/2 3xl:w-[300px]`}
     >
       <div
         className="flex min-h-[600px] flex-col items-center justify-center gap-3 rounded-xl border border-dashed border-border p-4 text-center"
         style={{ minHeight: 600 }}
       >
         <Frown className="h-6 w-6 shrink-0 text-foreground" aria-hidden />
-        <p className="text-sm font-medium text-foreground">{supportText}</p>
-        <p className="mt-1 text-xs text-muted-foreground">{enableText}</p>
+        <p className="m-0 text-sm font-medium text-foreground">{supportText}</p>
+        <p className="m-0 mt-1 text-xs text-muted-foreground">{enableText}</p>
       </div>
     </aside>
   );

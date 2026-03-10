@@ -49,17 +49,19 @@ function BlogCard({
   post,
   locale,
   pathLocale,
+  priorityImage = false,
 }: {
   post: BlogPostMeta;
   locale: Locale;
   pathLocale: string;
+  priorityImage?: boolean;
 }) {
   return (
     <Link
       href={`/${pathLocale}/blog/${post.slug}`}
       className="block overflow-hidden rounded-lg border border-border bg-card text-left transition-colors hover:bg-muted/50"
     >
-      {/* Imagem 16:9, largura total do card */}
+      {/* Imagem 16:9; priorityImage para LCP no primeiro card (mobile) */}
       <div className="relative aspect-video w-full overflow-hidden bg-muted">
         {post.image ? (
           // eslint-disable-next-line @next/next/no-img-element
@@ -68,6 +70,7 @@ function BlogCard({
             alt=""
             width={640}
             height={360}
+            fetchPriority={priorityImage ? "high" : undefined}
             className="h-full w-full object-cover"
           />
         ) : (
@@ -113,7 +116,7 @@ export default async function BlogPage({ params }: Props) {
           </h1>
           {/* Grid: 4 colunas em 1920px, até 12 colunas; gap reduzido entre cards */}
           <div
-            className="grid w-full gap-2 md:gap-3"
+            className="grid w-full gap-4"
             style={{
               gridTemplateColumns:
                 "repeat(auto-fill, minmax(max(320px, 100%/12), 1fr))",
@@ -135,14 +138,17 @@ export default async function BlogPage({ params }: Props) {
                     items.push({ type: "ad", key: `ad-after-${i}` });
                   }
                 });
+                let postIndex = 0;
                 return items.map((item) => {
                   if (item.type === "post") {
+                    const isFirstPost = postIndex++ === 0;
                     return (
                       <BlogCard
                         key={item.post.slug}
                         post={item.post}
                         locale={locale}
                         pathLocale={pathLocale}
+                        priorityImage={isFirstPost}
                       />
                     );
                   }

@@ -420,7 +420,7 @@ export function CalculatorView() {
       {/* Conteúdo: px-6 para todo; desktop com margem entre conteúdo e sidebars (32px de gap) */}
       <div className="w-full flex flex-col min-w-0 px-6 xl:pl-[208px] xl:pr-[208px] 3xl:pl-[348px] 3xl:pr-[348px]">
       <div className="mx-auto w-full max-w-6xl pt-14 pb-10 lg:px-10">
-      <section className="w-full max-w-3xl mx-auto text-center">
+      <section className="w-full max-w-3xl mx-auto text-center min-h-[420px]">
         <div className="space-y-4">
           <h1 className="text-4xl font-semibold tracking-tight md:text-5xl">
             {pageTitle}
@@ -688,8 +688,8 @@ export function CalculatorView() {
       </section>
       </div>
 
-      {/* Mobile: ad “esquerdo” abaixo da calculadora */}
-      <div className="mt-8">
+      {/* Ad abaixo da calculadora (mobile); gap menor mt-4 no mobile */}
+      <div className="mt-4 min-h-[282px] xl:hidden">
         <AdPlaceholder
           variant="inline"
           inlineSize="300x600"
@@ -698,8 +698,11 @@ export function CalculatorView() {
         />
       </div>
 
-      {/* Tabela tempo por pace */}
-      <section className="mx-auto w-full max-w-5xl py-8 xl:mt-16">
+      {/* Tabela tempo por pace (content-visibility: auto para melhor FCP/LCP no mobile) */}
+      <section
+        className="mx-auto w-full max-w-5xl mt-4 py-4 xl:mt-8 xl:py-6"
+        style={{ contentVisibility: "auto" as const }}
+      >
         <h2 className="mb-2 text-2xl font-semibold tracking-tight">
           {t.paceTimeTableTitle}
         </h2>
@@ -714,8 +717,8 @@ export function CalculatorView() {
         </p>
       </section>
 
-      {/* Mobile: segundo banner acima do FAQ */}
-      <div className="mt-8">
+      {/* Segundo banner acima do FAQ (mobile); gap menor mt-4 no mobile */}
+      <div className="mt-4 min-h-[282px] xl:hidden">
         <AdPlaceholder
           variant="inline"
           inlineSize="300x600"
@@ -724,7 +727,10 @@ export function CalculatorView() {
         />
       </div>
 
-      <section className="mx-auto w-full max-w-3xl pb-12 pt-6">
+      <section
+        className="mx-auto w-full max-w-3xl mt-4 pb-12 pt-4 xl:mt-8 xl:pt-6"
+        style={{ contentVisibility: "auto" as const }}
+      >
         <h2 className="mb-4 text-2xl font-semibold tracking-tight">
           {faqByLocale[locale].title}
         </h2>

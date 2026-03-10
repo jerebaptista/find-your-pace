@@ -119,6 +119,7 @@ export default async function BlogPostPage({ params }: Props) {
                 alt=""
                 width={640}
                 height={360}
+                fetchPriority="high"
                 className="h-full w-full object-cover"
               />
             ) : null}
@@ -184,13 +185,13 @@ export default async function BlogPostPage({ params }: Props) {
             );
           })()}
 
-          {/* Banner de ads no final (só mobile) */}
+          {/* Banner de ads no final (só mobile); height maior como nos outros */}
           <div className="xl:hidden w-full max-w-3xl mt-8">
             <AdPlaceholder
               variant="inline"
               supportText={t.adSupportRun}
               enableText={t.adEnableAds}
-              inlineSize="320x100"
+              inlineSize="300x600"
             />
           </div>
         </div>

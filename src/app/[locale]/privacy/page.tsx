@@ -23,21 +23,27 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const t = translations[localeKey];
   const pageUrl = `${siteBaseUrl}/${pathLocale}/privacy`;
   const title = `${t.privacyPageTitle} – FindYourPace`;
+  const firstBody = t.privacySections[0]?.body?.split(/\n/)[0] ?? "";
+  const description =
+    firstBody.length > 160 ? `${firstBody.slice(0, 157)}...` : firstBody;
   const languages: Record<string, string> = {};
   for (const loc of pathLocales) {
     languages[loc === "pt" ? "pt" : loc] = `${siteBaseUrl}/${loc}/privacy`;
   }
+  languages["x-default"] = `${siteBaseUrl}/en/privacy`;
   return {
     title,
+    description: description || undefined,
     alternates: { canonical: pageUrl, languages },
     openGraph: {
       type: "website",
       url: pageUrl,
       siteName: "FindYourPace",
       title,
+      description: description || undefined,
       locale: localeKey,
     },
-    twitter: { card: "summary", title },
+    twitter: { card: "summary", title, description: description || undefined },
   };
 }
 

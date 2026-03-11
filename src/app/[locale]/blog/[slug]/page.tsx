@@ -6,6 +6,7 @@ import { AppHeader } from "@/components/app-header";
 import {
   pathLocaleToLocale,
   pathLocales,
+  siteBaseUrl,
   translations,
   type PathLocale,
 } from "@/lib/i18n";
@@ -47,11 +48,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const locale = pathLocaleToLocale(pathLocale);
   const t = translations[locale];
   const imageUrl = post.image || "/og.png";
+  const pageUrl = `${siteBaseUrl}/${safeLocale}/blog/${slug}`;
+  const languages: Record<string, string> = {};
+  for (const loc of pathLocales) {
+    if (getPostBySlug(slug, loc as PathLocale))
+      languages[loc === "pt" ? "pt" : loc] = `${siteBaseUrl}/${loc}/blog/${slug}`;
+  }
+  languages["x-default"] = `${siteBaseUrl}/en/blog/${slug}`;
   return {
     title: `${post.title} – ${t.menuBlog}`,
     description: post.description,
+    alternates: { canonical: pageUrl, languages },
     openGraph: {
       type: "article",
+      url: pageUrl,
       title: post.title,
       description: post.description,
       images: [{ url: imageUrl, width: 1200, height: 630, alt: post.title }],

@@ -28,6 +28,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   for (const loc of pathLocales) {
     languages[loc === "pt" ? "pt" : loc] = `${siteBaseUrl}/${loc}/blog`;
   }
+  languages["x-default"] = `${siteBaseUrl}/en/blog`;
   return {
     title,
     description,

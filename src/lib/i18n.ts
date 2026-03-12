@@ -20,6 +20,8 @@ type Translation = {
   menuCalculators: string;
   menuTables: string;
   menuBlog: string;
+  blogPageTitle: string;
+  blogMetaDescription: string;
   navCalculatorLabels: readonly [
     string,
     string,
@@ -124,6 +126,9 @@ export const translations: Record<Locale, Translation> = {
     menuCalculators: "Calculators",
     menuTables: "Tables",
     menuBlog: "Blog",
+    blogPageTitle: "Running & Pace Blog – Tips, Calculators & Articles | FindYourPace",
+    blogMetaDescription:
+      "Running tips, pace calculators, and training articles. Learn to calculate pace, race time, and improve your running with FindYourPace.",
     navCalculatorLabels: [
       "Pace Calculator",
       "Race Time Predictor",
@@ -265,6 +270,9 @@ export const translations: Record<Locale, Translation> = {
     menuCalculators: "Calculadoras",
     menuTables: "Tablas",
     menuBlog: "Blog",
+    blogPageTitle: "Blog de running y ritmo – Consejos, calculadoras y artículos | FindYourPace",
+    blogMetaDescription:
+      "Consejos de running, calculadoras de ritmo y artículos de entrenamiento. Aprende a calcular el pace, tiempo de carrera y mejora con FindYourPace.",
     navCalculatorLabels: [
       "Calculadora de Ritmo",
       "Preditor de Tiempo de Prueba",
@@ -406,6 +414,9 @@ export const translations: Record<Locale, Translation> = {
     menuCalculators: "Calculateurs",
     menuTables: "Tableaux",
     menuBlog: "Blog",
+    blogPageTitle: "Blog running et allure – Conseils, calculateurs et articles | FindYourPace",
+    blogMetaDescription:
+      "Conseils running, calculateurs d'allure et articles d'entraînement. Calculez votre allure, temps de course et progressez avec FindYourPace.",
     navCalculatorLabels: [
       "Calculateur d'allure",
       "Prédicteur de temps de course",
@@ -547,6 +558,9 @@ export const translations: Record<Locale, Translation> = {
     menuCalculators: "Rechner",
     menuTables: "Tabellen",
     menuBlog: "Blog",
+    blogPageTitle: "Lauf- & Pace-Blog – Tipps, Rechner und Artikel | FindYourPace",
+    blogMetaDescription:
+      "Lauftipps, Pace-Rechner und Trainingsartikel. Pace und Renndauer berechnen und dein Laufen mit FindYourPace verbessern.",
     navCalculatorLabels: [
       "Pace-Rechner",
       "Wettkampfzeit-Vorhersage",
@@ -688,6 +702,9 @@ export const translations: Record<Locale, Translation> = {
     menuCalculators: "Calculadoras",
     menuTables: "Tabelas",
     menuBlog: "Blog",
+    blogPageTitle: "Blog de corrida e pace – Dicas, calculadoras e artigos | FindYourPace",
+    blogMetaDescription:
+      "Dicas de corrida, calculadoras de pace e artigos de treino. Aprenda a calcular pace, tempo de prova e melhore com FindYourPace.",
     navCalculatorLabels: [
       "Calculadora de Pace",
       "Preditor de Tempo de Prova",
@@ -829,6 +846,9 @@ export const translations: Record<Locale, Translation> = {
     menuCalculators: "Calcolatori",
     menuTables: "Tabelle",
     menuBlog: "Blog",
+    blogPageTitle: "Blog corsa e pace – Consigli, calcolatori e articoli | FindYourPace",
+    blogMetaDescription:
+      "Consigli sulla corsa, calcolatori di pace e articoli di allenamento. Calcola pace, tempo di gara e migliora con FindYourPace.",
     navCalculatorLabels: [
       "Calcolatore di ritmo",
       "Predittore tempo di gara",
@@ -970,6 +990,9 @@ export const translations: Record<Locale, Translation> = {
     menuCalculators: "計算ツール",
     menuTables: "表",
     menuBlog: "ブログ",
+    blogPageTitle: "ランニング・ペースブログ – ヒント、計算機、記事 | FindYourPace",
+    blogMetaDescription:
+      "ランニングのヒント、ペース計算機、トレーニング記事。ペースやレースタイムの計算方法を学び、FindYourPaceで上達しましょう。",
     navCalculatorLabels: [
       "ペース計算機",
       "レースタイム予測",
@@ -1111,6 +1134,9 @@ export const translations: Record<Locale, Translation> = {
     menuCalculators: "Rekenmachines",
     menuTables: "Tabellen",
     menuBlog: "Blog",
+    blogPageTitle: "Hardloop- en tempoblog – Tips, rekenmachines en artikelen | FindYourPace",
+    blogMetaDescription:
+      "Hardlooptips, temporekenmachines en trainingsartikelen. Leer tempo en wedstrijdtijd berekenen en verbeter met FindYourPace.",
     navCalculatorLabels: [
       "Tempo-calculator",
       "Wedstrijdtijd-voorspeller",
@@ -1252,6 +1278,9 @@ export const translations: Record<Locale, Translation> = {
     menuCalculators: "Kalkulatory",
     menuTables: "Tabele",
     menuBlog: "Blog",
+    blogPageTitle: "Blog o bieganiu i tempie – Porady, kalkulatory i artykuły | FindYourPace",
+    blogMetaDescription:
+      "Porady biegowe, kalkulatory tempa i artykuły treningowe. Obliczaj tempo, czas biegu i poprawiaj się z FindYourPace.",
     navCalculatorLabels: [
       "Kalkulator tempa",
       "Predyktor czasu biegu",
@@ -1393,6 +1422,9 @@ export const translations: Record<Locale, Translation> = {
     menuCalculators: "Kalkylatorer",
     menuTables: "Tabeller",
     menuBlog: "Blogg",
+    blogPageTitle: "Löpning & tempoblogg – Tips, kalkylatorer och artiklar | FindYourPace",
+    blogMetaDescription:
+      "Löptips, tempokalkylatorer och träningsartiklar. Lär dig räkna tempo och lopptid och bli bättre med FindYourPace.",
     navCalculatorLabels: [
       "Tempokalkylator",
       "Lopptidsförutsägelse",

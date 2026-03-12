@@ -42,6 +42,19 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              name: "FindYourPace",
+              url: siteBaseUrl,
+              description:
+                "Free running pace calculator to estimate pace, distance, time and race splits. Find your pace. Win your race.",
+            }),
+          }}
+        />
         <meta name="google-adsense-account" content="ca-pub-9553386327607295" />
         <script
           async

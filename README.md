@@ -31,7 +31,6 @@ Ideal para quem treina por pace, planeja provas ou quer converter entre unidades
 - **Tailwind CSS 4**, **Radix UI** / **shadcn**, **next-themes**
 - Conteúdo do blog em **Markdown/MDX** (gray-matter, react-markdown)
 - **Vercel**: deploy (produção + preview), Analytics, Speed Insights
-- **Google AdSense**: placeholders preparados (inline e sidebars)
 
 ---
 
@@ -69,10 +68,10 @@ npm run lint     # lint
 
 ```
 ├── content/blog/{locale}/   # Posts em Markdown/MDX por idioma
-├── public/                  # Favicon, ads.txt, og.png, etc.
+├── public/                  # Favicon, og.png, etc.
 ├── src/
 │   ├── app/[locale]/        # Rotas por locale
-│   ├── components/          # Header, footer, calculadora, ads, UI
+│   ├── components/          # Header, footer, calculadora, UI
 │   └── lib/                  # i18n, blog, calculator-utils
 ├── release-notes-v1.0.0.md
 └── package.json

@@ -7,7 +7,6 @@ import { usePathname, useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 import { useLanguage } from "@/components/language-provider";
-import { AdPlaceholder } from "@/components/ad-placeholder";
 import { AppHeader } from "@/components/app-header";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -418,7 +417,7 @@ export function CalculatorView() {
     <main className="flex min-h-screen flex-col bg-background py-5 lg:px-0">
       <AppHeader />
       {/* Conteúdo: px-6 para todo; desktop com margem entre conteúdo e sidebars (32px de gap) */}
-      <div className="w-full flex flex-col min-w-0 px-6 xl:pl-[208px] xl:pr-[208px] 3xl:pl-[348px] 3xl:pr-[348px]">
+      <div className="w-full flex flex-col min-w-0 px-6 md:px-10 lg:px-16">
       <div className="mx-auto w-full max-w-6xl pt-14 pb-10 lg:px-10">
       <section className="w-full max-w-3xl mx-auto text-center min-h-[420px]">
         <div className="space-y-4">
@@ -688,16 +687,6 @@ export function CalculatorView() {
       </section>
       </div>
 
-      {/* Ad abaixo da calculadora (mobile); gap menor mt-4 no mobile */}
-      <div className="mt-4 min-h-[282px] xl:hidden">
-        <AdPlaceholder
-          variant="inline"
-          inlineSize="300x600"
-          supportText={t.adSupportRun}
-          enableText={t.adEnableAds}
-        />
-      </div>
-
       {/* Tabela tempo por pace (content-visibility: auto para melhor FCP/LCP no mobile) */}
       <section
         className="mx-auto w-full max-w-5xl mt-4 py-4 xl:mt-8 xl:py-6"
@@ -717,16 +706,6 @@ export function CalculatorView() {
         </p>
       </section>
 
-      {/* Segundo banner acima do FAQ (mobile); gap menor mt-4 no mobile */}
-      <div className="mt-4 min-h-[282px] xl:hidden">
-        <AdPlaceholder
-          variant="inline"
-          inlineSize="300x600"
-          supportText={t.adSupportRun}
-          enableText={t.adEnableAds}
-        />
-      </div>
-
       <section
         className="mx-auto w-full max-w-3xl mt-4 pb-12 pt-4 xl:mt-8 xl:pt-6"
         style={{ contentVisibility: "auto" as const }}
@@ -744,19 +723,6 @@ export function CalculatorView() {
         </Accordion>
       </section>
       </div>
-
-      <AdPlaceholder
-        variant="sidebar"
-        side="left"
-        supportText={t.adSupportRun}
-        enableText={t.adEnableAds}
-      />
-      <AdPlaceholder
-        variant="sidebar"
-        side="right"
-        supportText={t.adSupportRun}
-        enableText={t.adEnableAds}
-      />
     </main>
   );
 }

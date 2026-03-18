@@ -73,8 +73,6 @@ type Translation = {
   placeholderDistance: string;
   placeholderTime: string;
   comboboxEmpty: string;
-  adSupportRun: string;
-  adEnableAds: string;
   distanceBadges: Record<
     "miles" | "kilometers" | "meters",
     Array<{ label: string; value: string }>
@@ -185,8 +183,6 @@ export const translations: Record<Locale, Translation> = {
     placeholderDistance: "0",
     placeholderTime: "00",
     comboboxEmpty: "None",
-    adSupportRun: "Support our run",
-    adEnableAds: "Enable ads and keep this tool free for everyone.",
     distanceBadges: {
       kilometers: [
         { label: "1km", value: "1" },
@@ -329,8 +325,6 @@ export const translations: Record<Locale, Translation> = {
     placeholderDistance: "0",
     placeholderTime: "00",
     comboboxEmpty: "Ninguno",
-    adSupportRun: "Apoya nuestra carrera",
-    adEnableAds: "Activa los anuncios y mantén esta herramienta gratis para todos.",
     distanceBadges: {
       kilometers: [
         { label: "1 km", value: "1" },
@@ -473,8 +467,6 @@ export const translations: Record<Locale, Translation> = {
     placeholderDistance: "0",
     placeholderTime: "00",
     comboboxEmpty: "Aucun",
-    adSupportRun: "Soutenez notre course",
-    adEnableAds: "Activez les annonces et gardez cet outil gratuit pour tous.",
     distanceBadges: {
       kilometers: [
         { label: "1 km", value: "1" },
@@ -617,8 +609,6 @@ export const translations: Record<Locale, Translation> = {
     placeholderDistance: "0",
     placeholderTime: "00",
     comboboxEmpty: "Keine",
-    adSupportRun: "Unterstütze unseren Lauf",
-    adEnableAds: "Aktiviere Anzeigen und halte dieses Tool für alle kostenlos.",
     distanceBadges: {
       kilometers: [
         { label: "1 km", value: "1" },
@@ -761,8 +751,6 @@ export const translations: Record<Locale, Translation> = {
     placeholderDistance: "0",
     placeholderTime: "00",
     comboboxEmpty: "Nenhum",
-    adSupportRun: "Apoie nossa correria",
-    adEnableAds: "Ative os anúncios e mantenha esta ferramenta gratuita para todos.",
     distanceBadges: {
       kilometers: [
         { label: "1 km", value: "1" },
@@ -905,8 +893,6 @@ export const translations: Record<Locale, Translation> = {
     placeholderDistance: "0",
     placeholderTime: "00",
     comboboxEmpty: "Nessuno",
-    adSupportRun: "Sostieni la nostra corsa",
-    adEnableAds: "Abilita gli annunci e mantieni questo strumento gratuito per tutti.",
     distanceBadges: {
       kilometers: [
         { label: "1 km", value: "1" },
@@ -1049,8 +1035,6 @@ export const translations: Record<Locale, Translation> = {
     placeholderDistance: "0",
     placeholderTime: "00",
     comboboxEmpty: "なし",
-    adSupportRun: "私たちのランをサポート",
-    adEnableAds: "広告を有効にして、このツールを誰でも無料で使えるようにしましょう。",
     distanceBadges: {
       kilometers: [
         { label: "1km", value: "1" },
@@ -1193,8 +1177,6 @@ export const translations: Record<Locale, Translation> = {
     placeholderDistance: "0",
     placeholderTime: "00",
     comboboxEmpty: "Geen",
-    adSupportRun: "Ondersteun onze hardloop",
-    adEnableAds: "Schakel advertenties in en houd deze tool gratis voor iedereen.",
     distanceBadges: {
       kilometers: [
         { label: "1 km", value: "1" },
@@ -1337,8 +1319,6 @@ export const translations: Record<Locale, Translation> = {
     placeholderDistance: "0",
     placeholderTime: "00",
     comboboxEmpty: "Brak",
-    adSupportRun: "Wspieraj nasz bieg",
-    adEnableAds: "Włącz reklamy i zachowaj to narzędzie bezpłatne dla wszystkich.",
     distanceBadges: {
       kilometers: [
         { label: "1 km", value: "1" },
@@ -1481,8 +1461,6 @@ export const translations: Record<Locale, Translation> = {
     placeholderDistance: "0",
     placeholderTime: "00",
     comboboxEmpty: "Ingen",
-    adSupportRun: "Stöd vårt löp",
-    adEnableAds: "Aktivera annonser och håll verktyget gratis för alla.",
     distanceBadges: {
       kilometers: [
         { label: "1 km", value: "1" },

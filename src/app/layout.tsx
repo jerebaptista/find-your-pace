@@ -42,6 +42,14 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+        <link rel="dns-prefetch" href="https://vitals.vercel-insights.com" />
+        <link rel="dns-prefetch" href="https://va.vercel-scripts.com" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -54,12 +62,6 @@ export default function RootLayout({
                 "Free running pace calculator to estimate pace, distance, time and race splits. Find your pace. Win your race.",
             }),
           }}
-        />
-        <meta name="google-adsense-account" content="ca-pub-9553386327607295" />
-        <script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9553386327607295"
-          crossOrigin="anonymous"
         />
       </head>
       <body

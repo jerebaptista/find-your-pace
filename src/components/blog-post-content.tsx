@@ -1,34 +1,10 @@
 "use client";
 
 import ReactMarkdown from "react-markdown";
-import { useMemo } from "react";
-import { AdPlaceholder } from "@/components/ad-placeholder";
 
 type BlogPostContentProps = {
   content: string;
-  adSupportText: string;
-  adEnableText: string;
 };
-
-/** Divide o conteúdo em "antes do 2.º H2" e "do 2.º H2 em diante" para inserir o ad de forma determinística (evita hydration mismatch). */
-function splitBeforeSecondH2(markdown: string): { before: string; fromSecond: string } | null {
-  const lines = markdown.split("\n");
-  let h2Count = 0;
-  let splitIndex = -1;
-  for (let i = 0; i < lines.length; i++) {
-    if (/^##\s/.test(lines[i])) {
-      h2Count += 1;
-      if (h2Count === 2) {
-        splitIndex = i;
-        break;
-      }
-    }
-  }
-  if (splitIndex < 0) return null;
-  const before = lines.slice(0, splitIndex).join("\n");
-  const fromSecond = lines.slice(splitIndex).join("\n");
-  return { before, fromSecond };
-}
 
 const proseClass = [
   "mt-8 w-full max-w-3xl text-left prose text-lg prose-neutral dark:prose-invert",
@@ -41,33 +17,10 @@ const proseClass = [
   "[&_li]:text-foreground [&_li]:leading-relaxed",
 ].join(" ");
 
-export function BlogPostContent({
-  content,
-  adSupportText,
-  adEnableText,
-}: BlogPostContentProps) {
-  const parts = useMemo(() => splitBeforeSecondH2(content), [content]);
-
-  if (!parts) {
-    return (
-      <div className={proseClass}>
-        <ReactMarkdown>{content}</ReactMarkdown>
-      </div>
-    );
-  }
-
+export function BlogPostContent({ content }: BlogPostContentProps) {
   return (
     <div className={proseClass}>
-      <ReactMarkdown>{parts.before}</ReactMarkdown>
-      <div className="not-prose xl:hidden my-6">
-        <AdPlaceholder
-          variant="inline"
-          supportText={adSupportText}
-          enableText={adEnableText}
-          inlineSize="320x100"
-        />
-      </div>
-      <ReactMarkdown>{parts.fromSecond}</ReactMarkdown>
+      <ReactMarkdown>{content}</ReactMarkdown>
     </div>
   );
 }

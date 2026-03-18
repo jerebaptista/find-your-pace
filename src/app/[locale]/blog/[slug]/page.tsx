@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { AdPlaceholder } from "@/components/ad-placeholder";
 import { BlogPostContent } from "@/components/blog-post-content";
 import { AppHeader } from "@/components/app-header";
 import {
@@ -90,7 +89,7 @@ export default async function BlogPostPage({ params }: Props) {
   return (
     <main className="flex min-h-screen flex-col bg-background py-5 lg:px-0">
       <AppHeader />
-      <div className="w-full flex flex-col min-w-0 px-6 xl:pl-[216px] xl:pr-[216px] 3xl:pl-[356px] 3xl:pr-[356px] text-center">
+      <div className="w-full flex flex-col min-w-0 px-6 xl:px-[208px] 3xl:px-[348px] text-center">
         <div className="mx-auto max-w-4xl px-4 py-8 flex flex-col items-center">
 
           {/* Título e descrição */}
@@ -136,11 +135,7 @@ export default async function BlogPostPage({ params }: Props) {
           </div>
 
           {/* Conteúdo em markdown: gaps entre parágrafos; no mobile, 1 ad após 4º parágrafo */}
-          <BlogPostContent
-            content={post.content}
-            adSupportText={t.adSupportRun}
-            adEnableText={t.adEnableAds}
-          />
+          <BlogPostContent content={post.content} />
 
           {/* Secção: 3 outras postagens (aleatórias determinísticas) */}
           {(() => {
@@ -195,29 +190,8 @@ export default async function BlogPostPage({ params }: Props) {
             );
           })()}
 
-          {/* Banner de ads no final (só mobile); height maior como nos outros */}
-          <div className="xl:hidden w-full max-w-3xl mt-8">
-            <AdPlaceholder
-              variant="inline"
-              supportText={t.adSupportRun}
-              enableText={t.adEnableAds}
-              inlineSize="300x600"
-            />
-          </div>
         </div>
       </div>
-      <AdPlaceholder
-        variant="sidebar"
-        side="left"
-        supportText={t.adSupportRun}
-        enableText={t.adEnableAds}
-      />
-      <AdPlaceholder
-        variant="sidebar"
-        side="right"
-        supportText={t.adSupportRun}
-        enableText={t.adEnableAds}
-      />
     </main>
   );
 }

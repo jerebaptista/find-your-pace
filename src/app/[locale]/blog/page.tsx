@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { AdPlaceholder } from "@/components/ad-placeholder";
 import { AppHeader } from "@/components/app-header";
 import {
   type Locale,
@@ -110,7 +109,7 @@ export default async function BlogPage({ params }: Props) {
   return (
     <main className="flex min-h-screen flex-col bg-background py-5 lg:px-0">
       <AppHeader />
-      <div className="w-full flex flex-col min-w-0 px-6 xl:pl-[216px] xl:pr-[216px] 3xl:pl-[356px] 3xl:pr-[356px]">
+      <div className="w-full flex flex-col min-w-0 px-6 xl:px-[208px] 3xl:px-[348px]">
         <div className="w-full max-w-[3840px] px-0 py-6">
           <h1 className="mb-10 text-5xl font-semibold tracking-tight">
             {t.menuBlog}
@@ -128,58 +127,19 @@ export default async function BlogPage({ params }: Props) {
                 Nenhum post ainda.
               </div>
             ) : (
-              (() => {
-                type GridItem =
-                  | { type: "post"; post: BlogPostMeta }
-                  | { type: "ad"; key: string };
-                const items: GridItem[] = [];
-                posts.forEach((post, i) => {
-                  items.push({ type: "post", post });
-                  if ((i + 1) % 4 === 0 && i < posts.length - 1) {
-                    items.push({ type: "ad", key: `ad-after-${i}` });
-                  }
-                });
-                let postIndex = 0;
-                return items.map((item) => {
-                  if (item.type === "post") {
-                    const isFirstPost = postIndex++ === 0;
-                    return (
-                      <BlogCard
-                        key={item.post.slug}
-                        post={item.post}
-                        locale={locale}
-                        pathLocale={pathLocale}
-                        priorityImage={isFirstPost}
-                      />
-                    );
-                  }
-                  return (
-                    <div key={item.key} className="col-span-full xl:hidden">
-                      <AdPlaceholder
-                        variant="inline"
-                        supportText={t.adSupportRun}
-                        enableText={t.adEnableAds}
-                      />
-                    </div>
-                  );
-                });
-              })()
+              posts.map((post, i) => (
+                <BlogCard
+                  key={post.slug}
+                  post={post}
+                  locale={locale}
+                  pathLocale={pathLocale}
+                  priorityImage={i === 0}
+                />
+              ))
             )}
           </div>
         </div>
       </div>
-      <AdPlaceholder
-        variant="sidebar"
-        side="left"
-        supportText={t.adSupportRun}
-        enableText={t.adEnableAds}
-      />
-      <AdPlaceholder
-        variant="sidebar"
-        side="right"
-        supportText={t.adSupportRun}
-        enableText={t.adEnableAds}
-      />
     </main>
   );
 }
